@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @device.name %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @device.user_id %>
+</p>
+
+<p>
+  <strong>Hardware:</strong>
+  <%= @device.hardware_id %>
+</p>
+
+<p>
+  <strong>Activation token:</strong>
+  <%= @device.activation_token %>
+</p>
+
+<%= link_to 'Edit', edit_device_path(@device) %> |
+<%= link_to 'Back', devices_path %>
