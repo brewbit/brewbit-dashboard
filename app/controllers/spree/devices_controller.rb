@@ -1,11 +1,9 @@
 module Spree
   class DevicesController < Spree::StoreController
-    before_filter :check_authorization
-    before_action :set_device, only: [:show, :edit, :update, :destroy]
+    load_and_authorize_resource :except => :create
   
     # GET /devices
     def index
-      @devices = Device.all
     end
   
     # GET /devices/1
@@ -48,14 +46,9 @@ module Spree
     end
   
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_device
-        @device = Device.find(params[:id])
-      end
-  
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name, :user_id, :hardware_id, :activation_token)
+        params.require(:device).permit(:name, :hardware_id, :activation_token)
       end
   end
 end
