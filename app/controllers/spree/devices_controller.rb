@@ -1,6 +1,6 @@
 module Spree
   class DevicesController < Spree::StoreController
-    load_and_authorize_resource :except => :create
+    load_and_authorize_resource
   
     # GET /devices
     def index
