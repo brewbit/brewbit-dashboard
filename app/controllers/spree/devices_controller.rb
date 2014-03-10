@@ -1,6 +1,6 @@
 module Spree
   class DevicesController < Spree::StoreController
-    load_and_authorize_resource
+    load_and_authorize_resource :except => 'activate'
   
     # GET /devices
     def index
@@ -10,15 +10,10 @@ module Spree
     def show
     end
   
-    # GET /devices/new
-    def new
-      @device = Device.new
-    end
-  
     # GET /devices/1/edit
     def edit
     end
-  
+    
     # POST /devices
     def create
       @device = Device.new(device_params)
@@ -27,6 +22,28 @@ module Spree
         redirect_to @device, notice: 'Device was successfully created.'
       else
         render action: 'new'
+      end
+    end
+    
+    # GET /devices/activate
+    def start_activate
+      render 'activate'
+    end
+  
+    # POST /devices/activate
+    def activate
+      @device = Device.find_by activation_token: params[:activation_token]
+      if !@device
+        flash[:notice] = 'A device with that activation token could not be found.'
+      elsif @device.user
+        flash[:notice] = 'That device is already activated.'
+      else
+        @device.user = spree_current_user
+        if @device.save
+          redirect_to @device, notice: 'Device was successfully activated.'
+        else
+          flash[:notice] = 'Something went wrong...'
+        end
       end
     end
   
@@ -48,7 +65,7 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name, :hardware_id, :activation_token)
+        params.require(:device).permit(:name)
       end
   end
 end
