@@ -1,40 +1,12 @@
 <% unless @devices.blank? %>
-<h1>Listing devices</h1>
+	<h1>Listing devices</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>User</th>
-      <th>Hardware</th>
-      <th>Activation token</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+	<%= render @devices %>
 
-  <tbody>
-    <% @devices.each do |device| %>
-      <tr>
-        <td><%= device.name %></td>
-        <td><%= device.user_id %></td>
-        <td><%= device.hardware_id %></td>
-        <td><%= device.activation_token %></td>
-        <td><%= link_to 'Show', device %></td>
-        <td><%= link_to 'Edit', edit_device_path(device) %></td>
-        <td><%= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'Activate Device', devices_activate_path %>
+	<%= link_to 'Activate Device', devices_activate_path %>
 <% else %>
-<div id="no-devices">
-  <h1 id="blurb">No devices have been added to your account.</h1>
-  <%= link_to "Add One!", devices_activate_path, :class => 'btn' %>
-</div>
+	<div id="no-devices">
+		<h1 id="blurb">No devices have been added to your account.</h1>
+		<%= link_to "Add One!", devices_activate_path, :class => 'btn' %>
+	</div>
 <% end %>
