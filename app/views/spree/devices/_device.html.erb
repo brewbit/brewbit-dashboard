@@ -26,6 +26,7 @@
 <% end %>
 
 <div id="device-<%= device.id %>">
+	<h1><%= device.name %></h1>
 	<script type='text/javascript'>
 		device_timelines.push({
 			id: 'device-<%= device.id %>-timeline',
@@ -40,4 +41,6 @@
 		});
 	</script>
 	<div id="device-<%= device.id %>-timeline" style='width: 900px; height: 300px;'></div>
+	<%= link_to 'Edit Device Settings', edit_device_path(device) %>
+	<hr />
 </div>
