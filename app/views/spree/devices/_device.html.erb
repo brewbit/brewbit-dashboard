@@ -1,32 +1,43 @@
-<% content_for :head do %>
-  <%= javascript_include_tag 'http://www.google.com/jsapi' %>
+<% if device_counter == 0 %>
+	<% content_for :head do %>
+		<%= javascript_include_tag 'http://www.google.com/jsapi' %>
+	  
+		<script type='text/javascript'>
+			google.load('visualization', '1.1', {'packages':['annotationchart']});
+			google.setOnLoadCallback(drawTimelines);
+			function drawTimelines() {
+				var options = {
+					displayAnnotations: true,
+				};
+				for (var i = 0; i < device_timelines.length; i++) {
+					var timeline = device_timelines[i];
+					var data = new google.visualization.DataTable();
+					data.addColumn('date', 'Date');
+					data.addColumn('number', 'Temperature');
+					data.addRows(timeline.data);
+					
+					var chart = new google.visualization.AnnotationChart(document.getElementById(timeline.id));
+					chart.draw(data, options);
+				}
+			}
+			var device_timelines = new Array();
+		</script>
+	<% end %>
 <% end %>
 
 <div id="device-<%= device.id %>">
-  <script type='text/javascript'>
-      google.load('visualization', '1.1', {'packages':['annotationchart']});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Date');
-        data.addColumn('number', 'Temperature');
-        data.addRows([
-          [new Date(2314, 2, 15), 12400],
-          [new Date(2314, 2, 16), 24045],
-          [new Date(2314, 2, 17), 35022],
-          [new Date(2314, 2, 18), 12284],
-          [new Date(2314, 2, 19), 8476],
-          [new Date(2314, 2, 20), 0]
-        ]);
-
-        var chart = new google.visualization.AnnotationChart(document.getElementById('device-<%= device.id %>-timeline'));
-
-        var options = {
-          displayAnnotations: true,
-        };
-
-        chart.draw(data, options);
-      }
-    </script>
+	<script type='text/javascript'>
+		device_timelines.push({
+			id: 'device-<%= device.id %>-timeline',
+			data: [
+				[new Date(2314, 2, 15), 12400],
+				[new Date(2314, 2, 16), 24045],
+				[new Date(2314, 2, 17), 35022],
+				[new Date(2314, 2, 18), 12284],
+				[new Date(2314, 2, 19), 8476],
+				[new Date(2314, 2, 20), 0]
+			]
+		});
+	</script>
 	<div id="device-<%= device.id %>-timeline" style='width: 900px; height: 300px;'></div>
 </div>
