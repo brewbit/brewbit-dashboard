@@ -39,6 +39,7 @@ module Spree
         flash[:notice] = 'That device is already activated.'
       else
         @device.user = spree_current_user
+        @device.name = params[:name]
         if @device.save
           redirect_to @device, notice: 'Device was successfully activated.'
         else
