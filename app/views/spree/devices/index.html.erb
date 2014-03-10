@@ -1,3 +1,4 @@
+<% unless @devices.blank? %>
 <h1>Listing devices</h1>
 
 <table>
@@ -31,3 +32,9 @@
 <br>
 
 <%= link_to 'Activate Device', devices_activate_path %>
+<% else %>
+<div id="no-devices">
+  <h1 id="blurb">No devices have been added to your account.</h1>
+  <%= link_to "Add One!", devices_activate_path, :class => 'btn' %>
+</div>
+<% end %>
