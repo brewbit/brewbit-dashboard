@@ -8,7 +8,6 @@
 class TemperatureProfile < ActiveRecord::Base
   belongs_to :user
 
-  has_many :brews
   has_many :temperature_points, -> { order('point_index ASC') }
 
   validates :user_id, presence: true
