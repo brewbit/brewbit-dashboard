@@ -1,3 +1,5 @@
+require 'protobuf_messages/messages'
+
 module Activation
 
   def self.start( device_id )
@@ -14,14 +16,39 @@ module Activation
     device
   end
 
-  def self.user_activates_device( user, device )
-    if user.blank? || device.blank?
-      return
-    end
+  def self.user_activates_device( user, activation_token )
+    raise 'Invalid user specified' if user.blank?
+    raise 'Invalid activation token specified' if activation_token.blank?
+
+    device = Device.find_by activation_token: activation_token
+    raise 'A device with that activation token could not be found.' if !device
+    raise 'That device is already activated.' if device.user
 
     device.user = user
-
+    raise 'Something went wrong...' if !device.save
+    
+    begin
+      send_activation_notification device
+    rescue Exception => e
+      Rails.logger.warn e.message
+      Rails.logger.warn e.backtrace.join("\n\t")
+      
+      # invalidate the activation
+      device.user = nil
+      device.save
+      
+      raise 'The device must be connected during activation'
+    end
+    
     device
+  end
+  
+  def self.send_activation_notification( device )
+    type = ProtobufMessages::ApiMessage::Type::ACTIVATION_NOTIFICATION
+    auth_token = device.user.authentication_token
+    message = ProtobufMessages::Builder.build( type, auth_token )
+
+    ProtobufMessages::Sender.send( message, device.hardware_identifier.to_s )
   end
 
   def self.finish!( device )

@@ -32,19 +32,12 @@ module Spree
   
     # POST /devices/activate
     def activate
-      @device = Device.find_by activation_token: params[:activation_token]
-      if !@device
-        flash[:notice] = 'A device with that activation token could not be found.'
-      elsif @device.user
-        flash[:notice] = 'That device is already activated.'
+      begin
+        device = Activation.user_activates_device(spree_current_user, params[:activation_token])
+      rescue Exception => e
+        flash[:notice] = e.message
       else
-        @device.user = spree_current_user
-        @device.name = params[:name]
-        if @device.save
-          redirect_to @device, notice: 'Device was successfully activated.'
-        else
-          flash[:notice] = 'Something went wrong...'
-        end
+        redirect_to device, notice: 'Device was successfully activated.'
       end
     end
   
