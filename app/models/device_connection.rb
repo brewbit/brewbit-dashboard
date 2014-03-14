@@ -1,5 +1,6 @@
 class DeviceConnection
   attr_reader :socket
+  attr_reader :device_id
   attr_reader :authenitcated
   
   @@connections = []
@@ -36,8 +37,10 @@ class DeviceConnection
   def authenticate( auth_token )
     user = ApiKey.find_by_access_token( auth_token ).try( :user )
 
-    if device.user == user
+    if device and device.user == user
       @authenticated = true
+    else
+      false
     end
   end
 end
