@@ -49,6 +49,8 @@ module Activation
     message = ProtobufMessages::Builder.build( type, auth_token )
 
     connection = DeviceConnection.find_by_device_id device.hardware_identifier
+    connection.authenticate( auth_token )
+    
     ProtobufMessages::Sender.send( message, connection )
   end
 
