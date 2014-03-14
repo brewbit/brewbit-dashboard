@@ -17,6 +17,6 @@ module SpreeBrewbitDashboard
 
     config.to_prepare &method(:activate).to_proc
     
-    config.app_middleware.use "WebSocket::DeviceServer"
+    config.app_middleware.insert_before "Rack::Lock", "WebSocket::DeviceServer"
   end
 end

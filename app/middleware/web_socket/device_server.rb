@@ -1,6 +1,8 @@
 require 'faye/websocket'
 require 'thread'
 
+Faye::WebSocket.load_adapter('thin')
+
 module WebSocket
   class DeviceServer
     KEEPALIVE_TIME = 15 # in seconds
@@ -15,7 +17,7 @@ module WebSocket
         ws = Faye::WebSocket.new( env, nil, { ping: KEEPALIVE_TIME } )
 
         ws.on :open do |event|
-          @handler.connection_opened ws
+          @handler.connection_opened ws, env['HTTP_DEVICE_ID']
         end
 
         ws.on :message do |event|
@@ -23,7 +25,7 @@ module WebSocket
         end
 
         ws.on :close do |event|
-          @handler.close_connection ws
+          @handler.close_connection ws, event
         end
 
         ws.on :error do |event|

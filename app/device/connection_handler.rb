@@ -7,32 +7,30 @@ require 'singleton'
 class ConnectionHandler
   include Singleton
 
-  @@connections = {}
+  @@device_to_socket = {}
+  @@socket_to_device = {}
 
-  def connection_opened( socket )
-    Rails.logger.info "Connected: #{socket_id(socket)}"
-    @@connections[socket_id(socket)] = socket
-    ConnectionManager.init_connection socket
+  def connection_opened( socket, device_id )
+    Rails.logger.info "Connected: socket id: #{socket_id(socket)}, device id: #{device_id}"
+    
+    @@socket_to_device[socket_id(socket)] = device_id
+    @@device_to_socket[device_id] = socket
   end
 
   def on_message( socket, event )
     Rails.logger.info "Received: #{event.data.inspect}"
     # TODO add rescue and logging
-    ProtobufMessages::Handler.handle( event.data, socket )
+    device_id = @@socket_to_device[socket_id(socket)]
+    ProtobufMessages::Handler.handle( event.data, device_id )
   end
 
   def close_connection( socket, event )
     Rails.logger.info [:close, socket_id(socket), event.code, event.reason]
     delete( socket )
   end
-
-  def self.get_socket_for_device( id )
-    socket_id = ConnectionManager.get_socket_id( id )
-    @@connections[socket_id]
-  end
-
-  def self.connections
-    @@connections
+  
+  def self.get_socket( device_id )
+    @@device_to_socket[device_id]
   end
 
   private
@@ -41,13 +39,9 @@ class ConnectionHandler
     socket.object_id.to_s
   end
 
-  def get_socket( id )
-    @@connections[id]
-  end
-
   def delete( socket )
-    @@connections.delete socket_id(socket)
-    ConnectionManager.remove_connection socket
+    @@device_to_socket.delete @@socket_to_device[socket_id(socket)]
+    @@socket_to_device.delete socket_id(socket)
     socket = nil
   end
 end
