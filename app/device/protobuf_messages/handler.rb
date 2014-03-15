@@ -76,9 +76,9 @@ module ProtobufMessages::Handler
     raise UnknownDevice if device.blank?
 
     message.deviceReport.sensor_report.each do |sensor|
-      temperature = sensor.value
+      reading = sensor.value
       sensor_id = sensor.id
-      TemperatureService.record temperature, device, sensor_id
+      SensorReadingsService.record reading, device, sensor_id
     end
   end
 

@@ -1,21 +1,21 @@
 
-module TemperatureService
+module SensorReadingsService
 
   class UnknownSensor < Exception ; end
   class UnknownDevice < Exception ; end
 
-  def self.record( temperature, device, sensor_id )
+  def self.record( reading, device, sensor_id )
 
     raise UnknownDevice if device.blank? || device.class != Device
 
     sensor = find_sensor( device, sensor_id )
 
     attr = {
-      value: temperature,
+      value: reading,
       sensor_id: sensor.id
     }
 
-    device.temperatures.create attr
+    sensor.sensor_readings.create attr
   end
 
   private

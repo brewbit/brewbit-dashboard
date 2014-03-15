@@ -10,27 +10,27 @@ class Sensor < ActiveRecord::Base
   belongs_to :device
 
   has_many :outputs
-  has_many :temperatures
+  has_many :sensor_readings
 
   TYPES = { one: 'one', two: 'two' }
-  TEMPERATURE_READING_INTERVAL = 5.minutes
+  READING_READING_INTERVAL = 5.minutes
 
   validates :sensor_type, presence: true, inclusion: { in: TYPES.values }
 
-  def current_temperature
-    temperature = self.temperatures.order('created_at').try( :last )
-    return nil unless temperature
+  def current_reading
+    reading = self.readings.order('created_at').try( :last )
+    return nil unless reading
 
-    if last_expected_temperature_reading_time > temperature.created_at
+    if last_expected_reading_reading_time > reading.created_at
       nil
     else
-      temperature.try( :value )
+      reading.try( :value )
     end
   end
 
   private
 
-  def last_expected_temperature_reading_time
-    Time.now.utc - TEMPERATURE_READING_INTERVAL
+  def last_expected_reading_reading_time
+    Time.now.utc - READING_READING_INTERVAL
   end
 end

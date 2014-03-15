@@ -1,6 +1,6 @@
 # Attributes:
-# * sensor_id [integer]  - Sensor that recorded the reading
-# * value [float]       - Temperature
+# * sensor_id [integer] - Sensor that recorded the reading
+# * value [float]       - Sensor reading
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
