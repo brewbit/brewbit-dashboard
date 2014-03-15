@@ -1,0 +1,41 @@
+<% content_once_for :head do %>
+	<%= javascript_include_tag 'http://www.google.com/jsapi' %>
+  
+	<script type='text/javascript'>
+		google.load('visualization', '1.1', {'packages':['annotationchart']});
+		google.setOnLoadCallback(drawTimelines);
+		function drawTimelines() {
+			var options = {
+				displayAnnotations: true,
+			};
+			for (var i = 0; i < device_timelines.length; i++) {
+				var timeline = device_timelines[i];
+				var data = new google.visualization.DataTable();
+				data.addColumn('date', 'Date');
+				data.addColumn('number', 'Temperature');
+				data.addRows(timeline.data);
+				
+				var chart = new google.visualization.AnnotationChart(document.getElementById(timeline.id));
+				chart.draw(data, options);
+			}
+		}
+		var device_timelines = new Array();
+	</script>
+<% end %>
+
+<div id="sensor-<%= sensor.id %>">
+	<h2>Probe <%= sensor.sensor_index + 1 %></h2>
+	<div>Currently controlling: both outputs <%= link_to '(change)' %></div>
+	<div>Using temperature profile: 'Saison' <%= link_to '(change)' %></div>
+	<script type='text/javascript'>
+		device_timelines.push({
+			id: 'sensor-<%= sensor.id %>-timeline',
+			data: [
+				<% sensor.readings.each do |reading| %>
+				[new Date(<%= reading.created_at.to_i * 1000 %>), <%= reading.value %>],
+				<% end %>
+			]
+		});
+	</script>
+	<div id="sensor-<%= sensor.id %>-timeline" style='width: 900px; height: 200px;'></div>
+</div>
