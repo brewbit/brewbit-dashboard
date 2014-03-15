@@ -14,17 +14,6 @@ module Spree
     def edit
     end
     
-    # POST /devices
-    def create
-      @device = Device.new(device_params)
-  
-      if @device.save
-        redirect_to @device, notice: 'Device was successfully created.'
-      else
-        render action: 'new'
-      end
-    end
-    
     # GET /devices/activate
     def start_activate
       render 'activate'
