@@ -42,17 +42,6 @@ module Activation
     
     device
   end
-  
-  def self.send_activation_notification( device )
-    type = ProtobufMessages::ApiMessage::Type::ACTIVATION_NOTIFICATION
-    auth_token = device.user.authentication_token
-    message = ProtobufMessages::Builder.build( type, auth_token )
-
-    connection = DeviceConnection.find_by_device_id device.hardware_identifier
-    connection.authenticate( auth_token )
-    
-    ProtobufMessages::Sender.send( message, connection )
-  end
 
   def self.finish!( device )
     if device.user.blank? || device.activated?
@@ -66,6 +55,17 @@ module Activation
   end
 
   private
+  
+  def self.send_activation_notification( device )
+    type = ProtobufMessages::ApiMessage::Type::ACTIVATION_NOTIFICATION
+    auth_token = device.user.authentication_token
+    message = ProtobufMessages::Builder.build( type, auth_token )
+
+    connection = DeviceConnection.find_by_device_id device.hardware_identifier
+    connection.authenticate( auth_token )
+    
+    ProtobufMessages::Sender.send( message, connection )
+  end
 
   def self.create_token
     SecureRandom.hex( 3 )
