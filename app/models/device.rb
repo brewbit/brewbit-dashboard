@@ -16,7 +16,7 @@
 class Device < ActiveRecord::Base
   belongs_to :user, class_name: "Spree::User"
 
-  has_many :sensors, dependent: :destroy
+  has_many :sensors, dependent: :destroy, :order => 'sensor_index ASC'
   has_many :outputs, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 100 }
