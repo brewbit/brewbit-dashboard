@@ -26,9 +26,13 @@
 <% end %>
 
 <div id="device-<%= device.id %>">
-	<h1><%= device.name %></h1>
+	<fieldset>
+	<legend><h1><%= device.name %></h1></legend>
 	<% device.sensors.each do |sensor| %>
 		<div id="sensor-<%= sensor.id %>">
+			<h2>Probe <%= sensor.sensor_type %></h2>
+			<div>Currently controlling: both outputs <%= link_to '(change)' %></div>
+			<div>Using temperature profile: 'Saison' <%= link_to '(change)' %></div>
 			<script type='text/javascript'>
 				device_timelines.push({
 					id: 'sensor-<%= sensor.id %>-timeline',
@@ -43,5 +47,5 @@
 		</div>
 	<% end %>
 	<%= link_to 'Edit Device Settings', edit_device_path(device) %>
-	<hr />
+	</fieldset>
 </div>
