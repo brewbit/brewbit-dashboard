@@ -4,8 +4,8 @@
 # * start_hour [decimal] - TODO: document me
 # * start_minute [decimal] - TODO: document me
 # * temperature [decimal] - TODO: document me
-# * temperature_profile_id [integer] - belongs to :temperature_profile
-# * temperature_profile_point_id [integer] - TODO: document me
+# * dynamic_setpoint_id [integer] - belongs to :dynamic_setpoint
+# * dynamic_setpoint_point_id [integer] - TODO: document me
 # * temperature_scale [string] - TODO: document me
 # * time_offset [integer] - TODO: document me
 # * transition_type [string] - TODO: document me
@@ -13,9 +13,9 @@
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
 # * updated_at [datetime, not null] - last update time
-class TemperaturePoint < ActiveRecord::Base
+class DynamicSetpointStep < ActiveRecord::Base
 
-  belongs_to :temperature_profile
+  belongs_to :dynamic_setpoint
 
   validates :time_offset, presence: true, numericality: true
   validates :point_index, presence: true, numericality: true
@@ -24,7 +24,7 @@ class TemperaturePoint < ActiveRecord::Base
 
   def as_json( options = {} )
     super( options.merge(
-      except: [ :id, :created_at, :updated_at, :temperature_profile_id ]
+      except: [ :id, :created_at, :updated_at, :dynamic_setpoint_id ]
     ))
   end
 end

@@ -5,10 +5,10 @@
 # * name [string]
 # * updated_at [datetime, not null] - last update time
 # * user_id [integer] - belongs to :user
-class TemperatureProfile < ActiveRecord::Base
+class DynamicSetpoint < ActiveRecord::Base
   belongs_to :user
 
-  has_many :temperature_points, -> { order('point_index ASC') }
+  has_many :steps, -> { order('point_index ASC') }, class_name: 'DynamicSetpointStep'
 
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 100 }

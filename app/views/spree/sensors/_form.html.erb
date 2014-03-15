@@ -1,0 +1,32 @@
+<%= form_for [@device, @sensor] do |f| %>
+  <% if @sensor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sensor.errors.count, "error") %> prohibited this sensor from being saved:</h2>
+
+      <ul>
+      <% @sensor.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :setpoint_type %><br>
+    <%= f.select :setpoint_type, [['Static',:static],['Dynamic',:dynamic]] %>
+  </div>
+
+  <div class="field">
+    <%= f.label :static_setpoint %><br>
+    <%= f.number_field :static_setpoint %>
+  </div>
+
+  <div class="field">
+    <%= f.label :dynamic_setpoint %><br>
+    <%= f.select :dynamic_setpoint, @device.user.dynamic_setpoints.collect{|x| [x.name, x.id]} %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

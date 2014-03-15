@@ -5,7 +5,8 @@ class AbilityDecorator
     if user.respond_to?(:has_spree_role?) && user.has_spree_role?('user')
       can :start_activate, Device
       can :activate, Device, :user => nil
-      can [:index, :show, :edit, :update, :destroy], Device, :user => user
+      can [:index, :show, :edit, :update], Device, :user => user
+      can [:show, :edit, :update], Sensor, :device => { :user => user }
     end
   end
 end

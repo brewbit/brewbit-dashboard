@@ -3,6 +3,8 @@ Spree::Core::Engine.routes.draw do
     get '/' => 'devices#index'
     get '/devices/activate' => 'devices#start_activate'
     post '/devices/activate' => 'devices#activate'
-    resources :devices
+    resources :devices do
+      resources :sensors
+    end
   end
 end
