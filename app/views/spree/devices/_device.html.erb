@@ -27,20 +27,21 @@
 
 <div id="device-<%= device.id %>">
 	<h1><%= device.name %></h1>
-	<script type='text/javascript'>
-		device_timelines.push({
-			id: 'device-<%= device.id %>-timeline',
-			data: [
-				[new Date(2314, 2, 15), 12400],
-				[new Date(2314, 2, 16), 24045],
-				[new Date(2314, 2, 17), 35022],
-				[new Date(2314, 2, 18), 12284],
-				[new Date(2314, 2, 19), 8476],
-				[new Date(2314, 2, 20), 0]
-			]
-		});
-	</script>
-	<div id="device-<%= device.id %>-timeline" style='width: 900px; height: 300px;'></div>
+	<% device.sensors.each do |sensor| %>
+		<div id="sensor-<%= sensor.id %>">
+			<script type='text/javascript'>
+				device_timelines.push({
+					id: 'sensor-<%= sensor.id %>-timeline',
+					data: [
+						<% sensor.readings.each do |reading| %>
+						[new Date(<%= reading.created_at.to_i * 1000 %>), <%= reading.value %>],
+						<% end %>
+					]
+				});
+			</script>
+			<div id="sensor-<%= sensor.id %>-timeline" style='width: 900px; height: 200px;'></div>
+		</div>
+	<% end %>
 	<%= link_to 'Edit Device Settings', edit_device_path(device) %>
 	<hr />
 </div>

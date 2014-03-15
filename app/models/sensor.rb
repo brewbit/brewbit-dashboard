@@ -27,6 +27,10 @@ class Sensor < ActiveRecord::Base
       reading.try( :value )
     end
   end
+  
+  def readings
+    self.sensor_readings
+  end
 
   private
 
