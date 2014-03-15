@@ -4,7 +4,7 @@ module ProtobufMessages::Handler
 
   class MissingDeviceId < Exception ; end
   class MissingAuthToken < Exception ; end
-  class MissingProbeData < Exception ; end
+  class MissingSensorData < Exception ; end
   class UnknownDevice < Exception ; end
 
   def self.handle( msg, connection )
@@ -64,7 +64,7 @@ module ProtobufMessages::Handler
   end
 
   def self.device_report( message, connection )
-    raise MissingProbeData if message.deviceReport.probeReport.blank?
+    raise MissingSensorData if message.deviceReport.sensor_report.blank?
 
     return if !connection.authenticated
     
@@ -75,10 +75,10 @@ module ProtobufMessages::Handler
 
     raise UnknownDevice if device.blank?
 
-    message.deviceReport.probeReport.each do |probe|
-      temperature = probe.value
-      probe_id = probe.id
-      TemperatureService.record temperature, device, probe_id
+    message.deviceReport.sensor_report.each do |sensor|
+      temperature = sensor.value
+      sensor_id = sensor.id
+      TemperatureService.record temperature, device, sensor_id
     end
   end
 

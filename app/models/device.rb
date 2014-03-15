@@ -15,9 +15,8 @@
 
 class Device < ActiveRecord::Base
   belongs_to :user, class_name: "Spree::User"
-  has_many :temperatures
 
-  has_many :probes, dependent: :destroy
+  has_many :sensors, dependent: :destroy
   has_many :outputs, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 100 }
@@ -39,11 +38,11 @@ class Device < ActiveRecord::Base
     outputs.find_by_output_type Output::TYPES[:right]
   end
 
-  def probe_one
-    probes.find_by_probe_type Probe::TYPES[:one]
+  def sensor_one
+    sensors.find_by_sensor_type Sensor::TYPES[:one]
   end
 
-  def probe_two
-    probes.find_by_probe_type Probe::TYPES[:two]
+  def sensor_two
+    sensors.find_by_sensor_type Sensor::TYPES[:two]
   end
 end

@@ -9,7 +9,7 @@
 # * updated_at [datetime, not null] - last update time
 class Output < ActiveRecord::Base
   belongs_to :device
-  belongs_to :probe
+  belongs_to :sensor
 
   FUNCTIONS = { hot: 'hot', cold: 'cold' }
   TYPES = { right: 'right', left: 'left' }
@@ -18,10 +18,10 @@ class Output < ActiveRecord::Base
 
   validates :function, presence: true, inclusion: { in: FUNCTIONS.values }
   validates :output_type, presence: true, inclusion: { in: TYPES.values }
-  validates :probe_id,
+  validates :sensor_id,
             allow_blank: true,
-            inclusion: { in: lambda { |output| output.device.probes.map { |o| o.id } },
-                                      message: 'Only devices probes are allowed' }
+            inclusion: { in: lambda { |output| output.device.sensors.map { |o| o.id } },
+                                      message: 'Only devices sensors are allowed' }
   validates :compressor_delay, allow_blank: true,
             numericality: { only_integer: true,
                             greater_than: 0,

@@ -26,7 +26,7 @@ class DeviceMessageNotification
     when TYPES[:auth_response]
       build_auth_response options[:authenticated]
     when TYPES[:device_report]
-      build_device_report options[:probes]
+      build_device_report options[:sensors]
     when TYPES[:send_update]
       build_send_update options[:requested_version]
     when TYPES[:send_update_info]
@@ -77,9 +77,9 @@ class DeviceMessageNotification
     @data = { authenticated: authenticated }
   end
 
-  def build_device_report( probes )
+  def build_device_report( sensors )
     @type = TYPES[:device_report]
-    @data = { probes: probes }
+    @data = { sensors: sensors }
   end
 
   def build_send_update( device_version )
@@ -105,9 +105,9 @@ class DeviceMessageNotification
   end
 
   def get_device_report_data( data )
-    symbolized_data = data['probes'].map { |p| p.symbolize_keys }
+    symbolized_data = data['sensors'].map { |p| p.symbolize_keys }
 
-    { probes: symbolized_data }
+    { sensors: symbolized_data }
   end
 
   def get_send_update_data( data )

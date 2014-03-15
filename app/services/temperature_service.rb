@@ -1,18 +1,18 @@
 
 module TemperatureService
 
-  class UnknownProbe < Exception ; end
+  class UnknownSensor < Exception ; end
   class UnknownDevice < Exception ; end
 
-  def self.record( temperature, device, probe_id )
+  def self.record( temperature, device, sensor_id )
 
     raise UnknownDevice if device.blank? || device.class != Device
 
-    probe = find_probe( device, probe_id )
+    sensor = find_sensor( device, sensor_id )
 
     attr = {
       value: temperature,
-      probe_id: probe.id
+      sensor_id: sensor.id
     }
 
     device.temperatures.create attr
@@ -20,15 +20,15 @@ module TemperatureService
 
   private
 
-  def self.find_probe( device, probe_id )
-    probes = { 0 => 'one', 1 => 'two' }
+  def self.find_sensor( device, sensor_id )
+    sensors = { 0 => 'one', 1 => 'two' }
 
-    probe = "probe_#{probes[probe_id]}"
+    sensor = "sensor_#{sensors[sensor_id]}"
     
-    if device.respond_to? probe.to_sym
-      return device.send( probe )
+    if device.respond_to? sensor.to_sym
+      return device.send( sensor )
     else
-      raise UnknownProbe
+      raise UnknownSensor
     end
   end
 end

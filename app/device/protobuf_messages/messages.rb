@@ -23,7 +23,7 @@ module ProtobufMessages
     include Beefcake::Message
   end
 
-  class ProbeReport
+  class SensorReport
     include Beefcake::Message
   end
 
@@ -108,14 +108,14 @@ module ProtobufMessages
   end
 
 
-  class ProbeReport
+  class SensorReport
     required :id, :uint32, 1
     required :value, :float, 2
   end
 
 
   class DeviceReport
-    repeated :probeReport, ProbeReport, 1
+    repeated :sensor_report, SensorReport, 1
   end
 
 
@@ -152,7 +152,7 @@ module ProtobufMessages
     required :id, :uint32, 1
     required :function, :uint32, 2
     required :compressor_delay, :uint32, 3
-    required :trigger_probe_id, :uint32, 4
+    required :trigger_sensor_id, :uint32, 4
   end
 
 

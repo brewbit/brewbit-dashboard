@@ -10,7 +10,7 @@ module Activation
       device = DefaultDeviceBuilderService.new( token, device_id ).device
 
       device.outputs << build_outputs
-      device.probes << build_probes
+      device.sensors << build_sensors
     end
 
     device
@@ -79,11 +79,11 @@ module Activation
     [ output_right, output_left ]
   end
 
-  def self.build_probes
-    probe_one = DefaultProbeBuilderService.new.probe
-    probe_two = DefaultProbeBuilderService.new( Probe::TYPES[:two] ).probe
+  def self.build_sensors
+    sensor_one = DefaultSensorBuilderService.new.sensor
+    sensor_two = DefaultSensorBuilderService.new( Sensor::TYPES[:two] ).sensor
 
-    [ probe_one, probe_two ]
+    [ sensor_one, sensor_two ]
   end
 end
 
