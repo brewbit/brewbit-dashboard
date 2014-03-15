@@ -66,8 +66,8 @@ module ProtobufMessages::Handler
   def self.device_report( message, connection )
     raise MissingProbeData if message.deviceReport.probeReport.blank?
 
-    return if !DeviceService.authenticated?( connection )
-
+    return if !connection.authenticated
+    
     Rails.logger.info 'Process Device Report'
     Rails.logger.info "    Message: #{message.inspect}"
 

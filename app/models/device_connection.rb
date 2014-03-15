@@ -1,7 +1,7 @@
 class DeviceConnection
   attr_reader :socket
   attr_reader :device_id
-  attr_reader :authenitcated
+  attr_reader :authenticated
   
   @@connections = []
   

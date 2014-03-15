@@ -20,11 +20,11 @@ module TemperatureService
 
   private
 
-  def self.find_probe( device, id )
-    probes = { 1 => 'one', 2 => 'two' }
+  def self.find_probe( device, probe_id )
+    probes = { 0 => 'one', 1 => 'two' }
 
-    probe = "probe_#{probes[id]}"
-
+    probe = "probe_#{probes[probe_id]}"
+    
     if device.respond_to? probe.to_sym
       return device.send( probe )
     else
