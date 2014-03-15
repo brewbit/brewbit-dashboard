@@ -1,7 +1,7 @@
 # Attributes:
 # * device_id [integer] - - Which device it belongs to
 # * output_id [integer] - - belongs to :output
-# * sensor_type [string] - - First or Second sensor
+# * sensor_index [integer] - - First or Second sensor
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
@@ -12,10 +12,7 @@ class Sensor < ActiveRecord::Base
   has_many :outputs
   has_many :sensor_readings
 
-  TYPES = { one: 'one', two: 'two' }
   READING_READING_INTERVAL = 5.minutes
-
-  validates :sensor_type, presence: true, inclusion: { in: TYPES.values }
 
   def current_reading
     reading = self.readings.order('created_at').try( :last )

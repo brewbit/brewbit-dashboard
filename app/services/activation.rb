@@ -80,8 +80,8 @@ module Activation
   end
 
   def self.build_sensors
-    sensor_one = DefaultSensorBuilderService.new.sensor
-    sensor_two = DefaultSensorBuilderService.new( Sensor::TYPES[:two] ).sensor
+    sensor_one = DefaultSensorBuilderService.new( 0 ).sensor
+    sensor_two = DefaultSensorBuilderService.new( 1 ).sensor
 
     [ sensor_one, sensor_two ]
   end

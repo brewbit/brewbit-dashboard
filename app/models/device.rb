@@ -29,20 +29,4 @@ class Device < ActiveRecord::Base
   def activate
     self.activation_token = ''
   end
-
-  def left_output
-    outputs.find_by_output_type Output::TYPES[:left]
-  end
-
-  def right_output
-    outputs.find_by_output_type Output::TYPES[:right]
-  end
-
-  def sensor_one
-    sensors.find_by_sensor_type Sensor::TYPES[:one]
-  end
-
-  def sensor_two
-    sensors.find_by_sensor_type Sensor::TYPES[:two]
-  end
 end

@@ -2,8 +2,8 @@
 #
 class DefaultSensorBuilderService
 
-  def initialize( type = Sensor::TYPES[:one] )
-    attr = { sensor_type: type }
+  def initialize( index )
+    attr = { sensor_index: index }
     @sensor = Sensor.new attr
   end
 

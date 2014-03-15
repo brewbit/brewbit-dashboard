@@ -8,27 +8,14 @@ module SensorReadingsService
 
     raise UnknownDevice if device.blank? || device.class != Device
 
-    sensor = find_sensor( device, sensor_id )
-
-    attr = {
-      value: reading,
-      sensor_id: sensor.id
-    }
-
-    sensor.sensor_readings.create attr
-  end
-
-  private
-
-  def self.find_sensor( device, sensor_id )
-    sensors = { 0 => 'one', 1 => 'two' }
-
-    sensor = "sensor_#{sensors[sensor_id]}"
-    
-    if device.respond_to? sensor.to_sym
-      return device.send( sensor )
-    else
-      raise UnknownSensor
+    sensor = device.sensors.find_by sensor_index: sensor_id
+    if sensor
+      attr = {
+        value: reading,
+        sensor_id: sensor.id
+      }
+  
+      sensor.readings.create attr if sensor
     end
   end
 end

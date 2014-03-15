@@ -30,7 +30,7 @@
 	<legend><h1><%= device.name %></h1></legend>
 	<% device.sensors.each do |sensor| %>
 		<div id="sensor-<%= sensor.id %>">
-			<h2>Probe <%= sensor.sensor_type %></h2>
+			<h2>Probe <%= sensor.sensor_index %></h2>
 			<div>Currently controlling: both outputs <%= link_to '(change)' %></div>
 			<div>Using temperature profile: 'Saison' <%= link_to '(change)' %></div>
 			<script type='text/javascript'>
