@@ -1,7 +1,7 @@
 # Attributes:
 # * duration [integer] - Duration of step (in seconds)
 # * index [integer] - Index of step in the dynamic setpoint
-# * value [integer] - Setpoint value for step
+# * value [float] - Setpoint value for step
 # * step_type [integer] - Hold or ramp to the setpoint value
 # * dynamic_setpoint_id [integer] - Dynamic setpoint to which this step belongs
 #
