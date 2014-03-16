@@ -1,14 +1,9 @@
 # Attributes:
-# * point_index [integer] - TODO: document me
-# * start_day [decimal] - TODO: document me
-# * start_hour [decimal] - TODO: document me
-# * start_minute [decimal] - TODO: document me
-# * temperature [decimal] - TODO: document me
-# * dynamic_setpoint_id [integer] - belongs to :dynamic_setpoint
-# * dynamic_setpoint_point_id [integer] - TODO: document me
-# * temperature_scale [string] - TODO: document me
-# * time_offset [integer] - TODO: document me
-# * transition_type [string] - TODO: document me
+# * duration [integer] - Duration of step (in seconds)
+# * index [integer] - Index of step in the dynamic setpoint
+# * value [integer] - Setpoint value for step
+# * step_type [integer] - Hold or ramp to the setpoint value
+# * dynamic_setpoint_id [integer] - Dynamic setpoint to which this step belongs
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
@@ -17,10 +12,12 @@ class DynamicSetpointStep < ActiveRecord::Base
 
   belongs_to :dynamic_setpoint
 
-  validates :time_offset, presence: true, numericality: true
-  validates :point_index, presence: true, numericality: true
-  validates :temperature, presence: true, numericality: true
-  validates :transition_type, presence: true, inclusion: { in: [ 'gradual', 'crash' ] }
+  STEP_TYPE = { hold: 0, ramp: 1 }
+  
+  validates :duration, presence: true, numericality: true
+  validates :index, presence: true, numericality: true
+  validates :value, presence: true, numericality: true
+  validates :step_type, presence: true, inclusion: { in: STEP_TYPE.values }
 
   def as_json( options = {} )
     super( options.merge(
