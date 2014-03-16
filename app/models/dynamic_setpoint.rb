@@ -9,6 +9,7 @@ class DynamicSetpoint < ActiveRecord::Base
   belongs_to :user, class_name: 'Spree::User'
 
   has_many :steps, -> { order('index ASC') }, class_name: 'DynamicSetpointStep'
+  accepts_nested_attributes_for :steps, :allow_destroy => true
 
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 100 }

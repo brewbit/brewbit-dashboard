@@ -22,7 +22,7 @@ module Spree
     def create
       @dynamic_setpoint = DynamicSetpoint.new(dynamic_setpoint_params)
       @dynamic_setpoint.user = spree_current_user
-  
+      
       if @dynamic_setpoint.save
         redirect_to @dynamic_setpoint, notice: 'Dynamic setpoint was successfully created.'
       else
@@ -48,7 +48,7 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def dynamic_setpoint_params
-        params.require(:dynamic_setpoint).permit(:name)
+        params.require(:dynamic_setpoint).permit(:name, steps_attributes: [:id, :duration, :index, :value, :step_type, :_destroy])
       end
   end
 end

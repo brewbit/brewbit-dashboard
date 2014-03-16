@@ -1,10 +1,19 @@
-<%= form_for(@dynamic_setpoint) do |f| %>
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
+<%= nested_form_for @dynamic_setpoint do |f| %>
+	<div class="field">
+		<%= f.label :name %><br>
+		<%= f.text_field :name %>
+	</div>
+	
+	<%= f.fields_for :steps do |ff| %>
+		<%= ff.number_field :duration %>
+		<%= ff.number_field :index %>
+		<%= ff.number_field :value %>
+		<%= ff.number_field :step_type %>
+		<%= ff.link_to_remove "remove" %>
+	<% end %>
+	<p><%= f.link_to_add "add step", :steps %></p>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<div class="actions">
+		<%= f.submit %>
+	</div>
 <% end %>
