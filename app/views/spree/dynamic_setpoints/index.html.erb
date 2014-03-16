@@ -1,0 +1,27 @@
+<h1>Dynamic Setpoints</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dynamic_setpoints.each do |dynamic_setpoint| %>
+      <tr>
+        <td><%= dynamic_setpoint.name %></td>
+        <td><%= link_to 'Show', dynamic_setpoint %></td>
+        <td><%= link_to 'Edit', edit_dynamic_setpoint_path(dynamic_setpoint) %></td>
+        <td><%= link_to 'Destroy', dynamic_setpoint, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dynamic Setpoint', new_dynamic_setpoint_path %>

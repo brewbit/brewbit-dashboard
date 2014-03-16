@@ -6,7 +6,11 @@ class AbilityDecorator
       can :start_activate, Device
       can :activate, Device, :user => nil
       can [:index, :show, :edit, :update], Device, :user => user
+      
       can [:show, :edit, :update], Sensor, :device => { :user => user }
+      
+      can :create, DynamicSetpoint
+      can :manage, DynamicSetpoint, :user => user
     end
   end
 end

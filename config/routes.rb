@@ -6,5 +6,6 @@ Spree::Core::Engine.routes.draw do
     resources :devices do
       resources :sensors
     end
+    resources :dynamic_setpoints
   end
 end
