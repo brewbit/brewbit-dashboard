@@ -1,7 +1,7 @@
 <div id="device-<%= device.id %>">
 	<fieldset>
 		<legend>
-			<h1><%= device.name %></h1>
+			<h2><%= device.name %></h2>
 		</legend>
 		<%= render device.sensors %>
 		<%= link_to 'Edit Device Settings', edit_device_path(device) %>
