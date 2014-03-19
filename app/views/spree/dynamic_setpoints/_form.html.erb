@@ -18,7 +18,7 @@
               <th class="col-sm-2">Temperature</th>
               <th class="col-sm-3">Duration</th>
               <th class="col-sm-2">Type</th>
-              <th class="col-sm-2"><%= f.link_to_add raw('<span class="glyphicon glyphicon-plus"></span>'), :steps, :data => { :target => "#steps" }, class: 'btn btn-default btn-sm' %></th>
+              <th class="col-sm-2"><%= f.link_to_add raw('<span class="glyphicon glyphicon-plus"></span> Add Step'), :steps, :data => { :target => "#steps" }, class: 'btn btn-default btn-sm' %></th>
             </tr>
           </thead>
           <tbody>
@@ -29,12 +29,13 @@
                 <%= ff.hidden_field :id %>
               </td>
               <td>
-                <%= ff.number_field :value, value: 68, class: 'form-control' %></td>
+                <%= ff.number_field :value, value: 68, class: 'form-control' %>
+              </td>
               <td>
                 <div class="input-group">
-                  <input type="text" class="form-control">
+                  <%= ff.text_field :duration, value: 2, class: 'form-control' %>
                   <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">hours <span class="caret"></span></button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">days <span class="caret"></span></button>
                     <ul class="dropdown-menu">
                       <li><a href="#">minutes</a></li>
                       <li><a href="#">hours</a></li>
