@@ -1,41 +1,27 @@
-<% content_once_for :head do %>
-	<%= javascript_include_tag 'http://www.google.com/jsapi' %>
-  
-	<script type='text/javascript'>
-   $(document).ready(function () {
-			for (var i = 0; i < device_timelines.length; i++) {
-				var timeline = device_timelines[i];
-				
-    		g = new Dygraph(
-          document.getElementById(timeline.id),
-          timeline.data,
-          {
-            showRoller: true,
-            labels: ['Time', 'Temperature']
-          }
-        );
-			}
-		});
-		var device_timelines = new Array();
-	</script>
-<% end %>
-
-<div id="sensor-<%= sensor.id %>" class="sensor">
-	<h4>Sensor <%= sensor.sensor_index + 1 %></h4>
-	<div>Currently controlling: both outputs <%= link_to '(change)' %></div>
-	<div>Using temperature profile: 'Saison' <%= link_to '(change)' %></div>
-	<script type='text/javascript'>
-		device_timelines.push({
-			id: 'sensor-<%= sensor.id %>-timeline',
-			data: [
-				<% sensor.readings.each do |reading| %>
-				[new Date(<%= reading.created_at.to_i * 1000 %>), <%= reading.value %>],
-				<% end %>
-			]
-		});
-	</script>
-	<div class="col-md-12">
-    <div id="sensor-<%= sensor.id %>-timeline" class="sensor-plot"></div>
-	</div>
-	<div class="clearfix"></div>
+<div class="sensor col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Sensor <%= sensor.sensor_index + 1 %></h3>
+    </div>
+    <div class="panel-body">
+      <div id="sensor-<%= sensor.id %>-timeline" class="sensor-plot"></div>
+      <script type='text/javascript'>
+        $(document).ready(function () {
+          g = new Dygraph(
+            document.getElementById("sensor-<%= sensor.id %>-timeline"),
+            [
+              <% sensor.readings.each do |reading| %>
+              [new Date(<%= reading.created_at.to_i * 1000 %>), <%= reading.value %>],
+              <% end %>
+            ],
+            {
+              labels: ['Time', 'Temperature']
+            }
+          );
+        });
+      </script>
+      <div>Currently controlling: both outputs <%= link_to '(change)' %></div>
+      <div>Using temperature profile: 'Saison' <%= link_to '(change)' %></div>
+    </div>
+  </div>
 </div>
