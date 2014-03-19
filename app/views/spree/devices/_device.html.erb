@@ -7,8 +7,10 @@
   <li class="tab-right">
     <%= link_to raw('<span class="glyphicon glyphicon-plus"></span> Activate Device'), activate_path %>
   </li>
+  <li class="tab-right">
+    <%= link_to raw('<span class="glyphicon glyphicon-cog"></span> Edit Device Settings'), edit_device_path(device) %>
+  </li>
 </ul>
 <div id="device-<%= device.id %>">
   <%= render device.sensors %>
-  <%= link_to 'Edit Device Settings', edit_device_path(device) %>
 </div>
