@@ -14,11 +14,11 @@
         <table id="steps" class="table table-striped">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Temperature</th>
-              <th>Duration</th>
-              <th>Type</th>
-              <th><%= f.link_to_add raw('<span class="glyphicon glyphicon-plus"></span>'), :steps, :data => { :target => "#steps" }, class: 'btn btn-default btn-sm' %></th>
+              <th class="col-sm-1">#</th>
+              <th class="col-sm-2">Temperature</th>
+              <th class="col-sm-3">Duration</th>
+              <th class="col-sm-2">Type</th>
+              <th class="col-sm-2"><%= f.link_to_add raw('<span class="glyphicon glyphicon-plus"></span>'), :steps, :data => { :target => "#steps" }, class: 'btn btn-default btn-sm' %></th>
             </tr>
           </thead>
           <tbody>
@@ -26,9 +26,24 @@
             <tr class="fields">
               <td>
                 <span>1</span>
-                <%= ff.hidden_field :id %></td>
-              <td><%= ff.number_field :value %></td>
-              <td><%= ff.number_field :duration %></td>
+                <%= ff.hidden_field :id %>
+              </td>
+              <td>
+                <%= ff.number_field :value, value: 68, class: 'form-control' %></td>
+              <td>
+                <div class="input-group">
+                  <input type="text" class="form-control">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">hours <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">minutes</a></li>
+                      <li><a href="#">hours</a></li>
+                      <li><a href="#">days</a></li>
+                      <li><a href="#">weeks</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
               <td>
                 <%= ff.hidden_field :step_type %>
                 <div class="btn-group" data-toggle="buttons">
