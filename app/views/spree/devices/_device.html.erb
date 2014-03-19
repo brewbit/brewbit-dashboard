@@ -4,7 +4,9 @@
       <%= link_to cur_device.name, cur_device %>
     </li>
   <% end %>
-  <li><%= link_to 'Add Device', activate_path %></li>
+  <li class="tab-right">
+    <%= link_to raw('<span class="glyphicon glyphicon-plus"></span> Add Device'), activate_path %>
+  </li>
 </ul>
 <div id="device-<%= device.id %>">
   <%= render device.sensors %>
