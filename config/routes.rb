@@ -8,4 +8,6 @@ Spree::Core::Engine.routes.draw do
     end
     resources :dynamic_setpoints
   end
+  get  '/activate' => 'devices#start_activate'
+  post '/activate' => 'devices#activate'
 end
