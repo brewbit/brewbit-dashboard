@@ -15,7 +15,13 @@
               <% end %>
             ],
             {
-              labels: ['Time', 'Temperature']
+              rollPeriod: 10,
+              labels: ['', 'Temperature'],
+              labelsDivWidth: 300,
+              ylabel: 'Temperature',
+              showRangeSelector: true,
+              legend: 'always',
+              labelsDivStyles: { 'textAlign': 'right' },
             }
           );
         });
