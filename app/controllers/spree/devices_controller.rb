@@ -8,6 +8,7 @@ module Spree
   
     # GET /devices/1
     def show
+      @devices = spree_current_user.devices
     end
   
     # GET /devices/1/edit

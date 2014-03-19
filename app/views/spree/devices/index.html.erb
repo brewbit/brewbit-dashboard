@@ -1,7 +1,5 @@
 <% unless @devices.blank? %>
-	<%= render @devices %>
-
-	<%= link_to 'Activate Device', devices_activate_path %>
+  <%= render @devices.first %>
 <% else %>
 	<div id="no-devices">
 		<h1 id="blurb">No devices have been added to your account.</h1>

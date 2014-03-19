@@ -1,9 +1,17 @@
+  <ul class="nav nav-tabs">
+    <% @devices.each do |cur_device| %>
+      <li class="<%= 'active' if device == cur_device %>">
+        <%= link_to cur_device.name, cur_device %>
+      </li>
+    <% end %>
+    <li><%= link_to 'Add Device', devices_activate_path %></li>
+  </ul>
+
+
+
+
+
 <div id="device-<%= device.id %>">
-	<fieldset>
-		<legend>
-			<h2><%= device.name %></h2>
-		</legend>
-		<%= render device.sensors %>
-		<%= link_to 'Edit Device Settings', edit_device_path(device) %>
-	</fieldset>
+  <%= render device.sensors %>
+  <%= link_to 'Edit Device Settings', edit_device_path(device) %>
 </div>
