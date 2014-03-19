@@ -23,8 +23,10 @@
           </thead>
           <tbody>
           <%= f.fields_for :steps, :wrapper => false do |ff| %>
-            <tr>
-              <td>1</td>
+            <tr class="fields">
+              <td>
+                <span>1</span>
+                <%= ff.hidden_field :id %></td>
               <td><%= ff.number_field :value %></td>
               <td><%= ff.number_field :duration %></td>
               <td>
@@ -39,8 +41,8 @@
                 </div>
               </td>
               <td>
-                <%= ff.link_to_remove raw('<span class="glyphicon glyphicon-chevron-up"></span>'), class: 'btn btn-default btn-sm' %>
-                <%= ff.link_to_remove raw('<span class="glyphicon glyphicon-chevron-down"></span>'), class: 'btn btn-default btn-sm' %>
+                <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-up"></span>'), 'moveStepUp', class: 'btn btn-default btn-sm' %>
+                <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-down"></span>'), 'moveStepDown', class: 'btn btn-default btn-sm' %>
                 <%= ff.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: 'btn btn-default btn-sm' %>
               </td>
             </tr>
