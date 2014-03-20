@@ -1,25 +1,25 @@
 module Spree
   class DevicesController < Spree::StoreController
     load_and_authorize_resource :except => 'activate'
-  
+
     # GET /devices
     def index
     end
-  
+
     # GET /devices/1
     def show
       @devices = spree_current_user.devices
     end
-  
+
     # GET /devices/1/edit
     def edit
     end
-    
+
     # GET /devices/activate
     def start_activate
       render 'activate'
     end
-  
+
     # POST /devices/activate
     def activate
       begin
@@ -30,26 +30,27 @@ module Spree
         redirect_to device, notice: 'Device was successfully activated.'
       end
     end
-  
+
     # PATCH/PUT /devices/1
     def update
+      p @params
       if @device.update(device_params)
         redirect_to @device, notice: 'Device was successfully updated.'
       else
         render action: 'edit'
       end
     end
-  
+
     # DELETE /devices/1
     def destroy
       @device.destroy
       redirect_to devices_url, notice: 'Device was successfully destroyed.'
     end
-  
+
     private
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name)
+        params.require(:device).permit(:name, outputs_attributes: [:id, :function, :compressor_delay, :sensor_id] )
       end
   end
 end

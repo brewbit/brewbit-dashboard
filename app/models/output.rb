@@ -17,7 +17,7 @@ class Output < ActiveRecord::Base
   MAX_COMPRESSOR_DELAY = 10
 
   validates :function, presence: true, inclusion: { in: FUNCTIONS.values }
-  validates :output_type, presence: true, inclusion: { in: TYPES.values }
+  validates :output_type, allow_blank: true, inclusion: { in: TYPES.values }
   validates :sensor_id,
             allow_blank: true,
             inclusion: { in: lambda { |output| output.device.sensors.map { |o| o.id } },

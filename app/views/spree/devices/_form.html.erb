@@ -18,6 +18,16 @@
     </div>
   </div>
 
+    <div>
+      <%= f.fields_for :outputs do |o| %>
+        <div>
+          <%= o.select :function, Output::FUNCTIONS.values %>
+          <%= o.text_field :compressor_delay %>
+          <%= o.select :sensor_id, @device.sensors.collect {|s| [s.sensor_index, s.id]}, include_blank: true %>
+        </div>
+      <% end -%>
+    </div>
+
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <%= f.submit class: 'btn btn-primary' %>
