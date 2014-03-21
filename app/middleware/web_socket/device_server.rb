@@ -1,8 +1,6 @@
 require 'faye/websocket'
 require 'thread'
 
-Faye::WebSocket.load_adapter('thin')
-
 module WebSocket
   class DeviceServer
     KEEPALIVE_TIME = 15 # in seconds
