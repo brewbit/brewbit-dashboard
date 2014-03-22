@@ -2,10 +2,11 @@ require 'protobuf_messages/messages'
 
 module Spree
   class DevicesController < Spree::StoreController
-    load_and_authorize_resource :except => 'activate'
+    load_and_authorize_resource except: ['activate', 'index']
 
     # GET /devices
     def index
+      @devices = spree_current_user.devices
     end
 
     # GET /devices/1

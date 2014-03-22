@@ -12,7 +12,7 @@ class Sensor < ActiveRecord::Base
   belongs_to :device
 
   has_many :outputs
-  has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading', dependent: :destroy
+  has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading', foreign_key: 'sensor_id', dependent: :destroy
   belongs_to :dynamic_setpoint
 
   SETPOINT_TYPE = { static: 0, dynamic: 1 }
