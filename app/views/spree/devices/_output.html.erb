@@ -1,0 +1,28 @@
+<h3><%= Output::INDEX_NAME[o.object.output_index].capitalize %> Output</h3>
+
+<div class='form-group'>
+  <div class='col-sm-4'>
+    <%= o.label :function, class: 'col-sm-2 control-label' %>
+  </div>
+  <div class='col-sm-2'>
+    <%= o.select :function, Output::FUNCTIONS.values %>
+  </div>
+</div>
+
+<div class='form-group'>
+  <div class='col-sm-4'>
+    <%= o.label :compressor_delay, class: 'col-sm-2 control-label' %>
+  </div>
+  <div class='col-sm-2'>
+    <%= o.text_field :compressor_delay %>
+  </div>
+</div>
+
+<div class='form-group'>
+  <div class='col-sm-4'>
+    <%= o.label :sensor, class: 'col-sm-2 control-label' %>
+  </div>
+  <div class='col-sm-2'>
+    <%= o.select :sensor_id, @device.sensors.collect {|s| [s.sensor_index, s.id]} %>
+  </div>
+</div>

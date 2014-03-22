@@ -53,10 +53,21 @@ module ProtobufMessages
 
   class OutputSettings
     include Beefcake::Message
+
+    module Function
+      HEATING = 0
+      COOLING = 1
+      MANUAL = 2
+    end
   end
 
   class SensorSettings
     include Beefcake::Message
+
+    module SetpointType
+      STATIC = 0
+      DYNAMIC = 1
+    end
   end
 
   class DeviceSettingsNotification
@@ -150,7 +161,7 @@ module ProtobufMessages
 
   class OutputSettings
     required :id, :uint32, 1
-    required :function, :uint32, 2
+    required :function, OutputSettings::Function, 2
     required :compressor_delay, :uint32, 3
     required :trigger_sensor_id, :uint32, 4
   end
@@ -158,7 +169,9 @@ module ProtobufMessages
 
   class SensorSettings
     required :id, :uint32, 1
-    required :setpoint, :uint32, 2
+    required :setpoint_type, SensorSettings::SetpointType, 2
+    optional :static_setpoint, :float, 3
+    optional :dynamic_setpoint, :uint32, 4
   end
 
 

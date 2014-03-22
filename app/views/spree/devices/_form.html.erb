@@ -1,10 +1,10 @@
 <%= form_for @device, html: { class: 'form-horizontal' } do |f| %>
-  <% if @device.errors.any? %>
+  <% if f.object.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@device.errors.count, "error") %> prohibited this device from being saved:</h2>
+      <h2><%= pluralize(f.object.errors.count, "error") %> prohibited this device from being saved:</h2>
 
       <ul>
-      <% @device.errors.full_messages.each do |msg| %>
+      <% f.object.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>
@@ -18,19 +18,24 @@
     </div>
   </div>
 
-    <div>
-      <%= f.fields_for :outputs do |o| %>
-        <div>
-          <%= o.select :function, Output::FUNCTIONS.values %>
-          <%= o.text_field :compressor_delay %>
-          <%= o.select :sensor_id, @device.sensors.collect {|s| [s.sensor_index, s.id]}, include_blank: true %>
-        </div>
-      <% end -%>
-    </div>
+  <div class='form-group'>
+    <%= f.fields_for :outputs do |o| %>
+      <div class='col-sm-6'>
+        <%= render partial: 'output', locals: { o: o } %>
+      </div>
+    <% end -%>
+  </div>
 
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= f.submit class: 'btn btn-primary' %>
+    <div class='col-sm-offset-2 col-sm-4'>
+      <div class='pull-left'>
+        <%= link_to "Delete", f.object, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' } %>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class='pull-right'>
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
     </div>
   </div>
 <% end %>

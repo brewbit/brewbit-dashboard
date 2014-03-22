@@ -1,3 +1,5 @@
+require 'protobuf_messages/messages'
+
 module Spree
   class DevicesController < Spree::StoreController
     load_and_authorize_resource :except => 'activate'
@@ -33,8 +35,8 @@ module Spree
 
     # PATCH/PUT /devices/1
     def update
-      p @params
       if @device.update(device_params)
+        notify_device_with_new_settings
         redirect_to @device, notice: 'Device was successfully updated.'
       else
         render action: 'edit'
@@ -51,6 +53,42 @@ module Spree
       # Only allow a trusted parameter "white list" through.
       def device_params
         params.require(:device).permit(:name, outputs_attributes: [:id, :function, :compressor_delay, :sensor_id] )
+      end
+
+      def notify_device_with_new_settings
+        connection = DeviceConnection.find_by_device_id( @device.hardware_identifier )
+
+        # no need to send settings to a device that's not connected
+        #return unless connection
+
+        data = {
+          name: @device.name,
+          outputs: [],
+          sensors: []
+        }
+        @device.outputs.each do |o|
+          output = {
+            index:            o.output_index,
+            function:         Output::FUNCTIONS.values.index( o.function ),
+            compressor_delay: o.compressor_delay,
+            sensor_index:     o.sensor.sensor_index
+          }
+          data[:outputs] << output
+        end
+        @device.sensors.each do |s|
+          sensor = {
+            index:                s.sensor_index,
+            setpoint_type:        Sensor::SETPOINT_TYPE[s.setpoint_type],
+            static_setpoint:      s.static_setpoint,
+            dynamic_setpoint_id:  s.dynamic_setpoint_id
+          }
+          data[:sensors] << sensor
+        end
+
+        type = ProtobufMessages::ApiMessage::Type::DEVICE_SETTINGS_NOTIFICATION
+        message = ProtobufMessages::Builder.build( type, data )
+        logger.debug "Sending Device Settings Notification Message: #{message.inspect}"
+        ProtobufMessages::Sender.send( message, connection )
       end
   end
 end

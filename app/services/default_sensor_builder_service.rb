@@ -2,8 +2,9 @@
 #
 class DefaultSensorBuilderService
 
-  def initialize( index )
-    attr = { sensor_index: index }
+  def initialize( index, setpoint_type = :static )
+    attr = { sensor_index: index, setpoint_type: setpoint_type }
+    p attr
     @sensor = Sensor.new attr
   end
 

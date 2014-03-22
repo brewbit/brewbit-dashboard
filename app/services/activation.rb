@@ -26,20 +26,20 @@ module Activation
 
     device.user = user
     raise 'Something went wrong...' if !device.save
-    
+
     begin
       send_activation_notification device
     rescue Exception => e
       Rails.logger.warn e.message
       Rails.logger.warn e.backtrace.join("\n\t")
-      
+
       # invalidate the activation
       device.user = nil
       device.save
-      
+
       raise 'The device must be connected during activation'
     end
-    
+
     device
   end
 
@@ -55,7 +55,7 @@ module Activation
   end
 
   private
-  
+
   def self.send_activation_notification( device )
     type = ProtobufMessages::ApiMessage::Type::ACTIVATION_NOTIFICATION
     auth_token = device.user.authentication_token
@@ -63,7 +63,7 @@ module Activation
 
     connection = DeviceConnection.find_by_device_id device.hardware_identifier
     connection.authenticate( auth_token )
-    
+
     ProtobufMessages::Sender.send( message, connection )
   end
 
@@ -74,7 +74,7 @@ module Activation
 
   def self.build_outputs
     output_right = DefaultOutputBuilderService.new.output
-    output_left = DefaultOutputBuilderService.new( Output::FUNCTIONS[:cold], Output::TYPES[:left] ).output
+    output_left = DefaultOutputBuilderService.new( Output::FUNCTIONS[:cold], 1 ).output
 
     [ output_right, output_left ]
   end

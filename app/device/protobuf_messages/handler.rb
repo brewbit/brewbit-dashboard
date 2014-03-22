@@ -24,6 +24,8 @@ module ProtobufMessages::Handler
       firmware_download_request message, connection
     when ProtobufMessages::ApiMessage::Type::FIRMWARE_UPDATE_CHECK_REQUEST
       firmware_update_check_request message, connection
+    when ProtobufMessages::ApiMessage::Type::DEVICE_SETTINGS_NOTIFICATION
+      device_settings_notification message, connection
     end
   end
 
@@ -67,7 +69,7 @@ module ProtobufMessages::Handler
     raise MissingSensorData if message.deviceReport.sensor_report.blank?
 
     return if !connection.authenticated
-    
+
     Rails.logger.info 'Process Device Report'
     Rails.logger.info "    Message: #{message.inspect}"
 
@@ -130,6 +132,40 @@ module ProtobufMessages::Handler
 
     response_message = ProtobufMessages::Builder.build( type, data )
     send_response response_message, connection
+  end
+
+  def self.device_settings_notification( message, connection )
+    Rails.logger.info 'Process Device Settings Notification'
+    Rails.logger.info "    Message: #{message.inspect}"
+
+    return if !connection.authenticated
+
+    device = Device.find_by( hardware_identifier: connection.device_id )
+
+    if device
+      device.name = message.deviceSettingsNotification.name
+
+      message.deviceSettingsNotification.output.each do |o|
+        if output = device.outputs.find_by( output_index: o.id )
+          output.function = Output::FUNCTIONS.values[o.function]
+          output.compressor_delay = o.compressor_delay
+          output.sensor = device.sensors.find_by( sensor_index: o.trigger_sensor_id )
+        end
+      end
+
+      message.deviceSettingsNotification.sensor.each do |s|
+        if sensor = device.sensors.find_by( sensor_index: s.id )
+          sensor.setpoint_type = s.setpoint_type
+
+          case sensor.setpoint_type
+          when ProtobufMessages::SensorSettings::SetpointType::STATIC
+            sensor.static_setpoint = s.static_setpoint
+          when ProtobufMessages::SensorSettings::SetpointType::DYNAMIC
+            sensor.dynamic_setpoint_id = s.dynamic_setpoint_id
+          end
+        end
+      end
+    end
   end
 
   private

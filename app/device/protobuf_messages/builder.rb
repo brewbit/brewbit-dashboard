@@ -14,6 +14,8 @@ module ProtobufMessages::Builder
       return build_firmware_download_response data
     when ProtobufMessages::ApiMessage::Type::FIRMWARE_UPDATE_CHECK_RESPONSE
       return build_firmware_update_check_response data
+    when ProtobufMessages::ApiMessage::Type::DEVICE_SETTINGS_NOTIFICATION
+      return build_device_settings_notification data
     end
   end
 
@@ -63,6 +65,41 @@ module ProtobufMessages::Builder
     message.firmwareUpdateCheckResponse.update_available = data[:update_available]
     message.firmwareUpdateCheckResponse.version = data[:version]
     message.firmwareUpdateCheckResponse.binary_size = data[:binary_size]
+
+    message
+  end
+
+  def self.build_device_settings_notification( data )
+    message = ProtobufMessages::ApiMessage.new
+    message.type = ProtobufMessages::ApiMessage::Type::DEVICE_SETTINGS_NOTIFICATION
+    message.deviceSettingsNotification = ProtobufMessages::DeviceSettingsNotification.new
+
+    message.deviceSettingsNotification.name = data[:name]
+
+    message.deviceSettingsNotification.output = []
+    data[:outputs].each do |o|
+      output = ProtobufMessages::OutputSettings.new
+      output.id = o[:index]
+      output.function = o[:function]
+      output.compressor_delay = o[:compressor_delay]
+      output.trigger_sensor_id = o[:sensor_index]
+      message.deviceSettingsNotification.output << output
+    end
+
+    message.deviceSettingsNotification.sensor = []
+    data[:sensors].each do |s|
+      sensor = ProtobufMessages::SensorSettings.new
+      sensor.id = s[:index]
+      sensor.setpoint_type = s[:setpoint_type]
+
+      case sensor.setpoint_type
+      when ProtobufMessages::SensorSettings::SetpointType::STATIC
+        sensor.static_setpoint = s[:static_setpoint]
+      when ProtobufMessages::SensorSettings::SetpointType::DYNAMIC
+        sensor.dynamic_setpoint_id = s[:dynamic_setpoint_id]
+      end
+      message.deviceSettingsNotification.sensor << sensor
+    end
 
     message
   end
