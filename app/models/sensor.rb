@@ -12,17 +12,17 @@ class Sensor < ActiveRecord::Base
   belongs_to :device
 
   has_many :outputs
-  has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading'
+  has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading', dependent: :destroy
   belongs_to :dynamic_setpoint
 
   SETPOINT_TYPE = { static: 0, dynamic: 1 }
   READING_READING_INTERVAL = 5.minutes
 
- 
+
   def setpoint_type
     SETPOINT_TYPE.key(read_attribute(:setpoint_type))
   end
- 
+
   def setpoint_type=(s)
     write_attribute(:setpoint_type, SETPOINT_TYPE[s])
   end
@@ -37,7 +37,7 @@ class Sensor < ActiveRecord::Base
       reading.try( :value )
     end
   end
-  
+
   private
 
   def last_expected_reading_reading_time

@@ -147,9 +147,11 @@ module ProtobufMessages::Handler
 
       message.deviceSettingsNotification.output.each do |o|
         if output = device.outputs.find_by( output_index: o.id )
-          output.function = Output::FUNCTIONS.values[o.function]
+          output.function = Output::FUNCTIONS.values.index( o.function )
           output.compressor_delay = o.compressor_delay
           output.sensor = device.sensors.find_by( sensor_index: o.trigger_sensor_id )
+
+          output.save
         end
       end
 
@@ -157,15 +159,19 @@ module ProtobufMessages::Handler
         if sensor = device.sensors.find_by( sensor_index: s.id )
           sensor.setpoint_type = s.setpoint_type
 
-          case sensor.setpoint_type
+          case s.setpoint_type
           when ProtobufMessages::SensorSettings::SetpointType::STATIC
             sensor.static_setpoint = s.static_setpoint
           when ProtobufMessages::SensorSettings::SetpointType::DYNAMIC
             sensor.dynamic_setpoint_id = s.dynamic_setpoint_id
           end
+
+          sensor.save
         end
       end
     end
+
+    device.save
   end
 
   private
