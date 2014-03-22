@@ -2,7 +2,7 @@ require 'protobuf_messages/messages'
 
 module Spree
   class DevicesController < Spree::StoreController
-    load_and_authorize_resource except: ['activate', 'index']
+    before_filter :correct_user, except: [:index, :activate, :start_activate]
 
     # GET /devices
     def index
@@ -60,7 +60,7 @@ module Spree
         connection = DeviceConnection.find_by_device_id( @device.hardware_identifier )
 
         # no need to send settings to a device that's not connected
-        #return unless connection
+        return unless connection
 
         data = {
           name: @device.name,
@@ -90,6 +90,11 @@ module Spree
         message = ProtobufMessages::Builder.build( type, data )
         logger.debug "Sending Device Settings Notification Message: #{message.inspect}"
         ProtobufMessages::Sender.send( message, connection )
+      end
+
+      def correct_user
+        @device = spree_current_user.devices.find_by( id: params[:id] )
+        redirect_to root_path, error: 'You can only see your own devices' unless @device
       end
   end
 end
