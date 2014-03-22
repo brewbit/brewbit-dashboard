@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'spree_core', '~> 2.2.0'
   s.add_dependency 'beefcake'
-  s.add_dependency 'faye'
   s.add_dependency 'nested_form'
 
   s.add_development_dependency 'capybara', '~> 2.1'
