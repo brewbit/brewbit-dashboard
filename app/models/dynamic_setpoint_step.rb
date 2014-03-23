@@ -1,6 +1,6 @@
 # Attributes:
 # * duration [integer] - Duration of step (in seconds)
-# * index [integer] - Index of step in the dynamic setpoint
+# * step_index [integer] - Index of step in the dynamic setpoint
 # * value [float] - Setpoint value for step
 # * step_type [integer] - Hold or ramp to the setpoint value
 # * dynamic_setpoint_id [integer] - Dynamic setpoint to which this step belongs
@@ -13,9 +13,9 @@ class DynamicSetpointStep < ActiveRecord::Base
   belongs_to :dynamic_setpoint
 
   STEP_TYPE = { hold: 0, ramp: 1 }
-  
+
   validates :duration, presence: true, numericality: true
-  validates :index, presence: true, numericality: true
+  validates :step_index, presence: true, numericality: true
   validates :value, presence: true, numericality: true
   validates :step_type, presence: true, inclusion: { in: STEP_TYPE.values }
 

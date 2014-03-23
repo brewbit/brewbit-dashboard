@@ -1,0 +1,40 @@
+<tr class="fields">
+  <td>
+    <span class='step_index'><%= f.object.step_index %></span>
+    <%= f.hidden_field :step_index, class: 'step_index' %>
+  </td>
+  <td>
+    <%= f.number_field :value, class: 'form-control' %>
+  </td>
+  <td>
+    <div class="input-group">
+      <%= f.number_field :duration, class: 'form-control' %>
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">days <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">minutes</a></li>
+          <li><a href="#">hours</a></li>
+          <li><a href="#">days</a></li>
+          <li><a href="#">weeks</a></li>
+        </ul>
+      </div>
+    </div>
+  </td>
+  <td>
+    <%= f.hidden_field :step_type, class: 'step_type' %>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == DynamicSetpointStep::STEP_TYPE[:ramp] %>">
+        <input type="radio" name="step_types" id="ramp"> Ramp</input>
+      </label>
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == DynamicSetpointStep::STEP_TYPE[:hold] %>">
+        <input type="radio" name="step_types" id="hold"> Hold</input>
+      </label>
+    </div>
+  </td>
+  <td>
+    <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-up"></span>'), 'moveStepUp', class: 'btn btn-default btn-sm' %>
+    <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-down"></span>'), 'moveStepDown', class: 'btn btn-default btn-sm' %>
+    <%= f.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: 'btn btn-default btn-sm' %>
+  </td>
+</tr>
+

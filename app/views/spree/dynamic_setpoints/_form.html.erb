@@ -1,7 +1,7 @@
 <div class="col-md-8 col-md-offset-2">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Edit Dynamic Setpoint</h3>
+      <h3 class="panel-title">Edit Temperature Profile</h3>
     </div>
     <div class="panel-body">
       <%= nested_form_for @dynamic_setpoint, html: { class: 'form-horizontal' } do |f| %>
@@ -22,56 +22,45 @@
             </tr>
           </thead>
           <tbody>
-          <%= f.fields_for :steps, :wrapper => false do |ff| %>
-            <tr class="fields">
-              <td>
-                <span>1</span>
-                <%= ff.hidden_field :id %>
-              </td>
-              <td>
-                <%= ff.number_field :value, value: 68, class: 'form-control' %>
-              </td>
-              <td>
-                <div class="input-group">
-                  <%= ff.text_field :duration, value: 2, class: 'form-control' %>
-                  <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">days <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">minutes</a></li>
-                      <li><a href="#">hours</a></li>
-                      <li><a href="#">days</a></li>
-                      <li><a href="#">weeks</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <%= ff.hidden_field :step_type %>
-                <div class="btn-group" data-toggle="buttons">
-                  <label class="btn btn-default">
-                    <input type="radio" name="step_types" id="ramp"> Ramp
-                  </label>
-                  <label class="btn btn-default">
-                    <input type="radio" name="step_types" id="hold"> Hold
-                  </label>
-                </div>
-              </td>
-              <td>
-                <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-up"></span>'), 'moveStepUp', class: 'btn btn-default btn-sm' %>
-                <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-down"></span>'), 'moveStepDown', class: 'btn btn-default btn-sm' %>
-                <%= ff.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: 'btn btn-default btn-sm' %>
-              </td>
-            </tr>
-          <% end %>
+            <%= f.fields_for :steps, :wrapper => false do |ff| %>
+              <%= render partial: 'step_form', locals: { f: ff } %>
+            <% end -%>
           </tbody>
         </table>
-      
+
         <div class="form-group">
           <div class="col-md-offset-8 col-md-4">
-            <%= f.submit class: 'btn btn-primary' %>
+            <%= f.submit 'Update Temperature Profile', class: 'btn btn-primary' %>
           </div>
         </div>
       <% end %>
     </div>
   </div>
 </div>
+
+<script type='text/javascript'>
+  $(document).on('nested:fieldAdded', function(event){
+    var field = event.field;
+    var index_field = field.find('span.step_index');
+    var index_form_field = field.find('input.step_index');
+    var index = $('.fields').size() ;
+
+    index_field.text( index );
+    index_form_field.val( index );
+  }) ;
+
+  $(document).on( 'change', 'input[name="step_types"]', function(e){
+    var val = this.id;
+    var step_type_form_field = $(this).parents('td').find('input[type="hidden"]');
+
+    switch(val){
+      case 'hold':
+        step_type_form_field.val(0);
+        break;
+      case 'ramp':
+        step_type_form_field.val(1);
+        break;
+    }
+  });
+</script>
+
