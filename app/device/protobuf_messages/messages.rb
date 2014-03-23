@@ -66,7 +66,7 @@ module ProtobufMessages
 
     module SetpointType
       STATIC = 0
-      DYNAMIC = 1
+      TEMP_PROFILE = 1
     end
   end
 
@@ -171,7 +171,7 @@ module ProtobufMessages
     required :id, :uint32, 1
     required :setpoint_type, SensorSettings::SetpointType, 2
     optional :static_setpoint, :float, 3
-    optional :dynamic_setpoint, :uint32, 4
+    optional :temp_profile, :uint32, 4
   end
 
 

@@ -1,9 +1,9 @@
 # Attributes:
 # * device_id [integer] - - Which device it belongs to
 # * sensor_index [integer] - - First or Second sensor
-# * setpoint_type [integer] - - Static or dynamic setpoint
+# * setpoint_type [integer] - - Static setpoint or temp profile
 # * static_setpoint [float] - - The static setpoint value
-# * dynamic_setpoint_id [integer] - - The active dynamic setpoint
+# * temp_profile_id [integer] - - The active temp profile
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
@@ -13,9 +13,9 @@ class Sensor < ActiveRecord::Base
 
   has_many :outputs
   has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading', foreign_key: 'sensor_id', dependent: :destroy
-  belongs_to :dynamic_setpoint
+  belongs_to :temp_profile
 
-  SETPOINT_TYPE = { static: 0, dynamic: 1 }
+  SETPOINT_TYPE = { static: 0, temp_profile: 1 }
   READING_READING_INTERVAL = 5.minutes
 
 

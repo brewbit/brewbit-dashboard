@@ -1,16 +1,16 @@
 # Attributes:
 # * duration [integer] - Duration of step (in seconds)
-# * step_index [integer] - Index of step in the dynamic setpoint
+# * step_index [integer] - Index of step in the temp profile
 # * value [float] - Setpoint value for step
 # * step_type [integer] - Hold or ramp to the setpoint value
-# * dynamic_setpoint_id [integer] - Dynamic setpoint to which this step belongs
+# * temp_profile_id [integer] - Temp profile to which this step belongs
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
 # * updated_at [datetime, not null] - last update time
-class DynamicSetpointStep < ActiveRecord::Base
+class TempProfileStep < ActiveRecord::Base
 
-  belongs_to :dynamic_setpoint
+  belongs_to :temp_profile
 
   STEP_TYPE = { hold: 0, ramp: 1 }
 
@@ -21,7 +21,7 @@ class DynamicSetpointStep < ActiveRecord::Base
 
   def as_json( options = {} )
     super( options.merge(
-      except: [ :id, :created_at, :updated_at, :dynamic_setpoint_id ]
+      except: [ :id, :created_at, :updated_at, :temp_profile_id ]
     ))
   end
 end

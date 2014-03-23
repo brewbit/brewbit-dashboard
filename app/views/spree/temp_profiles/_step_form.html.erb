@@ -23,10 +23,10 @@
   <td>
     <%= f.hidden_field :step_type, class: 'step_type' %>
     <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == DynamicSetpointStep::STEP_TYPE[:ramp] %>">
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
         <input type="radio" name="step_types" id="ramp"> Ramp</input>
       </label>
-      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == DynamicSetpointStep::STEP_TYPE[:hold] %>">
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:hold] %>">
         <input type="radio" name="step_types" id="hold"> Hold</input>
       </label>
     </div>

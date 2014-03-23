@@ -6,7 +6,7 @@ Spree::Core::Engine.routes.draw do
     resources :devices do
       resources :sensors
     end
-    resources :dynamic_setpoints, except: [:show]
+    resources :temp_profiles, except: [:show]
   end
   get  '/activate' => 'devices#start_activate'
   post '/activate' => 'devices#activate'

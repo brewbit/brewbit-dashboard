@@ -162,8 +162,8 @@ module ProtobufMessages::Handler
           case s.setpoint_type
           when ProtobufMessages::SensorSettings::SetpointType::STATIC
             sensor.static_setpoint = s.static_setpoint
-          when ProtobufMessages::SensorSettings::SetpointType::DYNAMIC
-            sensor.dynamic_setpoint_id = s.dynamic_setpoint_id
+          when ProtobufMessages::SensorSettings::SetpointType::TEMP_PROFILE
+            sensor.temp_profile_id = s.temp_profile_id
           end
 
           sensor.save

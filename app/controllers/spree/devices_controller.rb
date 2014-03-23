@@ -78,10 +78,10 @@ module Spree
         end
         @device.sensors.each do |s|
           sensor = {
-            index:                s.sensor_index,
-            setpoint_type:        Sensor::SETPOINT_TYPE[s.setpoint_type],
-            static_setpoint:      s.static_setpoint,
-            dynamic_setpoint_id:  s.dynamic_setpoint_id
+            index:            s.sensor_index,
+            setpoint_type:    Sensor::SETPOINT_TYPE[s.setpoint_type],
+            static_setpoint:  s.static_setpoint,
+            temp_profile_id:  s.temp_profile_id
           }
           data[:sensors] << sensor
         end

@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :setpoint_type %><br>
-    <%= f.select :setpoint_type, [['Static',:static],['Dynamic',:dynamic]] %>
+    <%= f.select :setpoint_type, [['Static',:static],['Temp Profile',:temp_profile]] %>
   </div>
 
   <div class="field">
@@ -22,8 +22,8 @@
   </div>
 
   <div class="field">
-    <%= f.label :dynamic_setpoint %><br>
-    <%= f.select :dynamic_setpoint, @device.user.dynamic_setpoints.collect{|x| [x.name, x.id]} %>
+    <%= f.label :temp_profile %><br>
+    <%= f.select :temp_profile, @device.user.temp_profiles.collect{|x| [x.name, x.id]} %>
   </div>
   
   <div class="actions">

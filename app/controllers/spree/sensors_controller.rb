@@ -23,7 +23,7 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def sensor_params
-        params.require(:sensor).permit(:setpoint_type, :static_setpoint, :dynamic_setpoint)
+        params.require(:sensor).permit(:setpoint_type, :static_setpoint, :temp_profile)
       end
   end
 end

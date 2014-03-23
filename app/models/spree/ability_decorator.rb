@@ -9,8 +9,8 @@ class AbilityDecorator
       
       can [:show, :edit, :update], Sensor, :device => { :user => user }
       
-      can :create, DynamicSetpoint
-      can :manage, DynamicSetpoint, :user => user
+      can :create, TempProfile
+      can :manage, TempProfile, :user => user
     end
   end
 end
