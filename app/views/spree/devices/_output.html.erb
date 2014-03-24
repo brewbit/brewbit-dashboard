@@ -23,6 +23,9 @@
     <%= o.label :cycle_delay, class: 'col-sm-2 control-label' %>
   </div>
   <div class='col-sm-8'>
-    <%= o.text_field :cycle_delay, class: 'form-control' %>
+    <div class="input-group">
+      <%= o.text_field :cycle_delay, class: 'form-control' %>
+      <span class="input-group-addon">minutes</span>
+    </div>
   </div>
 </div>
