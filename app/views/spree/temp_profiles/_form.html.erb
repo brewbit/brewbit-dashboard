@@ -11,6 +11,14 @@
             <%= f.text_field :name, class: 'form-control' %>
           </div>
         </div>
+        
+        <div class="form-group">
+          <%= f.label :start_value, 'Starting Temperature', class: 'col-sm-2 control-label' %>
+          <div class="col-sm-10">
+            <%= f.number_field :start_value, class: 'form-control' %>
+          </div>
+        </div>
+        
         <table id="steps" class="table table-striped">
           <thead>
             <tr>
