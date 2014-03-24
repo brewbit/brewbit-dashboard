@@ -51,6 +51,19 @@ module ProtobufMessages
     include Beefcake::Message
   end
 
+  class TempProfileStep
+    include Beefcake::Message
+
+    module TempProfileStepType
+      HOLD = 0
+      RAMP = 1
+    end
+  end
+
+  class TempProfile
+    include Beefcake::Message
+  end
+
   class OutputSettings
     include Beefcake::Message
 
@@ -58,6 +71,11 @@ module ProtobufMessages
       HEATING = 0
       COOLING = 1
       MANUAL = 2
+    end
+
+    module OutputControlMode
+      ON_OFF = 0
+      PID = 1
     end
   end
 
@@ -159,11 +177,27 @@ module ProtobufMessages
   end
 
 
+  class TempProfileStep
+    required :duration, :uint32, 1
+    required :value, :float, 2
+    required :type, TempProfileStep::TempProfileStepType, 3
+  end
+
+
+  class TempProfile
+    required :id, :uint32, 1
+    required :name, :string, 2
+    required :start_value, :float, 3
+    repeated :steps, TempProfileStep, 4
+  end
+
+
   class OutputSettings
     required :id, :uint32, 1
     required :function, OutputSettings::Function, 2
     required :compressor_delay, :uint32, 3
     required :trigger_sensor_id, :uint32, 4
+    required :output_mode, OutputSettings::OutputControlMode, 5
   end
 
 
@@ -171,14 +205,14 @@ module ProtobufMessages
     required :id, :uint32, 1
     required :setpoint_type, SensorSettings::SetpointType, 2
     optional :static_setpoint, :float, 3
-    optional :temp_profile, :uint32, 4
+    optional :temp_profile_id, :uint32, 4
   end
 
 
   class DeviceSettingsNotification
-    required :name, :string, 1
-    repeated :output, OutputSettings, 2
-    repeated :sensor, SensorSettings, 3
+    repeated :output, OutputSettings, 1
+    repeated :sensor, SensorSettings, 2
+    optional :temp_profile, TempProfile, 3
   end
 
 
