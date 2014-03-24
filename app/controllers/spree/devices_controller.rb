@@ -53,7 +53,7 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name, outputs_attributes: [:id, :function, :compressor_delay, :sensor_id] )
+        params.require(:device).permit(:name, outputs_attributes: [:id, :function, :cycle_delay, :sensor_id] )
       end
 
       def notify_device_with_new_settings
@@ -74,7 +74,7 @@ module Spree
           output = {
             index:            o.output_index,
             function:         Output::FUNCTIONS.values.index( o.function ),
-            compressor_delay: o.compressor_delay,
+            cycle_delay: o.cycle_delay,
             sensor_index:     o.sensor.sensor_index,
             output_mode:      o.output_mode
           }

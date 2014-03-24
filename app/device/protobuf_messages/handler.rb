@@ -148,7 +148,7 @@ module ProtobufMessages::Handler
       message.deviceSettingsNotification.output.each do |o|
         if output = device.outputs.find_by( output_index: o.id )
           output.function = Output::FUNCTIONS.values.index( o.function )
-          output.compressor_delay = o.compressor_delay
+          output.cycle_delay = o.cycle_delay
           output.sensor = device.sensors.find_by( sensor_index: o.trigger_sensor_id )
 
           output.save

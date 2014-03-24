@@ -195,7 +195,7 @@ module ProtobufMessages
   class OutputSettings
     required :id, :uint32, 1
     required :function, OutputSettings::Function, 2
-    required :compressor_delay, :uint32, 3
+    required :cycle_delay, :uint32, 3
     required :trigger_sensor_id, :uint32, 4
     required :output_mode, OutputSettings::OutputControlMode, 5
   end

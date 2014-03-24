@@ -79,7 +79,7 @@ module ProtobufMessages::Builder
       output = ProtobufMessages::OutputSettings.new
       output.id = o[:index]
       output.function = o[:function]
-      output.compressor_delay = o[:compressor_delay]
+      output.cycle_delay = o[:cycle_delay]
       output.trigger_sensor_id = o[:sensor_index]
       output.output_mode = o[:output_mode]
       message.deviceSettingsNotification.output << output
