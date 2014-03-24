@@ -60,10 +60,13 @@ module Spree
         connection = DeviceConnection.find_by_device_id( @device.hardware_identifier )
 
         # no need to send settings to a device that's not connected
-        return unless connection
+        unless connection
+          logger.warn "Device not connected during settings update #{@device.hardware_identifier}"
+          logger.warn "Connected devices are: #{DeviceConnection.all.inspect}"
+          return
+        end
 
         data = {
-          name: @device.name,
           outputs: [],
           sensors: []
         }
@@ -72,7 +75,8 @@ module Spree
             index:            o.output_index,
             function:         Output::FUNCTIONS.values.index( o.function ),
             compressor_delay: o.compressor_delay,
-            sensor_index:     o.sensor.sensor_index
+            sensor_index:     o.sensor.sensor_index,
+            output_mode:      o.output_mode
           }
           data[:outputs] << output
         end

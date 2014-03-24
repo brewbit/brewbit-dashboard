@@ -74,8 +74,6 @@ module ProtobufMessages::Builder
     message.type = ProtobufMessages::ApiMessage::Type::DEVICE_SETTINGS_NOTIFICATION
     message.deviceSettingsNotification = ProtobufMessages::DeviceSettingsNotification.new
 
-    message.deviceSettingsNotification.name = data[:name]
-
     message.deviceSettingsNotification.output = []
     data[:outputs].each do |o|
       output = ProtobufMessages::OutputSettings.new
@@ -83,6 +81,7 @@ module ProtobufMessages::Builder
       output.function = o[:function]
       output.compressor_delay = o[:compressor_delay]
       output.trigger_sensor_id = o[:sensor_index]
+      output.output_mode = o[:output_mode]
       message.deviceSettingsNotification.output << output
     end
 

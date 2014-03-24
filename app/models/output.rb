@@ -3,6 +3,7 @@
 # * function [string] - - Function of the output [ HOT, COLD ]
 # * output_index [integer] - - Index of the output, from left and start at 0
 # * compressor_delay [integer] - - How much to wait between power cycles for a compressor in minutes
+# * output_mode [integer] - - Output control mode [PID, ON_OFF]
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
@@ -11,6 +12,7 @@ class Output < ActiveRecord::Base
   belongs_to :device
   belongs_to :sensor
 
+  OUTPUT_MODE = { on_off: 0, pid: 1 }
   FUNCTIONS = { hot: 'hot', cold: 'cold' }
   INDEX_NAME = [ 'left', 'right' ]
 
