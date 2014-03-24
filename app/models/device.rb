@@ -22,7 +22,7 @@ class Device < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 100 }
   validates :hardware_identifier, uniqueness: { case_sensitive: true }
 
-  accepts_nested_attributes_for :outputs
+  accepts_nested_attributes_for :outputs, :sensors
 
   def activated?
     !user.blank? && activation_token.blank?

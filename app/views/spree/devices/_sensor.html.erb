@@ -1,0 +1,28 @@
+<h3>Sensor <%= s.object.sensor_index + 1 %></h3>
+
+<div class='form-group'>
+  <div class='col-sm-4'>
+    <%= s.label :setpoint_type, class: 'col-sm-2 control-label' %>
+  </div>
+  <div class='col-sm-8'>
+    <%= s.select :setpoint_type, [['Static',:static],['Temp Profile',:temp_profile]], {}, class: 'form-control' %>
+  </div>
+</div>
+
+<div class='form-group'>
+  <div class='col-sm-4'>
+    <%= s.label :static_setpoint, class: 'col-sm-2 control-label' %>
+  </div>
+  <div class='col-sm-8'>
+    <%= s.number_field :static_setpoint, class: 'form-control' %>
+  </div>
+</div>
+
+<div class='form-group'>
+  <div class='col-sm-4'>
+    <%= s.label :temp_profile, class: 'col-sm-2 control-label' %>
+  </div>
+  <div class='col-sm-8'>
+    <%= s.select :temp_profile, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
+  </div>
+</div>
