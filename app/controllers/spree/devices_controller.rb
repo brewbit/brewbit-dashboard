@@ -85,7 +85,7 @@ module Spree
         @device.sensors.each do |s|
           sensor = {
             index:            s.sensor_index,
-            setpoint_type:    Sensor::SETPOINT_TYPE[s.setpoint_type],
+            setpoint_type:    s.setpoint_type,
             static_setpoint:  s.static_setpoint,
             temp_profile_id:  s.temp_profile_id
           }

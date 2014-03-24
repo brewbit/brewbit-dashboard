@@ -19,14 +19,6 @@ class Sensor < ActiveRecord::Base
   READING_READING_INTERVAL = 5.minutes
 
 
-  def setpoint_type
-    SETPOINT_TYPE.key(read_attribute(:setpoint_type))
-  end
-
-  def setpoint_type=(s)
-    write_attribute(:setpoint_type, SETPOINT_TYPE[s])
-  end
-
   def current_reading
     reading = self.readings.order('created_at').try( :last )
     return nil unless reading
