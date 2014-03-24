@@ -54,7 +54,7 @@ module Spree
       # Only allow a trusted parameter "white list" through.
       def device_params
         params.require(:device).permit(:name,
-          outputs_attributes: [:id, :function, :cycle_delay, :sensor_id],
+          outputs_attributes: [:id, :function, :cycle_delay, :sensor_id, :output_mode],
           sensors_attributes: [:id, :setpoint_type, :static_setpoint, :temp_profile_id] )
       end
 

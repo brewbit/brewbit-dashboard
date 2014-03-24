@@ -5,7 +5,7 @@
     <%= s.label :setpoint_type, class: 'col-sm-2 control-label' %>
   </div>
   <div class='col-sm-8'>
-    <%= s.select :setpoint_type, [['Static',:static],['Temp Profile',:temp_profile]], {}, class: 'form-control' %>
+    <%= s.select :setpoint_type, [['Static',Sensor::SETPOINT_TYPE[:static]],['Temp Profile',Sensor::SETPOINT_TYPE[:temp_profile]]], {}, class: 'form-control' %>
   </div>
 </div>
 
@@ -20,9 +20,9 @@
 
 <div class='form-group'>
   <div class='col-sm-4'>
-    <%= s.label :temp_profile, class: 'col-sm-2 control-label' %>
+    <%= s.label :temp_profile_id, class: 'col-sm-2 control-label' %>
   </div>
   <div class='col-sm-8'>
-    <%= s.select :temp_profile, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
+    <%= s.select :temp_profile_id, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
   </div>
 </div>
