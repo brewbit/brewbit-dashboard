@@ -212,7 +212,7 @@ module ProtobufMessages
   class DeviceSettingsNotification
     repeated :output, OutputSettings, 1
     repeated :sensor, SensorSettings, 2
-    optional :temp_profile, TempProfile, 3
+    repeated :temp_profiles, TempProfile, 3
   end
 
 
