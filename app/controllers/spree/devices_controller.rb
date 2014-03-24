@@ -70,7 +70,8 @@ module Spree
 
         data = {
           outputs: [],
-          sensors: []
+          sensors: [],
+          temp_profiles: []
         }
         @device.outputs.each do |o|
           output = {
@@ -85,10 +86,26 @@ module Spree
         @device.sensors.each do |s|
           sensor = {
             index:            s.sensor_index,
-            setpoint_type:    s.setpoint_type,
-            static_setpoint:  s.static_setpoint,
-            temp_profile_id:  s.temp_profile_id
+            setpoint_type:    s.setpoint_type
           }
+          case s.setpoint_type
+          when Sensor::SETPOINT_TYPE[:static]
+            sensor[:static_setpoint] = s.static_setpoint
+          when Sensor::SETPOINT_TYPE[:temp_profile]
+            sensor[:temp_profile_id] = s.temp_profile_id
+            temp_profile = {
+              id:           s.temp_profile.id,
+              name:         s.temp_profile.name,
+              start_value:  s.temp_profile.start_value,
+              steps:        s.temp_profile.steps.collect { |step| {
+                  duration: step.duration,
+                  value:    step.value,
+                  type:     step.step_type
+                }
+              }
+            }
+            data[:temp_profiles] << temp_profile
+          end
           data[:sensors] << sensor
         end
 

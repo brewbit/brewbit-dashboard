@@ -100,6 +100,25 @@ module ProtobufMessages::Builder
       message.deviceSettingsNotification.sensor << sensor
     end
 
+    message.deviceSettingsNotification.temp_profiles = []
+    data[:temp_profiles].each do |s|
+      temp_profile = ProtobufMessages::TempProfile.new
+      temp_profile.id          = s[:id]
+      temp_profile.name        = s[:name]
+      temp_profile.start_value = s[:start_value]
+      temp_profile.steps       = []
+      s[:steps].each do |st|
+        temp_profile_step = ProtobufMessages::TempProfileStep.new
+        temp_profile_step.duration = st[:duration]
+        temp_profile_step.value    = st[:value]
+        temp_profile_step.type     = st[:type]
+        
+        temp_profile.steps << temp_profile_step
+      end
+
+      message.deviceSettingsNotification.temp_profiles << temp_profile
+    end
+
     message
   end
 end
