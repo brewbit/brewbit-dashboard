@@ -1,5 +1,15 @@
-<h1>New device_command</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Back', device_commands_path %>
+<ol class="breadcrumb">
+  <li><%= link_to 'Dashboard', '/dashboard' %></li>
+  <li><%= link_to @device.name, @device %></li>
+  <li class="active">Send Command</li>
+</ol>
+<div class="col-md-8 col-md-offset-2">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Send Command to Device</h3>
+    </div>
+    <div class="panel-body">
+      <%= render 'form' %>
+    </div>
+  </div>
+</div>

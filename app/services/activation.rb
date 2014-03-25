@@ -7,10 +7,7 @@ module Activation
 
     unless device
       token = create_token
-      device = DefaultDeviceBuilderService.new( token, device_id ).device
-
-      build_sensors(device)
-      build_outputs(device)
+      device = Defaults.build_device( token, device_id )
     end
 
     device
@@ -69,17 +66,6 @@ module Activation
 
   def self.create_token
     SecureRandom.hex( 3 )
-  end
-
-
-  def self.build_outputs(device)
-    DefaultOutputBuilderService.new( device, OutputSettings::FUNCTIONS[:hot], 0 )
-    DefaultOutputBuilderService.new( device, OutputSettings::FUNCTIONS[:cold], 1 )
-  end
-
-  def self.build_sensors(device)
-    DefaultSensorBuilderService.new( device, 0 )
-    DefaultSensorBuilderService.new( device, 1 )
   end
 end
 

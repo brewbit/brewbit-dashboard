@@ -21,10 +21,10 @@ class OutputSettings < ActiveRecord::Base
   MAX_CYCLE_DELAY = 30
 
   validates :function, presence: true, inclusion: { in: FUNCTIONS.values }
-  validates :sensor_settings_id,
-            allow_blank: true,
-            inclusion: { in: lambda { |s| s.sensor.output.device.sensors.map { |o| o.id } },
-                                      message: 'Only devices sensor settings are allowed' }
+#  validates :sensor_settings_id,
+#            allow_blank: true,
+#            inclusion: { in: lambda { |s| s.device_command.device.sensors.collect { |sensor| sensor.settings.map { |o| o.id } } },
+#                                      message: 'Only devices sensor settings are allowed' }
   validates :cycle_delay, allow_blank: true,
             numericality: { only_integer: true,
                             greater_than: 0,

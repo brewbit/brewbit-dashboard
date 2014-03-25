@@ -1,26 +1,29 @@
 module Spree
   class DeviceCommandsController < Spree::StoreController
+    before_action :set_device
     before_action :set_device_command, only: [:show, :edit, :update, :destroy]
   
-    # GET /device_commands
+    # GET /commands
     def index
       @device_commands = DeviceCommand.all
     end
   
-    # GET /device_commands/1
+    # GET /commands/1
     def show
     end
   
-    # GET /device_commands/new
+    # GET /commands/new
     def new
-      @device_command = DeviceCommand.new
+      logger.warn @device
+      @device_command = Defaults.build_device_command @device, false
+      logger.warn @device_command
     end
   
-    # GET /device_commands/1/edit
+    # GET /commands/1/edit
     def edit
     end
   
-    # POST /device_commands
+    # POST /commands
     def create
       @device_command = DeviceCommand.new(device_command_params)
   
@@ -31,7 +34,7 @@ module Spree
       end
     end
   
-    # PATCH/PUT /device_commands/1
+    # PATCH/PUT /commands/1
     def update
       if @device_command.update(device_command_params)
         redirect_to @device_command, notice: 'Device command was successfully updated.'
@@ -40,7 +43,7 @@ module Spree
       end
     end
   
-    # DELETE /device_commands/1
+    # DELETE /commands/1
     def destroy
       @device_command.destroy
       redirect_to device_commands_url, notice: 'Device command was successfully destroyed.'
@@ -50,6 +53,10 @@ module Spree
       # Use callbacks to share common setup or constraints between actions.
       def set_device_command
         @device_command = DeviceCommand.find(params[:id])
+      end
+      
+      def set_device
+        @device = Device.find(params[:device_id])
       end
   
       # Only allow a trusted parameter "white list" through.
