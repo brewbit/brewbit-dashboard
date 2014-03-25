@@ -1,5 +1,6 @@
 module Spree
   class DeviceCommandsController < Spree::StoreController
+    layout 'spree/layouts/devices'
     before_action :set_device
     before_action :set_device_command, only: [:show, :edit, :update, :destroy]
   

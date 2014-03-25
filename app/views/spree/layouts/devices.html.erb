@@ -1,0 +1,15 @@
+<% content_for :dashboard_content do %>
+  <ul class="nav nav-pills device-nav">
+    <li class="active">
+      <%= link_to raw('<span class="glyphicon glyphicon-stats"></span> Status'), device_path(@device) %>
+    </li>
+    <li>
+      <%= link_to raw('<span class="glyphicon glyphicon-transfer"></span> Send Commands'), new_device_command_path(@device) %>
+    </li>
+    <li class="navbar-right">
+      <%= link_to raw('<span class="glyphicon glyphicon-cog"></span> Device Settings'), edit_device_path(@device) %>
+    </li>
+  </ul>
+  <%= yield %>
+<% end %>
+<%= render template: 'spree/layouts/dashboard' %>

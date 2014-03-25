@@ -2,6 +2,7 @@ require 'protobuf_messages/messages'
 
 module Spree
   class DevicesController < Spree::StoreController
+    layout :resolve_layout
     before_filter :correct_user, except: [:index, :activate, :start_activate]
 
     # GET /devices
@@ -20,6 +21,7 @@ module Spree
 
     # GET /devices/activate
     def start_activate
+      index
       render 'activate'
     end
 
@@ -118,6 +120,14 @@ module Spree
       def correct_user
         @device = spree_current_user.devices.find_by( id: params[:id] )
         redirect_to root_path, error: 'You can only see your own devices' unless @device
+      end
+      
+      def resolve_layout
+        if ['activate', 'start_activate'].include? action_name
+          "spree/layouts/dashboard"
+        else
+          "spree/layouts/devices"
+        end
       end
   end
 end
