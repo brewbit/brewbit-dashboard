@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div class='form-group'>
+<div id="static-setpoint-<%= s.object.sensor_index %>" class='form-group' style="<%= 'display: none;' if s.object.setpoint_type == Sensor::SETPOINT_TYPE[:temp_profile]%>">
   <div class='col-sm-4'>
     <%= s.label :static_setpoint, class: 'col-sm-2 control-label' %>
   </div>
@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div class='form-group'>
+<div id="temp-profile-<%= s.object.sensor_index %>" class='form-group' style="<%= 'display: none;' if s.object.setpoint_type == Sensor::SETPOINT_TYPE[:static]%>">
   <div class='col-sm-4'>
     <%= s.label :temp_profile_id, class: 'col-sm-2 control-label' %>
   </div>
@@ -26,3 +26,18 @@
     <%= s.select :temp_profile_id, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#device_sensors_attributes_<%= s.object.sensor_index %>_setpoint_type').change(function() {
+      if ($(this).val() == <%= Sensor::SETPOINT_TYPE[:static] %>) {
+        $('#static-setpoint-<%= s.object.sensor_index %>').show();
+        $('#temp-profile-<%= s.object.sensor_index %>').hide();
+      }
+      else {
+        $('#static-setpoint-<%= s.object.sensor_index %>').hide();
+        $('#temp-profile-<%= s.object.sensor_index %>').show();
+      }
+    }); 
+  });
+</script>
