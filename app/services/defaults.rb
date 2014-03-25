@@ -56,8 +56,8 @@ class Defaults
     build_sensor_settings( device_command, device.sensors[0], save )
     build_sensor_settings( device_command, device.sensors[1], save )
     
-    build_output_settings( device_command, device.outputs[0], save, OutputSettings::FUNCTIONS[:hot] )
-    build_output_settings( device_command, device.outputs[1], save, OutputSettings::FUNCTIONS[:cold] )
+    build_output_settings( device_command, device.outputs[0], save, OutputSettings::FUNCTIONS[:heating] )
+    build_output_settings( device_command, device.outputs[1], save, OutputSettings::FUNCTIONS[:cooling] )
     
     device_command
   end
@@ -76,7 +76,7 @@ class Defaults
     end
   end
   
-  def self.build_output_settings( device_command, output, save, function = Output::FUNCTIONS[:hot], cycle_delay = 3 )
+  def self.build_output_settings( device_command, output, save, function = Output::FUNCTIONS[:heating], cycle_delay = 3 )
     attr = {
       device_command: device_command,
       output: output,

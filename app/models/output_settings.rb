@@ -1,7 +1,7 @@
 # Attributes:
 # * device_command_id [integer] - - Which device command it belongs to
 # * output_id [integer] - - Which output it belongs to
-# * function [integer] - - Function of the output [ HOT, COLD ]
+# * function [integer] - - Function of the output [ HEATING, COOLING ]
 # * cycle_delay [integer] - - How much to wait between power cycles of an output in minutes
 # * output_mode [integer] - - Output control mode [PID, ON_OFF]
 # * sensor_id [integer] - - Which sensor it is controlled by
@@ -15,7 +15,8 @@ class OutputSettings < ActiveRecord::Base
   belongs_to :sensor_settings
 
   OUTPUT_MODE = { on_off: 0, pid: 1 }
-  FUNCTIONS = { hot: 0, cold: 1 }
+  FUNCTIONS = { heating: 0, cooling: 1 }
+  FUNCTION_NAME = [ 'heating', 'cooling' ]
   INDEX_NAME = [ 'left', 'right' ]
 
   MAX_CYCLE_DELAY = 30
