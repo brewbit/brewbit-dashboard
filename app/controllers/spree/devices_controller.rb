@@ -21,7 +21,6 @@ module Spree
 
     # GET /devices/activate
     def start_activate
-      index
       render 'activate'
     end
 

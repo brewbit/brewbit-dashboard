@@ -1,7 +1,7 @@
 <% content_for :app_content do %>
   <div class="bottom-space">
     <ul class="nav nav-tabs">
-      <% @devices.each do |cur_device| %>
+      <% spree_current_user.devices.each do |cur_device| %>
         <li class="<%= 'active' if @device == cur_device %>">
           <%= link_to cur_device.name, cur_device %>
         </li>
