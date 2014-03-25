@@ -4,6 +4,7 @@
       <h3 class="panel-title">Sensor <%= sensor.sensor_index + 1 %></h3>
     </div>
     <div class="panel-body">
+      
       <div id="sensor-<%= sensor.id %>-timeline" class="sensor-plot"></div>
       <script type='text/javascript'>
         $(document).ready(function () {
@@ -26,8 +27,47 @@
           );
         });
       </script>
-      <div>Currently controlling: both outputs <%= link_to '(change)' %></div>
-      <div>Using temperature profile: 'Saison' <%= link_to '(change)' %></div>
+      
+      <div class="row device-nav">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">Current command</h4>
+            </div>
+            <div class="panel-body">
+              <h4>
+                <span class="label label-default label-lg">
+                  <% if sensor.setpoint_type == Sensor::SETPOINT_TYPE[:static] %>
+                    Static Setpoint - <%= sensor.static_setpoint %>&deg; F
+                  <% else %>
+                    Temperature Profile - <%= sensor.temp_profile.name %>
+                  <% end %>
+                </span>
+              </h4>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 col">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">Currently controlling</h4>
+            </div>
+            <div class="panel-body">
+              <h4>
+                <% unless sensor.outputs.blank? %>
+                  <% sensor.outputs.each do |output| %>
+                    <span class="label label-default label-lg"><%= Output::INDEX_NAME[output.output_index].capitalize %> Output - <%= output.function %></span>
+                  <% end %>
+                <% else %>
+                  <span class="label label-default label-lg">Nothing</span>
+                <% end %>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 </div>
