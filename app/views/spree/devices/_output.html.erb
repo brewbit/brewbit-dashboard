@@ -1,4 +1,4 @@
-<h3><%= Output::INDEX_NAME[o.object.output_index].capitalize %> Output</h3>
+<h3><%= OutputSettings::INDEX_NAME[o.object.output_index].capitalize %> Output</h3>
 
 <div class='form-group'>
   <div class='col-sm-4'>
@@ -14,7 +14,7 @@
     <%= o.label :function, class: 'col-sm-2 control-label' %>
   </div>
   <div class='col-sm-8'>
-    <%= o.select :function, Output::FUNCTIONS.values, {}, class: 'form-control' %>
+    <%= o.select :function, OutputSettings::FUNCTIONS.values, {}, class: 'form-control' %>
   </div>
 </div>
 
@@ -35,6 +35,6 @@
     <%= o.label :output_mode, class: 'col-sm-2 control-label' %>
   </div>
   <div class='col-sm-8'>
-    <%= o.select :output_mode, Output::OUTPUT_MODE.map {|k,v| [k.capitalize, v]}, {}, class: 'form-control' %>
+    <%= o.select :output_mode, OutputSettings::OUTPUT_MODE.map {|k,v| [k.capitalize, v]}, {}, class: 'form-control' %>
   </div>
 </div>

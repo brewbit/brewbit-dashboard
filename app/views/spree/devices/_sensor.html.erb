@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div id="static-setpoint-<%= s.object.sensor_index %>" class='form-group' style="<%= 'display: none;' if s.object.setpoint_type == Sensor::SETPOINT_TYPE[:temp_profile]%>">
+<div id="static-setpoint-<%= s.object.sensor_index %>" class='form-group' style="<%= 'display: none;' if s.object.current_settings.setpoint_type == Sensor::SETPOINT_TYPE[:temp_profile]%>">
   <div class='col-sm-4'>
     <%= s.label :static_setpoint, class: 'col-sm-2 control-label' %>
   </div>
@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div id="temp-profile-<%= s.object.sensor_index %>" class='form-group' style="<%= 'display: none;' if s.object.setpoint_type == Sensor::SETPOINT_TYPE[:static]%>">
+<div id="temp-profile-<%= s.object.sensor_index %>" class='form-group' style="<%= 'display: none;' if s.object.current_settings.setpoint_type == Sensor::SETPOINT_TYPE[:static]%>">
   <div class='col-sm-4'>
     <%= s.label :temp_profile_id, class: 'col-sm-2 control-label' %>
   </div>

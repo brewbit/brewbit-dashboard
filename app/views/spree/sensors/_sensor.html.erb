@@ -37,10 +37,10 @@
             <div class="panel-body">
               <h4>
                 <span class="label label-default label-lg">
-                  <% if sensor.setpoint_type == Sensor::SETPOINT_TYPE[:static] %>
-                    Static Setpoint - <%= sensor.static_setpoint %>&deg; F
+                  <% if sensor.current_settings.setpoint_type == Sensor::SETPOINT_TYPE[:static] %>
+                    Static Setpoint - <%= sensor.current_settings.static_setpoint %>&deg; F
                   <% else %>
-                    Temperature Profile - <%= sensor.temp_profile.name %>
+                    Temperature Profile - <%= sensor.current_settings.temp_profile.name %>
                   <% end %>
                 </span>
               </h4>
@@ -55,9 +55,9 @@
             </div>
             <div class="panel-body">
               <h4>
-                <% unless sensor.outputs.blank? %>
-                  <% sensor.outputs.each do |output| %>
-                    <span class="label label-default label-lg"><%= Output::INDEX_NAME[output.output_index].capitalize %> Output - <%= output.function %></span>
+                <% unless sensor.current_settings.outputs.blank? %>
+                  <% sensor.current_settings.outputs.each do |output_settings| %>
+                    <span class="label label-default label-lg"><%= OutputSettings::INDEX_NAME[output_settings.output.output_index].capitalize %> Output - <%= output_settings.function %></span>
                   <% end %>
                 <% else %>
                   <span class="label label-default label-lg">Nothing</span>

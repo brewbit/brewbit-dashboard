@@ -76,8 +76,8 @@ module Spree
         @device.outputs.each do |o|
           output = {
             index:            o.output_index,
-            function:         Output::FUNCTIONS.values.index( o.function ),
-            cycle_delay: o.cycle_delay,
+            function:         o.function,
+            cycle_delay:      o.cycle_delay,
             sensor_index:     o.sensor.sensor_index,
             output_mode:      o.output_mode
           }

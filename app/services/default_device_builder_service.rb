@@ -14,6 +14,10 @@ class DefaultDeviceBuilderService
     }
 
     @device = Device.new attr
+    
+    attr = { name: '' }
+    device_command = DeviceCommand.new attr
+    @device.commands << device_command
   end
 
   def device

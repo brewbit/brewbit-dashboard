@@ -1,0 +1,17 @@
+<%= form_for(@device_command) do |f| %>
+  <% if @device_command.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@device_command.errors.count, "error") %> prohibited this device_command from being saved:</h2>
+
+      <ul>
+      <% @device_command.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
