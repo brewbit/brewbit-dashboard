@@ -1,13 +1,13 @@
 <% content_for :dashboard_content do %>
   <div class="bottom-space">
     <ul class="nav nav-pills device-nav">
-      <li class="active">
+      <li class="<%= 'active' if current_page?(device_path(@device)) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-stats"></span> Status'), device_path(@device) %>
       </li>
-      <li>
+      <li class="<%= 'active' if current_page?(new_device_command_path(@device)) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-transfer"></span> Send Commands'), new_device_command_path(@device) %>
       </li>
-      <li class="navbar-right">
+      <li class="navbar-right <%= 'active' if current_page?(edit_device_path(@device)) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-cog"></span> Device Settings'), edit_device_path(@device) %>
       </li>
     </ul>

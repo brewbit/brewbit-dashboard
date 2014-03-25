@@ -6,7 +6,7 @@
           <%= link_to cur_device.name, cur_device %>
         </li>
       <% end %>
-      <li class="tab-right">
+      <li class="tab-right <%= 'active' if current_page?(activate_path) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-plus"></span> Activate Device'), activate_path %>
       </li>
     </ul>
