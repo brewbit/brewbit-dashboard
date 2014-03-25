@@ -7,8 +7,8 @@
 #
 class DefaultOutputBuilderService
 
-  def initialize( function = Output::FUNCTIONS[:hot], index = 0, cycle_delay = 3 )
-    attr = { function: function, output_index: index, cycle_delay: cycle_delay }
+  def initialize( sensor, function = Output::FUNCTIONS[:hot], index = 0, cycle_delay = 3 )
+    attr = { sensor: sensor, function: function, output_index: index, cycle_delay: cycle_delay }
     @output = Output.new attr
   end
 

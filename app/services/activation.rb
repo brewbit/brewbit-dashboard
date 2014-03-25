@@ -9,8 +9,8 @@ module Activation
       token = create_token
       device = DefaultDeviceBuilderService.new( token, device_id ).device
 
-      device.outputs << build_outputs
       device.sensors << build_sensors
+      device.outputs << build_outputs(device.sensors)
     end
 
     device
@@ -72,9 +72,9 @@ module Activation
   end
 
 
-  def self.build_outputs
-    output_right = DefaultOutputBuilderService.new.output
-    output_left = DefaultOutputBuilderService.new( Output::FUNCTIONS[:cold], 1 ).output
+  def self.build_outputs(sensors)
+    output_right = DefaultOutputBuilderService.new( sensors[0], Output::FUNCTIONS[:hot], 0 ).output
+    output_left = DefaultOutputBuilderService.new( sensors[0], Output::FUNCTIONS[:cold], 1 ).output
 
     [ output_right, output_left ]
   end
