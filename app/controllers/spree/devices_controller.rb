@@ -1,11 +1,12 @@
 module Spree
   class DevicesController < Spree::StoreController
-    layout :resolve_layout
     before_filter :correct_user, except: [:index, :activate, :start_activate]
+    layout :resolve_layout
 
     # GET /devices
     def index
       @devices = spree_current_user.devices
+      @device = @devices.first
     end
 
     # GET /devices/1
@@ -45,7 +46,7 @@ module Spree
     # DELETE /devices/1
     def destroy
       @device.destroy
-      redirect_to devices_url, notice: 'Device was successfully destroyed.'
+      redirect_to spree_brewbit_dashboard_url, notice: 'Device was successfully destroyed.'
     end
 
     private
@@ -60,7 +61,7 @@ module Spree
       end
       
       def resolve_layout
-        if ['activate', 'start_activate'].include? action_name
+        if ( @device == nil ) || ( ['activate', 'start_activate'].include? action_name )
           "spree/layouts/dashboard"
         else
           "spree/layouts/devices"
