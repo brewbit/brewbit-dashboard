@@ -5,29 +5,29 @@ module Spree
     layout 'spree/layouts/devices'
     before_action :set_device
     before_action :set_device_command, only: [:show, :edit, :destroy]
-  
+
     # GET /commands
     def index
       @device_commands = @device.commands
     end
-  
+
     # GET /commands/1
     def show
     end
-  
+
     # GET /commands/new
     def new
       @device_command = Defaults.build_device_command @device, false
     end
-  
+
     # GET /commands/1/edit
     def edit
     end
-  
+
     # POST /commands
     def create
       @device_command = DeviceCommand.new(device_command_params)
-  
+
       if @device_command.save
         notify_device_with_new_settings
         redirect_to @device, notice: 'Device command was successfully sent.'
@@ -35,23 +35,23 @@ module Spree
         render action: 'new'
       end
     end
-  
+
     # DELETE /commands/1
     def destroy
       @device_command.destroy
       redirect_to device_commands_url, notice: 'Device command was successfully destroyed.'
     end
-  
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_device_command
         @device_command = DeviceCommand.find(params[:id])
       end
-      
+
       def set_device
         @device = Device.find(params[:device_id])
       end
-      
+
       def notify_device_with_new_settings
         connection = DeviceConnection.find_by_device_id( @device.hardware_identifier )
 
@@ -92,7 +92,7 @@ module Spree
               name:         s.temp_profile.name,
               start_value:  s.temp_profile.start_value,
               steps:        s.temp_profile.steps.collect { |step| {
-                  duration: step.duration,
+                  duration: step.duration_for_device,
                   value:    step.value,
                   type:     step.step_type
                 }
