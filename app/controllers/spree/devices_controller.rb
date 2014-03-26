@@ -61,9 +61,7 @@ module Spree
       end
       
       def resolve_layout
-        if @device == nil
-          "spree/layouts/spree_application"
-        elsif ['activate', 'start_activate'].include? action_name
+        if ( @device == nil ) || ( ['activate', 'start_activate'].include? action_name )
           "spree/layouts/dashboard"
         else
           "spree/layouts/devices"
