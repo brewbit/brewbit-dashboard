@@ -67,9 +67,9 @@ module Spree
           sensors: [],
           temp_profiles: []
         }
-        @device.outputs.each do |o|
+        @device_command.output_settings.each do |o|
           output = {
-            index:            o.output_index,
+            index:            o.output.output_index,
             function:         o.function,
             cycle_delay:      o.cycle_delay,
             sensor_index:     o.sensor.sensor_index,
@@ -77,9 +77,9 @@ module Spree
           }
           data[:outputs] << output
         end
-        @device.sensors.each do |s|
+        @device_command.sensor_settings.each do |s|
           sensor = {
-            index:            s.sensor_index,
+            index:            s.sensor.sensor_index,
             setpoint_type:    s.setpoint_type
           }
           case s.setpoint_type
@@ -112,8 +112,8 @@ module Spree
       # Only allow a trusted parameter "white list" through.
       def device_command_params
         params.require(:device_command).permit(:name,
-          output_settings_attributes: [:id, :function, :cycle_delay, :sensor_settings_id, :output_mode],
-          sensor_settings_attributes: [:id, :setpoint_type, :static_setpoint, :temp_profile_id] )
+          output_settings_attributes: [:id, :output_id, :function, :cycle_delay, :sensor_id, :output_mode],
+          sensor_settings_attributes: [:id, :sensor_id, :setpoint_type, :static_setpoint, :temp_profile_id] )
       end
   end
 end

@@ -1,11 +1,13 @@
 <h3><%= OutputSettings::INDEX_NAME[o.object.output.output_index].capitalize %> Output</h3>
 
+<%= o.hidden_field :output_id %>
+    
 <div class='form-group'>
   <div class='col-sm-4'>
-    <%= o.label :sensor_settings_id, class: 'col-sm-2 control-label' %>
+    <%= o.label :sensor_id, class: 'col-sm-2 control-label' %>
   </div>
   <div class='col-sm-8'>
-    <%= o.select :sensor_settings_id, @device.sensors.collect {|s| ["Sensor #{s.sensor_index+1}", s.id]}, {}, class: 'form-control' %>
+    <%= o.select :sensor_id, @device.sensors.collect {|s| ["Sensor #{s.sensor_index+1}", s.id]}, {}, class: 'form-control' %>
   </div>
 </div>
 

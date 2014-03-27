@@ -12,7 +12,7 @@
 class OutputSettings < ActiveRecord::Base
   belongs_to :device_command
   belongs_to :output
-  belongs_to :sensor_settings
+  belongs_to :sensor
 
   OUTPUT_MODE = { on_off: 0, pid: 1 }
   FUNCTIONS = { heating: 0, cooling: 1 }

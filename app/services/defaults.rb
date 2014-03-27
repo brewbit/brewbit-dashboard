@@ -80,7 +80,7 @@ class Defaults
     attr = {
       device_command: device_command,
       output: output,
-      sensor_settings: output.device.sensors[0].current_settings,
+      sensor: output.device.sensors[0],
       function: function,
       cycle_delay: cycle_delay
     }

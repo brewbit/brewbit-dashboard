@@ -8,13 +8,18 @@
 class Sensor < ActiveRecord::Base
   belongs_to :device
 
+  has_many :output_settings, -> { order 'created_at ASC' }
   has_many :settings, -> { order 'created_at ASC' }, class_name: 'SensorSettings'
   has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading', foreign_key: 'sensor_id', dependent: :destroy
-  belongs_to :temp_profile
 
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
   
   def current_settings
-    settings.last
+    device.current_command.sensor_settings.find_by sensor: self
+  end
+  
+  def outputs
+    output_settings = device.current_command.output_settings.find_by sensor: self
+    output_settings ? output_settings.collect { |os| os.output } : nil
   end
 end
