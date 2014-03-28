@@ -12,7 +12,6 @@ class SensorSettings < ActiveRecord::Base
   belongs_to :device_command
   belongs_to :sensor
 
-  has_many :outputs, -> { order 'created_at ASC' }, class_name: 'OutputSettings'
   has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading'
   belongs_to :temp_profile
 

@@ -1,5 +1,7 @@
 <h3>Sensor <%= s.object.sensor.sensor_index + 1 %></h3>
 
+<%= s.hidden_field :sensor_id %>
+
 <div class='form-group'>
   <div class='col-sm-4'>
     <%= s.label :setpoint_type, class: 'col-sm-2 control-label' %>

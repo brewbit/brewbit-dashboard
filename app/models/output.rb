@@ -13,7 +13,7 @@ class Output < ActiveRecord::Base
   validates :output_index, allow_blank: true, numericality: { only_integer: true, greater_than: -1 }
   
   def current_settings
-    settings.last
+    device.current_command.output_settings.find_by output: self
   end
 end
 
