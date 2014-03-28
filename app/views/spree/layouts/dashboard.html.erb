@@ -9,6 +9,9 @@
       <li class="tab-right <%= 'active' if current_page?(activate_path) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-plus"></span> Activate Device'), activate_path %>
       </li>
+      <li class="tab-right <%= 'active' if controller.controller_name == 'temp_profiles' %>">
+        <%= link_to raw('<span class="glyphicon glyphicon-plus"></span> Temp Profiles'), temp_profiles_path %>
+      </li>
     </ul>
   </div>
   <%= content_for?(:dashboard_content) ? yield(:dashboard_content) : yield %>
