@@ -4,15 +4,15 @@
     <%= f.hidden_field :step_index, class: 'step_index' %>
   </td>
   <td>
-    <%= f.number_field :value, class: 'form-control' %>
+    <%= f.number_field :value, class: 'form-control value' %>
   </td>
   <td>
     <div class="input-group">
       <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
-      <%= f.hidden_field :duration_type, class: 'duration_type_field', value: f.object.duration_type %>
+      <%= f.hidden_field :duration_type, class: 'duration_type_field', value: (f.object.duration_type || 'minutes') %>
       <input class="form-control duration" type="number" value="<%= f.object.duration %>">
       <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class='selection'><%= f.object.duration_type %></span> <span class="caret"></span></button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class='selection'><%= (f.object.duration_type || 'minutes') %></span> <span class="caret"></span></button>
         <ul class="dropdown-menu">
           <% TempProfileStep::DURATION_TYPE.each do |d| -%>
             <li><a href="#"><%= d %></a></li>
@@ -25,16 +25,16 @@
     <%= f.hidden_field :step_type, class: 'step_type' %>
     <div class="btn-group" data-toggle="buttons">
       <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
-        <input type="radio" name="step_types" id="ramp"> Ramp</input>
+        <input type="radio" name="step_types" class="ramp"> Ramp</input>
       </label>
       <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:hold] %>">
-        <input type="radio" name="step_types" id="hold"> Hold</input>
+        <input type="radio" name="step_types" class="hold"> Hold</input>
       </label>
     </div>
   </td>
   <td>
-    <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-up"></span>'), 'moveStepUp', class: 'btn btn-default btn-sm' %>
-    <%= link_to_function raw('<span class="glyphicon glyphicon-chevron-down"></span>'), 'moveStepDown', class: 'btn btn-default btn-sm' %>
+    <a class="btn btn-default btn-sm move-row-up" href="#"><span class="glyphicon glyphicon-chevron-up"></span></a>
+    <a class="btn btn-default btn-sm move-row-down" href="#"><span class="glyphicon glyphicon-chevron-down"></span></a>
     <%= f.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: 'btn btn-default btn-sm' %>
   </td>
 </tr>

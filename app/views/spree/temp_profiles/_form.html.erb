@@ -78,7 +78,7 @@
     set_value( value, field);
   });
 
-  $(document).on( 'click', ".dropdown-menu li a", function(){
+  $(document).on( 'click', '.dropdown-menu li a', function(){
     $(this).parents(".input-group-btn").find('.selection').text($(this).text());
     $(this).parents(".input-group-btn").find('.selection').val($(this).text());
 
@@ -88,8 +88,97 @@
     set_value( value, field);
   });
 
+  $(document).on( 'click', '.move-row-up', function(event){
+    var row = $(this).parents('tr');
+    var index = row[0].rowIndex;
+
+    if( index === 1 ){
+      return ;
+    }
+
+    var prev_index = index - 1;
+    var prev_row = row.parents('table').find('tr:eq(' + prev_index + ')');
+
+    swap_rows( row, prev_row );
+  });
+
+  $(document).on( 'click', '.move-row-down', function(event){
+    var row = $(this).parents('tr');
+    var index = row[0].rowIndex;
+
+    if( index === (row.parents('table').find('tr').length - 1) ){
+      return ;
+    }
+
+    var next_index = index + 1;
+    var next_row = row.parents('table').find('tr:eq(' + next_index + ')');
+
+    swap_rows( row, next_row );
+  });
+
   function set_value( value, field){
     field.val( value );
+  }
+
+  function swap_rows( row_one, row_two ){
+    swap_index( row_one, row_two );
+    swap_value( row_one, row_two );
+    swap_duration( row_one, row_two );
+    swap_step_type( row_one, row_two );
+  }
+
+  function swap_index( row_one, row_two ){
+    var one = row_one.find('span.step_index').text();
+    var two = row_two.find('span.step_index').text();
+    row_one.find('span.step_index').text(two);
+    row_two.find('span.step_index').text(one);
+    row_one.find('input.step_index').text(two);
+    row_two.find('input.step_index').text(one);
+  }
+
+  function swap_value( row_one, row_two ){
+    one = row_one.find('input.value').val();
+    two = row_two.find('input.value').val();
+    row_one.find('input.value').val(two);
+    row_two.find('input.value').val(one);
+  }
+
+  function swap_duration( row_one, row_two ){
+    one = row_one.find('input.duration_field').val();
+    two = row_two.find('input.duration_field').val();
+    row_one.find('input.duration_field').val(two);
+    row_two.find('input.duration_field').val(one);
+    row_one.find('input.duration').val(two);
+    row_two.find('input.duration').val(one);
+
+    swap_duration_type( row_one, row_two );
+  }
+
+  function swap_duration_type( row_one, row_two ){
+    one = row_one.find('input.duration_type_field').val();
+    two = row_two.find('input.duration_type_field').val();
+    row_one.find('input.duration_type_field').val(two);
+    row_two.find('input.duration_type_field').val(one);
+    row_one.find('.selection').text(two);
+    row_two.find('.selection').text(one);
+  }
+
+  function swap_step_type( row_one, row_two ){
+    one = row_one.find('input.step_type').val();
+    two = row_two.find('input.step_type').val();
+    row_one.find('input.step_type').val(two);
+    row_two.find('input.step_type').val(one);
+
+    swap_step_type_buttons( row_one, row_two );
+  }
+
+  function swap_step_type_buttons( row_one, row_two ){
+    one = row_one.find('.active').children().attr('class');
+    two = row_two.find('.active').children().attr('class');
+    row_one.find('.active').removeClass('active');
+    row_two.find('.active').removeClass('active');
+    row_one.find('.' + two).parent().addClass('active');
+    row_two.find('.' + one).parent().addClass('active');
   }
 </script>
 
