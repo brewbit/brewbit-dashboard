@@ -18,8 +18,8 @@ class Sensor < ActiveRecord::Base
     device.current_command.sensor_settings.find_by sensor: self
   end
   
-  def outputs
-    output_settings = device.current_command.output_settings.find_by sensor: self
+  def controlled_outputs
+    output_settings = OutputSettings.where(device_command: device.current_command, sensor: self)
     output_settings ? output_settings.collect { |os| os.output } : nil
   end
 end

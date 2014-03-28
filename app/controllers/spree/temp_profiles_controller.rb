@@ -22,7 +22,7 @@ module Spree
       @temp_profile.user = spree_current_user
 
       if @temp_profile.save
-        redirect_to @temp_profile, notice: 'Temperature profile was successfully created.'
+        redirect_to spree_brewbit_dashboard_path, notice: 'Temperature profile was successfully created.'
       else
         flash[:error] = @temp_profile.errors.full_messages.to_sentence
         render action: 'new'

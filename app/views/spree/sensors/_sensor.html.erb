@@ -55,9 +55,9 @@
             </div>
             <div class="panel-body">
               <h4>
-                <% unless sensor.outputs.blank? %>
-                  <% sensor.outputs.each do |output_settings| %>
-                    <span class="label label-default label-lg"><%= OutputSettings::INDEX_NAME[output_settings.output.output_index].capitalize %> Output - <%= OutputSettings::FUNCTION_NAME[output_settings.function].capitalize %></span>
+                <% unless sensor.controlled_outputs.blank? %>
+                  <% sensor.controlled_outputs.each do |output| %>
+                    <span class="label label-default label-lg"><%= OutputSettings::INDEX_NAME[output.output_index].capitalize %> Output - <%= OutputSettings::FUNCTION_NAME[output.current_settings.function].capitalize %></span>
                   <% end %>
                 <% else %>
                   <span class="label label-default label-lg">Nothing</span>
