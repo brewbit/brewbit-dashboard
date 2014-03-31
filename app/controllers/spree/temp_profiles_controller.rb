@@ -23,7 +23,7 @@ module Spree
       @temp_profile.user = spree_current_user
 
       if @temp_profile.save
-        redirect_to spree_brewbit_dashboard_path, notice: 'Temperature profile was successfully created.'
+        redirect_to temp_profiles_url, notice: 'Temperature profile was successfully created.'
       else
         flash[:error] = @temp_profile.errors.full_messages.to_sentence
         render action: 'new'
@@ -33,7 +33,7 @@ module Spree
     # PATCH/PUT /temp_profiles/1
     def update
       if @temp_profile.update(temp_profile_params)
-        redirect_to edit_temp_profile_path(@temp_profile), notice: 'Temperature profile was successfully updated.'
+        redirect_to temp_profiles_url, notice: 'Temperature profile was successfully updated.'
       else
         flash[:error] = @temp_profile.errors.full_messages.to_sentence
         render action: 'edit'

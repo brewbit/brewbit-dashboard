@@ -19,16 +19,17 @@
           g = new Dygraph(
             document.getElementById("temp-profile-<%= temp_profile.id %>-timeline"),
             [
+              <% offset = 0 %>
               <% temp_profile.steps.each do |step| %>
-                [<%= step.duration %>, <%= step.value %>],
+                [<%= offset %>, <%= step.value %>],
+                <% offset += step.duration_for_device %>
               <% end %>
+                [<%= offset %>, <%= temp_profile.steps.last.value %>],
             ],
             {
-              rollPeriod: 10,
               labels: ['', 'Temperature'],
               labelsDivWidth: 300,
               ylabel: 'Temperature',
-              legend: 'always',
               labelsDivStyles: { 'textAlign': 'right' },
             }
           );
