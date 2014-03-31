@@ -1,0 +1,40 @@
+<div class="temp-profile col-md-10 col-md-offset-1">
+  <div class="panel panel-default">
+
+    <div class="panel-heading clearfix">
+      <h3 class="panel-title">
+        <%= temp_profile.name %>
+        <div class="btn-group pull-right">
+          <%= link_to raw('<span class="glyphicon glyphicon-pencil"></span>'), edit_temp_profile_path(temp_profile), class: 'btn btn-default' %>
+          <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), temp_profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        </div>
+      </h3>
+    </div>
+    
+    <div class="panel-body">
+      
+      <div id="temp-profile-<%= temp_profile.id %>-timeline" class="temp-profile-plot bottom-space"></div>
+      <script type='text/javascript'>
+        $(document).ready(function () {
+          g = new Dygraph(
+            document.getElementById("temp-profile-<%= temp_profile.id %>-timeline"),
+            [
+              <% temp_profile.steps.each do |step| %>
+                [<%= step.duration %>, <%= step.value %>],
+              <% end %>
+            ],
+            {
+              rollPeriod: 10,
+              labels: ['', 'Temperature'],
+              labelsDivWidth: 300,
+              ylabel: 'Temperature',
+              legend: 'always',
+              labelsDivStyles: { 'textAlign': 'right' },
+            }
+          );
+        });
+      </script>
+    
+    </div>
+  </div>
+</div>
