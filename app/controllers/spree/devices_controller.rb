@@ -46,7 +46,7 @@ module Spree
     # DELETE /devices/1
     def destroy
       @device.destroy
-      redirect_to spree_brewbit_dashboard_url, notice: 'Device was successfully destroyed.'
+      redirect_to '/dashboard', notice: 'Device was successfully destroyed.'
     end
 
     private
