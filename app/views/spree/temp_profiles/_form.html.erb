@@ -58,7 +58,7 @@
   }) ;
 
   $(document).on( 'change', 'input[name="step_types"]', function(e){
-    var val = this.id;
+    var val = this.value;
     var step_type_form_field = $(this).parents('td').find('input[type="hidden"]');
 
     switch(val){

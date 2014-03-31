@@ -49,7 +49,8 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def temp_profile_params
-        params.require(:temp_profile).permit(:name, :start_value, steps_attributes: [:id, :duration, :duration_type, :step_index, :value, :step_type, :_destroy])
+        params.require(:temp_profile).permit(:name, :start_value,
+          steps_attributes: [:id, :duration, :duration_type, :step_index, :value, :step_type, :_destroy])
       end
 
       def correct_user
