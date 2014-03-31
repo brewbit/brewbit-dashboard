@@ -43,26 +43,24 @@ class Defaults
     device.sensors << sensor
   end
   
-  def self.build_device_command( device, save = true )
+  def self.build_device_command( device )
     attr = {
       device: device,
       name: ''
     }
     device_command = DeviceCommand.new attr
-    if save
-      device.commands << device_command
-    end
+    device.commands << device_command
     
-    build_sensor_settings( device_command, device.sensors[0], save )
-    build_sensor_settings( device_command, device.sensors[1], save )
+    build_sensor_settings( device_command, device.sensors[0] )
+    build_sensor_settings( device_command, device.sensors[1] )
     
-    build_output_settings( device_command, device.outputs[0], save, OutputSettings::FUNCTIONS[:heating] )
-    build_output_settings( device_command, device.outputs[1], save, OutputSettings::FUNCTIONS[:cooling] )
+    build_output_settings( device_command, device.outputs[0], OutputSettings::FUNCTIONS[:heating] )
+    build_output_settings( device_command, device.outputs[1], OutputSettings::FUNCTIONS[:cooling] )
     
     device_command
   end
   
-  def self.build_sensor_settings( device_command, sensor, save, setpoint_type = Sensor::SETPOINT_TYPE[:static], static_setpoint = 68 )
+  def self.build_sensor_settings( device_command, sensor, setpoint_type = Sensor::SETPOINT_TYPE[:static], static_setpoint = 68 )
     attr = {
       device_command: device_command,
       sensor: sensor,
@@ -71,12 +69,10 @@ class Defaults
     }
     sensor_settings = SensorSettings.new attr
     device_command.sensor_settings << sensor_settings
-    if save
-      sensor.settings << sensor_settings
-    end
+    sensor.settings << sensor_settings
   end
   
-  def self.build_output_settings( device_command, output, save, function = Output::FUNCTIONS[:heating], cycle_delay = 3 )
+  def self.build_output_settings( device_command, output, function = Output::FUNCTIONS[:heating], cycle_delay = 3 )
     attr = {
       device_command: device_command,
       output: output,
@@ -86,9 +82,7 @@ class Defaults
     }
     output_settings = OutputSettings.new attr
     device_command.output_settings << output_settings
-    if save
-      output.settings << output_settings
-    end
+    output.settings << output_settings
   end
 end
 

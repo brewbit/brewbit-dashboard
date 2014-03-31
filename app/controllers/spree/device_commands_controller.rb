@@ -17,7 +17,14 @@ module Spree
 
     # GET /commands/new
     def new
-      @device_command = Defaults.build_device_command @device, false
+      @device_command = @device.current_command.dup
+      @device_command.name = ''
+      @device.current_command.sensor_settings.each do |ss|
+        @device_command.sensor_settings << ss.dup
+      end
+      @device.current_command.output_settings.each do |os|
+        @device_command.output_settings << os.dup
+      end
     end
 
     # GET /commands/1/edit
