@@ -37,7 +37,7 @@ class DeviceConnection
   def authenticate( auth_token )
     user = ApiKey.find_by_access_token( auth_token ).try( :user )
 
-    if device and device.user == user
+    if device and user and device.user == user
       @authenticated = true
     else
       false
