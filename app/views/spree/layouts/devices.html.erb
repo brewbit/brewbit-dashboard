@@ -7,6 +7,9 @@
       <li class="<%= 'active' if current_page?(new_device_command_path(@device)) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-transfer"></span> Send Commands'), new_device_command_path(@device) %>
       </li>
+      <li class="<%= 'active' if controller.controller_name == 'device_commands' && controller.action_name != 'new' %>">
+        <%= link_to raw('<span class="glyphicon glyphicon-book"></span> History'), device_commands_path(@device) %>
+      </li>
       <li class="navbar-right <%= 'active' if current_page?(edit_device_path(@device)) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-cog"></span> Device Settings'), edit_device_path(@device) %>
       </li>
