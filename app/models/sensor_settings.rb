@@ -18,7 +18,7 @@ class SensorSettings < ActiveRecord::Base
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
 
   def static_setpoint
-    scale = sensor.device.user.temperature_scale
+    scale = sensor.try( :device ).try( :user ).try( :temperature_scale )
 
     case scale
     when 'F'
@@ -31,7 +31,7 @@ class SensorSettings < ActiveRecord::Base
   end
 
   def static_setpoint=(value)
-    scale = sensor.device.user.temperature_scale
+    scale = sensor.try( :device ).try( :user ).try( :temperature_scale )
 
     case scale
     when 'F'
