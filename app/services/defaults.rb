@@ -46,7 +46,7 @@ class Defaults
   def self.build_device_command( device )
     attr = {
       device: device,
-      name: ''
+      name: '(default)'
     }
     device_command = DeviceCommand.new attr
     device.commands << device_command
