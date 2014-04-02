@@ -15,7 +15,8 @@ module SensorReadingsService
         sensor_id: sensor.id
       }
   
-      sensor.readings.create attr if sensor
+      reading = sensor.readings.create attr
+      sensor.current_settings.readings << reading
     end
   end
 end
