@@ -10,9 +10,9 @@
     </div>
   </td>
   <td>
+    <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
+    <%= f.hidden_field :duration_type, class: 'duration_type_field', value: (f.object.duration_type || 'minutes') %>
     <div class="input-group">
-      <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
-      <%= f.hidden_field :duration_type, class: 'duration_type_field', value: (f.object.duration_type || 'minutes') %>
       <input class="form-control duration" type="number" value="<%= f.object.duration %>">
       <div class="input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class='selection'><%= (f.object.duration_type || 'minutes') %></span> <span class="caret"></span></button>
