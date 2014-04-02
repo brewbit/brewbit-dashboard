@@ -16,5 +16,22 @@ class SensorReading < ActiveRecord::Base
       only: [ :value, :created_at ]
     ))
   end
+
+  def value
+    case sensor.device.user.temperature_scale
+    when 'F'
+      read_attribute( :value )
+    when 'C'
+      fahrenheit_to_celcius( read_attribute(:value) )
+    else
+      read_attribute( :value )
+    end
+  end
+
+  private
+
+  def fahrenheit_to_celcius(degrees)
+    (degrees.to_f - 32) / 1.8
+  end
 end
 

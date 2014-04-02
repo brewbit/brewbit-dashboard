@@ -17,13 +17,13 @@ class Device < ActiveRecord::Base
 
   has_many :sensors, -> { order('sensor_index ASC') }, dependent: :destroy
   has_many :outputs, -> { order('output_index ASC') }, dependent: :destroy
-  has_many :commands, -> { order('created_at DESC') }, class_name: 'DeviceCommand', dependent: :destroy
+  has_many :commands, -> { order('created_at DESC') }, class_name: 'DeviceCommand', dependent: :destroy, foreign_key: 'device_id'
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :hardware_identifier, uniqueness: { case_sensitive: true }
 
   accepts_nested_attributes_for :outputs, :sensors
-  
+
   def current_command
     commands.first
   end

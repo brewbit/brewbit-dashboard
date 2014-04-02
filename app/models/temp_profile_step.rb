@@ -44,4 +44,40 @@ class TempProfileStep < ActiveRecord::Base
 
     self.duration * multiplier
   end
+
+  def value
+    scale = temp_profile.try( :user ).try( :temperature_scale )
+
+    case scale
+    when 'F'
+      read_attribute( :value )
+    when 'C'
+      fahrenheit_to_celcius( read_attribute(:value) )
+    else
+      read_attribute( :value )
+    end
+  end
+
+  def value=(val)
+    scale = temp_profile.try( :user ).try( :temperature_scale )
+
+    case scale
+    when 'F'
+      write_attribute( :value, val )
+    when 'C'
+      write_attribute(:value, celcius_to_fahrenheit(val) )
+    else
+      write_attribute( :value, val )
+    end
+  end
+
+  private
+
+  def fahrenheit_to_celcius(degrees)
+    (degrees.to_f - 32) / 1.8
+  end
+
+  def celcius_to_fahrenheit(degrees)
+    degrees.to_f * 1.8 + 32
+  end
 end

@@ -4,7 +4,6 @@
       <h3 class="panel-title">Sensor <%= sensor_settings.sensor.sensor_index + 1 %></h3>
     </div>
     <div class="panel-body">
-      
       <div id="sensor-<%= sensor_settings.id %>-timeline" class="sensor-plot bottom-space"></div>
       <script type='text/javascript'>
         $(document).ready(function () {
@@ -27,7 +26,7 @@
           );
         });
       </script>
-      
+
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-default">
@@ -38,7 +37,7 @@
               <h4>
                 <span class="label label-default label-lg">
                   <% if sensor_settings.setpoint_type == Sensor::SETPOINT_TYPE[:static] %>
-                    Static Setpoint - <%= sensor_settings.static_setpoint %>&deg; F
+                    Static Setpoint - <%= sensor_settings.static_setpoint %>&deg; <%= spree_current_user.temperature_scale %>
                   <% else %>
                     Temperature Profile - <%= sensor_settings.temp_profile.name %>
                   <% end %>
@@ -47,7 +46,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="col-md-6 col">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -67,7 +66,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
 </div>

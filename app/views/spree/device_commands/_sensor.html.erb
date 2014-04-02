@@ -16,7 +16,10 @@
     <%= s.label :static_setpoint, class: 'col-sm-2 control-label' %>
   </div>
   <div class='col-sm-8'>
-    <%= s.number_field :static_setpoint, class: 'form-control' %>
+    <div class="input-group">
+      <%= s.text_field :static_setpoint, class: 'form-control', value: s.object.static_setpoint %>
+      <span class="input-group-addon"><%= spree_current_user.temperature_scale %>&deg;</span>
+    </div>
   </div>
 </div>
 
@@ -40,6 +43,6 @@
         $('#static-setpoint-<%= s.object.sensor.sensor_index %>').hide();
         $('#temp-profile-<%= s.object.sensor.sensor_index %>').show();
       }
-    }); 
+    });
   });
 </script>
