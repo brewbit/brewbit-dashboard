@@ -1,0 +1,48 @@
+<% content_for :page_title do %>
+  Upload New Firmware
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to 'back to firmware list', firmware_index_path, :icon => 'icon-arrow-left' %>
+  </li>
+<% end %>
+
+<%= form_for [:admin, @firmware], url: { action: :create }, html: { multipart: true } do |f| %>
+  <fieldset class="no-border-top">
+    <% if f.object.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(f.object.errors.count, "error") %> prohibited the firmware from being created:</h2>
+        <ul>
+        <% f.object.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="row">
+      <div class="alpha thirteen columns">
+        <div class="alpha four columns">
+          <%= f.field_container :version do %>
+            <%= f.label :version %><br>
+            <%= f.text_field :version, class: 'fullwidth' %>
+          <% end %>
+        </div>
+        <div class="omega two columns">&nbsp;</div>
+        <div class="omega five columns">
+          <%= f.field_container :file do %>
+            <%= f.label :file, 'Firmware Binary' %><br>
+            <%= f.file_field :file, as: :file, class: 'fullwidth' %>
+          <% end -%>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button Spree.t('actions.create'), 'icon-ok' %>
+      <span class="or"><%= Spree.t(:or) %></span>
+      <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), firmware_index_url, :class => 'button' %>
+    </div>
+  </fieldset>
+<% end -%>
+

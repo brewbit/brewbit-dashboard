@@ -6,24 +6,33 @@
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
 # * updated_at [datetime, not null] - last update time
-class Firmware < ActiveRecord::Base
+module Spree
+  class Firmware < ActiveRecord::Base
 
-  before_validation :set_size
+    self.table_name = 'firmwares'
 
-  validates :version, presence: true,
-                      uniqueness: true,
-                      format: { with: /[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}(-[0-9a-fA-F]{7,40})?/,
-                                message: 'Please use semantic versioning format' }
-  validates :size, presence: true, numericality: { only_integer: true }
-  validates :file, presence: true
+    before_validation :set_size
 
-  def self.is_latest?( version )
-    Firmware.order( 'version DESC' ).limit(1).pluck( :version ).first == version
-  end
+    validates :version, presence: true,
+                        uniqueness: true,
+                        format: { with: /[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}(-[0-9a-fA-F]{7,40})?/,
+                                  message: 'Please use semantic versioning format' }
+    validates :size, presence: true, numericality: { only_integer: true }
+    validates :file, presence: true
 
-  private
+    def self.is_latest?( version )
+      Spree::Firmware.order( 'version DESC' ).limit(1).pluck( :version ).first == version
+    end
 
-  def set_size
-    self.size = file.try( :size )
+    def size_in_kb
+      ( self.size / 1024.0 ).round( 2 )
+    end
+
+    private
+
+    def set_size
+      self.size = file.try( :size )
+    end
   end
 end
+

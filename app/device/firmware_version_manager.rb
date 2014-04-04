@@ -1,18 +1,21 @@
+require 'firmware' # manually loading cause Rails is failing to autoload on first try
 
-module FirmwareVersionManager
+class FirmwareVersionManager
 
   class FirmwareNotFound < Exception ; end
 
   def self.update_available?( current_version )
-    !Firmware.is_latest? current_version
+    result = (Spree::Firmware.is_latest?(current_version))
+    !result
   end
 
   def self.get_firmware( version )
-    Firmware.find_by_version( version )
+    firmware = (Spree::Firmware.find_by_version(version))
+    firmware
   end
 
   def self.get_latest_version_info
-    firmware = Firmware.order( 'version DESC' ).limit(1).first
+    firmware = (Spree::Firmware.order( 'version DESC' ).limit(1).first())
     build_firmware_info( firmware )
   end
 

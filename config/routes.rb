@@ -11,4 +11,10 @@ Spree::Core::Engine.routes.draw do
   end
   get  '/activate' => 'devices#start_activate'
   post '/activate' => 'devices#activate'
+
+  scope 'admin' do
+    resources :firmware, only: [:index, :create, :destroy, :new] do
+      get 'serve', on: :member
+    end
+  end
 end

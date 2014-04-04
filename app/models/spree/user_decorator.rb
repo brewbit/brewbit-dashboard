@@ -1,9 +1,6 @@
 module Spree
   User.class_eval do
 
-    FAHRENHEIT = 'F'
-    CELCIUS    = 'C'
-
     after_create :set_default_role
     after_create :set_default_temperature_scale
 
@@ -16,7 +13,7 @@ module Spree
     end
 
     def set_default_temperature_scale
-      self.temperature_scale = FAHRENHEIT
+      self.temperature_scale = 'F'
     end
 
     def authentication_token

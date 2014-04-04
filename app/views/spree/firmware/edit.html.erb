@@ -1,0 +1,13 @@
+<h2>Firmware Details</h2>
+
+<%= simple_form_for [:admin, @firmware], url: { action: :update }, html: { multipart: true } do |f| %>
+  <%= f.input :version %>
+  <%= f.input :file, as: :file %>
+
+  <div class='buttons'>
+    <div class='pull-right'>
+      <%= f.submit 'Update', class: 'btn btn-primary btn-large' %>
+    </div>
+  </div>
+<% end -%>
+
