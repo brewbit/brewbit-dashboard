@@ -1,5 +1,3 @@
-require 'firmware'
-
 module Spree
   class FirmwareController < Spree::Admin::BaseController
 

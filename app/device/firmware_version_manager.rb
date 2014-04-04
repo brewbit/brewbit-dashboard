@@ -1,5 +1,3 @@
-require 'firmware' # manually loading cause Rails is failing to autoload on first try
-
 class FirmwareVersionManager
 
   class FirmwareNotFound < Exception ; end
