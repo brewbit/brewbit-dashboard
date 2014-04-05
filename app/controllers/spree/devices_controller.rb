@@ -45,7 +45,11 @@ module Spree
 
     # DELETE /devices/1
     def destroy
+      connection = DeviceConnection.find_by_device_id @device.hardware_identifier
+      connection.delete if connection
+      
       @device.destroy
+      
       redirect_to '/dashboard', notice: 'Device was successfully destroyed.'
     end
 
