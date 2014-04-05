@@ -210,9 +210,10 @@ module ProtobufMessages
 
 
   class DeviceSettingsNotification
-    repeated :output, OutputSettings, 1
-    repeated :sensor, SensorSettings, 2
-    repeated :temp_profiles, TempProfile, 3
+    required :name, :string, 1
+    repeated :output, OutputSettings, 2
+    repeated :sensor, SensorSettings, 3
+    repeated :temp_profiles, TempProfile, 4
   end
 
 
