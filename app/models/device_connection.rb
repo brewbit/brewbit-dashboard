@@ -31,6 +31,8 @@ class DeviceConnection
   
   def delete
     @@connections.delete self
+    @authenticated = false
+    @socket.close
     @socket = nil
   end
   
