@@ -11,7 +11,7 @@
             document.getElementById("sensor-<%= sensor_settings.id %>-timeline"),
             [
               <% sensor_settings.readings.each do |reading| %>
-                [new Date(<%= reading.created_at.to_i %>), <%= reading.value %>],
+                [new Date(<%= reading.created_at.to_i * 1000 %>), <%= reading.value %>],
               <% end %>
             ],
             {
