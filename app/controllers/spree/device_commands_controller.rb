@@ -70,6 +70,7 @@ module Spree
         end
 
         data = {
+          name: @device_command.name,
           outputs: [],
           sensors: [],
           temp_profiles: []

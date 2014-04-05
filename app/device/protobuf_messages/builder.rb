@@ -73,6 +73,7 @@ module ProtobufMessages::Builder
     message = ProtobufMessages::ApiMessage.new
     message.type = ProtobufMessages::ApiMessage::Type::DEVICE_SETTINGS_NOTIFICATION
     message.deviceSettingsNotification = ProtobufMessages::DeviceSettingsNotification.new
+    message.deviceSettingsNotification.name = data[:name]
 
     message.deviceSettingsNotification.output = []
     data[:outputs].each do |o|
