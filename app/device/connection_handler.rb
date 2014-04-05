@@ -24,7 +24,7 @@ class ConnectionHandler
     Rails.logger.info [:close, socket_id(socket), event.code, event.reason]
 
     connection = DeviceConnection.find_by_socket socket
-    connection.delete
+    connection.delete if connection
   end
   
   private
