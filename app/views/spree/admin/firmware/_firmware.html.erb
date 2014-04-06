@@ -1,0 +1,16 @@
+<tr>
+  <td>
+  </td>
+  <td>
+    <%= firmware.version %>
+  </td>
+  <td>
+    <%= firmware.size_in_kb %> Kb
+  </td>
+  <td>
+    <%= link_to '<i class="icon-white icon-download"></i> Download'.html_safe, serve_admin_firmware_path(firmware), class: 'btn btn-info' %>
+  </td>
+  <td>
+    <%= link_to '<i class="icon-white icon-remove-circle"></i> Delete'.html_safe, admin_firmware_path(firmware), method: :delete, class: 'btn btn-danger' %>
+  </td>
+</tr>

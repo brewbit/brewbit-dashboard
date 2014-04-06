@@ -4,7 +4,7 @@
 
 <% content_for :page_actions do %>
   <li>
-    <%= button_link_to 'back to firmware list', firmware_index_path, :icon => 'icon-arrow-left' %>
+    <%= button_link_to 'back to firmware list', admin_firmware_index_path, :icon => 'icon-arrow-left' %>
   </li>
 <% end %>
 
@@ -41,7 +41,7 @@
     <div class="form-buttons filter-actions actions" data-hook="buttons">
       <%= button Spree.t('actions.create'), 'icon-ok' %>
       <span class="or"><%= Spree.t(:or) %></span>
-      <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), firmware_index_url, :class => 'button' %>
+      <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_firmware_index_url, :class => 'button' %>
     </div>
   </fieldset>
 <% end -%>
