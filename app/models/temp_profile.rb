@@ -42,11 +42,13 @@ class TempProfile < ActiveRecord::Base
 
   def steps_graph_data
     graph_data = []
-
     time_offset = 0
+
+    graph_data << [time_offset, self.start_value]
+
     self.steps.each do |step|
-      graph_data.concat( build_step(step, time_offset) )
       time_offset += step.duration_for_device
+      graph_data.concat( build_step(step, time_offset) )
     end
 
     graph_data
@@ -55,11 +57,12 @@ class TempProfile < ActiveRecord::Base
   private
 
   def build_step(step, offset)
-    if TempProfileStep::STEP_TYPE[:hold] ==  step.step_type
-      previous_step = self.steps[step.step_index - 2] # index starts counting at 1, but
-      return [[offset, previous_step.value.round(2)],[offset, step.value.round(2)]]
+    next_step = self.steps[step.step_index]
+
+    if TempProfileStep::STEP_TYPE[:hold] ==  next_step.try( :step_type )
+      return [[offset, step.value], [offset, next_step.value]]
     else
-      return [[offset, step.value.round(2)]]
+      return [[offset, step.value]]
     end
   end
 

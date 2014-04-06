@@ -48,14 +48,17 @@ class TempProfileStep < ActiveRecord::Base
   def value
     scale = temp_profile.try( :user ).try( :temperature_scale )
 
+    value = 0
     case scale
     when 'F'
-      read_attribute( :value )
+      value = read_attribute( :value )
     when 'C'
-      fahrenheit_to_celcius( read_attribute(:value) )
+      value = fahrenheit_to_celcius( read_attribute(:value) )
     else
-      read_attribute( :value )
+      value = read_attribute( :value )
     end
+
+    value.try( :round, 2 )
   end
 
   def value=(val)
