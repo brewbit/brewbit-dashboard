@@ -140,6 +140,7 @@ module ProtobufMessages
   class SensorReport
     required :id, :uint32, 1
     required :value, :float, 2
+    required :setpoint, :float, 3
   end
 
 
