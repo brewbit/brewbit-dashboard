@@ -2,17 +2,15 @@
   <div class="panel panel-default">
 
     <div class="panel-heading clearfix">
-      <h3 class="panel-title">
-        <%= temp_profile.name %>
-        <div class="btn-group pull-right">
-          <%= link_to raw('<span class="glyphicon glyphicon-pencil"></span>'), edit_temp_profile_path(temp_profile), class: 'btn btn-default' %>
-          <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), temp_profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-        </div>
-      </h3>
+      <div class='pull-left'>
+        <h3 class="panel-title"><%= temp_profile.name %></h3>
+      </div>
+      <div class="btn-group pull-right">
+        <%= link_to raw('<span class="glyphicon glyphicon-pencil"></span>'), edit_temp_profile_path(temp_profile), class: 'btn btn-default' %>
+        <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), temp_profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      </div>
     </div>
-    
     <div class="panel-body">
-      
       <div id="temp-profile-<%= temp_profile.id %>-timeline" class="temp-profile-plot bottom-space"></div>
       <script type='text/javascript'>
         $(document).ready(function () {
@@ -36,14 +34,7 @@
 
           g = new Dygraph(
             document.getElementById("temp-profile-<%= temp_profile.id %>-timeline"),
-            [
-              <% offset = 0 %>
-              <% temp_profile.steps.each do |step| %>
-                [<%= offset %>, <%= step.value %>],
-                <% offset += step.duration_for_device %>
-              <% end %>
-                [<%= offset %>, <%= temp_profile.steps.last.value %>],
-            ],
+            <%= temp_profile.steps_graph_data %>,
             {
               labels: ['', 'Temperature'],
               labelsDivWidth: 300,
@@ -54,9 +45,9 @@
                   ticker: function(min, max, pixels, opts, dygraph, vals) {
                     var chosen = Dygraph.pickDateTickGranularity(min*1000, max*1000, pixels, opts);
                     var f = (Dygraph.SHORT_SPACINGS[chosen] / 1000);
-                    
+
                     var tickers = Dygraph.numericTicks(min / f, max / f, pixels, opts, dygraph, vals);
-                    
+
                     var i;
                     for (i = 0; i < tickers.length; ++i) {
                       var r = RELATIVE_LABELS[chosen];
@@ -71,7 +62,6 @@
           );
         });
       </script>
-    
     </div>
   </div>
 </div>

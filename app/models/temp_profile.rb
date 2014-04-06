@@ -13,7 +13,7 @@ class TempProfile < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 100 }
-  
+
   def start_value
     scale = self.try( :user ).try( :temperature_scale )
 
@@ -40,7 +40,28 @@ class TempProfile < ActiveRecord::Base
     end
   end
 
+  def steps_graph_data
+    graph_data = []
+
+    time_offset = 0
+    self.steps.each do |step|
+      graph_data.concat( build_step(step, time_offset) )
+      time_offset += step.duration_for_device
+    end
+
+    graph_data
+  end
+
   private
+
+  def build_step(step, offset)
+    if TempProfileStep::STEP_TYPE[:hold] ==  step.step_type
+      previous_step = self.steps[step.step_index - 2] # index starts counting at 1, but
+      return [[offset, previous_step.value.round(2)],[offset, step.value.round(2)]]
+    else
+      return [[offset, step.value.round(2)]]
+    end
+  end
 
   def fahrenheit_to_celcius(degrees)
     (degrees.to_f - 32) / 1.8
