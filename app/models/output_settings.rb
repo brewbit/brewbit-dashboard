@@ -28,7 +28,7 @@ class OutputSettings < ActiveRecord::Base
 #                                      message: 'Only devices sensor settings are allowed' }
   validates :cycle_delay, allow_blank: true,
             numericality: { only_integer: true,
-                            greater_than: 0,
+                            greater_than_or_equal_to: 0,
                             less_than_or_equal_to: MAX_CYCLE_DELAY }
 end
 
