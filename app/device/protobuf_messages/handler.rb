@@ -79,8 +79,9 @@ module ProtobufMessages::Handler
 
     message.deviceReport.sensor_report.each do |sensor|
       reading = sensor.value
+      setpoint = sensor.setpoint
       sensor_id = sensor.id
-      SensorReadingsService.record reading, device, sensor_id
+      SensorReadingsService.record reading, setpoint, device, sensor_id
     end
   end
 
