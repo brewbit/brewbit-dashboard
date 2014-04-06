@@ -5,7 +5,7 @@ module Spree
 
     # GET /devices
     def index
-      @devices = spree_current_user.devices
+      @devices = spree_current_user.devices.includes( [ outputs: [:device], sensors: [:device], commands: [{sensor_settings: [:readings, :sensor, :temp_profile]}] ] )
       @device = @devices.first
     end
 
@@ -47,9 +47,9 @@ module Spree
     def destroy
       connection = DeviceConnection.find_by_device_id @device.hardware_identifier
       connection.delete if connection
-      
+
       @device.destroy
-      
+
       redirect_to '/dashboard', notice: 'Device was successfully destroyed.'
     end
 
@@ -60,10 +60,10 @@ module Spree
       end
 
       def correct_user
-        @device = spree_current_user.devices.find( params[:id] )
+        @device = spree_current_user.devices.includes(sensors: [:device], commands: [{sensor_settings: [:temp_profile, :sensor, :readings]}]).find( params[:id] )
         redirect_to root_path, error: 'You can only see your own devices' unless @device
       end
-      
+
       def resolve_layout
         if ( @device == nil ) || ( ['activate', 'start_activate'].include? action_name )
           "spree/layouts/dashboard"

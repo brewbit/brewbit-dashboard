@@ -52,7 +52,7 @@ module Spree
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_device_command
-        @device_command = DeviceCommand.find(params[:id])
+        @device_command = DeviceCommand.includes( sensor_settings: [:temp_profile, {sensor: [:device]}, {readings: [{sensor: :device}]}]).find(params[:id])
       end
 
       def set_device

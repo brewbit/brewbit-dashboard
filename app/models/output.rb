@@ -11,7 +11,7 @@ class Output < ActiveRecord::Base
   has_many :settings, -> { order 'created_at ASC' }, class_name: 'OutputSettings'
 
   validates :output_index, allow_blank: true, numericality: { only_integer: true, greater_than: -1 }
-  
+
   def current_settings
     device.current_command.output_settings.find_by output: self
   end

@@ -13,10 +13,10 @@
 class DeviceCommand < ActiveRecord::Base
   belongs_to :device
 
-  has_many :sensor_settings, class_name: 'SensorSettings', dependent: :destroy
-  has_many :output_settings, class_name: 'OutputSettings', dependent: :destroy
+  has_many :sensor_settings, class_name: 'SensorSettings', dependent: :destroy, foreign_key: 'device_command_id'
+  has_many :output_settings, class_name: 'OutputSettings', dependent: :destroy, foreign_key: 'device_command_id'
 
   validates :name, presence: true, length: { maximum: 100 }
-  
+
   accepts_nested_attributes_for :sensor_settings, :output_settings
 end

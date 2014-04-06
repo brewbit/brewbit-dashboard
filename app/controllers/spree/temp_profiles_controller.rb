@@ -5,7 +5,7 @@ module Spree
 
     # GET /temp_profiles
     def index
-      @temp_profiles = spree_current_user.temp_profiles
+      @temp_profiles = spree_current_user.temp_profiles.includes( steps: :temp_profile )
     end
 
     # GET /temp_profiles/new
@@ -54,7 +54,7 @@ module Spree
       end
 
       def correct_user
-        @temp_profile = spree_current_user.temp_profiles.find_by( id: params[:id] )
+        @temp_profile = spree_current_user.temp_profiles.includes( steps: :temp_profile ).find_by( id: params[:id] )
         redirect_to root_path, error: 'You can only see your temperature profiles' unless @temp_profile
       end
   end
