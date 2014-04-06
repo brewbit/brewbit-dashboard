@@ -45,6 +45,10 @@ class TempProfile < ActiveRecord::Base
     time_offset = 0
 
     graph_data << [time_offset, self.start_value]
+    
+    if self.steps[0].step_type == TempProfileStep::STEP_TYPE[:hold]
+      graph_data << [time_offset, self.steps[0].value]
+    end
 
     self.steps.each do |step|
       time_offset += step.duration_for_device
