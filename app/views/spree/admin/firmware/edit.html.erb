@@ -1,5 +1,7 @@
 <h2>Firmware Details</h2>
 
+<%= render partial: 'spree/admin/shared/devices_sub_menu' %>
+
 <%= simple_form_for [:admin, @firmware], url: { action: :update }, html: { multipart: true } do |f| %>
   <%= f.input :version %>
   <%= f.input :file, as: :file %>

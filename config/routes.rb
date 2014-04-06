@@ -16,5 +16,7 @@ Spree::Core::Engine.routes.draw do
     resources :firmware, only: [:index, :create, :destroy, :new] do
       get 'serve', on: :member
     end
+
+    resources :devices, only: :index
   end
 end

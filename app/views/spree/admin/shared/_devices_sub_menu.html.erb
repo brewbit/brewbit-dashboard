@@ -1,0 +1,6 @@
+<% content_for :sub_menu do %>
+  <ul id="sub_nav" data-hook="admin_devices_sub_tabs" class="inline-menu">
+    <%= tab :devices, url: admin_devices_path %>
+    <%= tab :firmware, url: admin_firmware_index_path %>
+  </ul>
+<% end %>

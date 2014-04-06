@@ -2,6 +2,8 @@
   Firmware Binaries
 <% end %>
 
+<%= render partial: 'spree/admin/shared/devices_sub_menu' %>
+
 <% content_for :page_actions do %>
   <li>
     <%= button_link_to 'new firmware', new_admin_firmware_path, :icon => 'icon-plus' %>

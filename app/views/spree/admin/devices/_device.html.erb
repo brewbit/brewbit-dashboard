@@ -1,0 +1,7 @@
+<tr>
+  <td class='align-center'><%= device.id %></td>
+  <td class='align-center'><%= device.name %></td>
+  <td class='align-center'><%= link_to device.user.email, edit_admin_user_url(device.user) %></td>
+  <td class='align-center'><span class='icon-<%= device.activated? ? 'ok' : 'ban' %>-circle'></span></td>
+  <td class='align-center'><span class='icon-<%= DeviceConnection.find_by_device_id(device.hardware_identifier) ? 'ok' : 'ban' %>-circle'></span></td>
+</tr>

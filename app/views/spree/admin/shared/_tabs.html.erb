@@ -14,4 +14,4 @@
 <% if Spree.user_class && can?(:admin, Spree.user_class) %>
   <%= tab(:users, :url => spree.admin_users_path, :icon => 'icon-user') %>
 <% end %>
-<%= tab :devices, :firmware, :url => spree.admin_firmware_index_path, :icon => 'icon-beer' %>
+<%= tab :devices, :url => spree.admin_devices_path, :icon => 'icon-beer' %>
