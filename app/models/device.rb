@@ -32,7 +32,8 @@ class Device < ActiveRecord::Base
     !user.blank? && activation_token.blank?
   end
 
-  def activate
+  def activate(user)
+    self.user = user
     self.activation_token = ''
   end
 end

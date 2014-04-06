@@ -21,7 +21,7 @@ module Activation
     raise 'A device with that activation token could not be found.' if !device
     raise 'That device is already activated.' if device.user
 
-    device.user = user
+    device.activate user
     raise 'Something went wrong...' if !device.save
 
     begin
