@@ -21,11 +21,9 @@ module Activation
     raise 'A device with that activation token could not be found.' if !device
     raise 'That device is already activated.' if device.user
 
-    device.activate user
-    raise 'Something went wrong...' if !device.save
-
     begin
-      send_activation_notification device
+      device.activate user
+      device.save!
     rescue Exception => e
       Rails.logger.warn e.message
       Rails.logger.warn e.backtrace.join("\n\t")
@@ -40,29 +38,7 @@ module Activation
     device
   end
 
-  def self.finish!( device )
-    if device.user.blank? || device.activated?
-      return
-    end
-
-    device.activate
-    device.save
-
-    device.user.authentication_token
-  end
-
   private
-
-  def self.send_activation_notification( device )
-    type = ProtobufMessages::ApiMessage::Type::ACTIVATION_NOTIFICATION
-    auth_token = device.user.authentication_token
-    message = ProtobufMessages::Builder.build( type, auth_token )
-
-    connection = DeviceConnection.find_by_device_id device.hardware_identifier
-    connection.authenticate( auth_token )
-
-    ProtobufMessages::Sender.send( message, connection )
-  end
 
   def self.create_token
     SecureRandom.hex( 3 )
