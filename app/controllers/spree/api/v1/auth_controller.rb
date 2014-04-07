@@ -15,7 +15,7 @@ module Spree
             if @device.user
               if @device.user.authentication_token == params[:auth_token]
                 @authorized = true
-                @message = ''
+                @message = 'Auth succeeded'
               else
                 @authorized = false
                 @message = 'Device is not activated'
