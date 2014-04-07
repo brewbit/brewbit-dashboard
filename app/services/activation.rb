@@ -40,17 +40,6 @@ module Activation
     device
   end
 
-  def self.finish!( device )
-    if device.user.blank? || device.activated?
-      return
-    end
-
-    device.activate
-    device.save
-
-    device.user.authentication_token
-  end
-
   private
 
   def self.send_activation_notification( device )
