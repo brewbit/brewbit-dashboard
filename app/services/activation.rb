@@ -1,5 +1,3 @@
-require 'protobuf_messages/messages'
-
 module Activation
 
   def self.start( device_id )

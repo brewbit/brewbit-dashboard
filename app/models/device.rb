@@ -36,6 +36,6 @@ class Device < ActiveRecord::Base
     self.user = user
     self.activation_token = ''
     
-    DeviceService.send_activation_notification device
+    DeviceService.send_activation_notification self
   end
 end

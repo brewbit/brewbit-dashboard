@@ -1,14 +1,12 @@
 class DeviceService
-  include HTTParty
-  base_uri 'device.brewbit.com'
 
   def self.send_activation_notification(device)
     options = {
-      # device.hardware_identifier,
-      # device.authentication_token
+      device_id:  device.hardware_identifier,
+      auth_token: device.authentication_token
     }
     
-   self.post("/v1/activation/notify", options)
+    device_post device, 'activation/complete', options
   end
   
   def self.send_command(device, command)
@@ -57,6 +55,8 @@ class DeviceService
     Rails.logger.debug "Sending device command: #{data.inspect}"
     device_post device, 'commands', data
   end
+  
+  private
   
   def device_post( device, path, query_opts = {} )
     # TODO resque errors
