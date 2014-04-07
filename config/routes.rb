@@ -23,9 +23,7 @@ Spree::Core::Engine.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :devices, only: [ :update, :show, :index ]
-      resources :activation, only: [ :new, :create ]
-      resources :temperatures, only: [ :create ]
-      resources :temperature_profiles, only: [ :show, :index ]
+      resources :activation, only: [ :new ]
     end
   end
 end
