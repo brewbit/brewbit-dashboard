@@ -1,3 +1,5 @@
+require 'json'
+
 class DeviceService
   DEVICE_GATEWAY_API_URL = 'http://localhost:10080'
 
@@ -6,7 +8,10 @@ class DeviceService
       auth_token: device.user.authentication_token
     }
     
-    device_post device, 'activate', options
+    response = device_post device, 'activation', options
+    unless response.code == 200
+      raise "Error sending activation notification to device: #{JSON.parse(response.body)["message"]}"
+    end
   end
   
   def self.send_command(device, command)
