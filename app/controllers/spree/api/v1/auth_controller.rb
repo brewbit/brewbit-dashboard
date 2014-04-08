@@ -22,7 +22,7 @@ module Spree
               end
             else
               @authorized = false
-              @message = 'Device is not activated'
+              @message = 'Device not activated'
             end
           else
             @authorized = false
