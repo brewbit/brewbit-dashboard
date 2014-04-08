@@ -8,49 +8,45 @@ module Spree
   
         before_filter :ensure_device_id!
         before_filter :ensure_auth_token!
-        before_filter :api_authorize!
+        before_filter :ensure_device_exists!
+        before_filter :ensure_device_activated!
+        before_filter :ensure_auth_token_matches!
         
         private
         
-        def api_authorize!
-          @device = Device.find_by hardware_identifier: params[:device_id]
-          if @device
-            if @device.user
-              if @device.user.authentication_token == params[:auth_token]
-                @authorized = true
-                @message = 'Auth succeeded'
-                status = 200
-              else
-                @authorized = false
-                @message = 'Invalid auth token'
-                status = 401
-              end
-            else
-              @authorized = false
-              @message = 'Device not activated'
-              status = 401
-            end
-          else
-            @authorized = false
-            @message = 'Device not found'
-            status = 404
+        def ensure_auth_token_matches!
+          unless @device.user.authentication_token == params[:auth_token]
+            @message = 'Invalid auth token'
+            render :error, status: 401
           end
-          render :new, status: status
+        end
+        
+        def ensure_device_activated!
+          unless @device.user
+            @message = 'Device not activated'
+            render :error, status: 401            
+          end
+        end
+        
+        def ensure_device_exists!
+          @device = Device.find_by hardware_identifier: params[:device_id]
+          unless @device
+            @message = 'Device not found'
+            render :error, status: 404
+          end
         end
         
         def ensure_device_id!
           if params[:device_id].blank?
-            @authorized = false
             @message = 'No device id provided'
-            render :new, status: 400
+            render :error, status: 400
           end
         end
         
         def ensure_auth_token!
           if params[:auth_token].blank?
-            @authorized = false
             @message = 'No auth token provided'
-            render :new, status: 400
+            render :error, status: 400
           end
         end
       end
