@@ -6,21 +6,28 @@ module Spree
         before_filter :validate_params!
   
         def create
-          SensorReadingsService.record( @device, params[:sensor_index], params[:reading], params[:setpoint] )
+          params[:controller_reports].each do |report|
+            SensorReadingsService.record( @device, report[:controller_index], report[:sensor_reading], report[:setpoint] )
+          end
         end
         
         private
         
         def validate_params!
-          if params[:sensor_index].blank?
-            @message = 'Sensor index not provided'
-            render :error, status: 400
-          elsif params[:reading].blank?
-            @message = 'Reading not provided'
-            render :error, status: 400
-          elsif params[:setpoint].blank?
-            @message = 'Setpoint not provided'
-            render :error, status: 400
+          params[:controller_reports].each do |report|
+            if report[:controller_index].blank?
+              @message = 'Controller index not provided'
+              render :error, status: 400
+              return
+            elsif report[:sensor_reading].blank?
+              @message = 'Sensor reading not provided'
+              render :error, status: 400
+              return
+            elsif report[:setpoint].blank?
+              @message = 'Setpoint not provided'
+              render :error, status: 400
+              return
+            end
           end
         end
   
