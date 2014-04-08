@@ -3,11 +3,10 @@ class DeviceService
 
   def self.send_activation_notification(device)
     options = {
-      device_id:  device.hardware_identifier,
       auth_token: device.user.authentication_token
     }
     
-    device_post device, 'activation/complete', options
+    device_post device, 'activate', options
   end
   
   def self.send_command(device, command)
@@ -65,11 +64,11 @@ class DeviceService
   
   def self.device_post( device, path, options = {} )
     # TODO resque errors
-    # HTTParty.post( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}/#{path}", options )
+    HTTParty.post( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}/#{path}", body: options.to_json )
   end
   
   def self.device_delete( device )
     # TODO resque errors
-    # HTTParty.delete( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}" )
+    HTTParty.delete( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}" )
   end
 end
