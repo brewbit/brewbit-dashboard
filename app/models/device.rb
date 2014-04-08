@@ -31,11 +31,4 @@ class Device < ActiveRecord::Base
   def activated?
     !user.blank? && activation_token.blank?
   end
-
-  def activate(user)
-    self.user = user
-    self.activation_token = ''
-    
-    DeviceService.send_activation_notification self
-  end
 end

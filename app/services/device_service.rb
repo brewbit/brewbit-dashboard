@@ -3,7 +3,7 @@ class DeviceService
   def self.send_activation_notification(device)
     options = {
       device_id:  device.hardware_identifier,
-      auth_token: device.authentication_token
+      auth_token: device.user.authentication_token
     }
     
     device_post device, 'activation/complete', options

@@ -20,8 +20,10 @@ module Activation
     raise 'That device is already activated.' if device.user
 
     begin
-      device.activate user
+      device.user = user
       device.save!
+      
+      DeviceService.send_activation_notification device
     rescue Exception => e
       Rails.logger.warn e.message
       Rails.logger.warn e.backtrace.join("\n\t")
@@ -30,7 +32,7 @@ module Activation
       device.user = nil
       device.save
 
-      raise 'The device must be connected during activation'
+      raise 'Device activation could not be completed.'
     end
 
     device
