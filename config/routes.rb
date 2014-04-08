@@ -22,9 +22,11 @@ Spree::Core::Engine.routes.draw do
   
   namespace :api do
     namespace :v1 do
-      resources :devices, only: [ :update, :show, :index ]
-      resources :activation, only: [ :new ]
-      resources :auth, only: [ :new ]
+      resources :devices do
+        resources :activation, only: [ :new ]
+        resources :auth, only: [ :new ]
+        resources :device_report, only: [ :create ]
+      end
     end
   end
 end
