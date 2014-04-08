@@ -29,6 +29,6 @@ class Device < ActiveRecord::Base
   end
 
   def activated?
-    !user.blank? && activation_token.blank?
+    !user.blank?
   end
 end
