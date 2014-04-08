@@ -17,14 +17,14 @@ module Spree
         def ensure_auth_token_matches!
           unless @device.user.authentication_token == params[:auth_token]
             @message = 'Invalid auth token'
-            render :error, status: 401
+            render :auth_error, status: 401
           end
         end
         
         def ensure_device_activated!
           unless @device.user
             @message = 'Device not activated'
-            render :error, status: 401            
+            render :auth_error, status: 401            
           end
         end
         
@@ -32,21 +32,21 @@ module Spree
           @device = Device.find_by hardware_identifier: params[:device_id]
           unless @device
             @message = 'Device not found'
-            render :error, status: 404
+            render :auth_error, status: 404
           end
         end
         
         def ensure_device_id!
           if params[:device_id].blank?
             @message = 'No device id provided'
-            render :error, status: 400
+            render :auth_error, status: 400
           end
         end
         
         def ensure_auth_token!
           if params[:auth_token].blank?
             @message = 'No auth token provided'
-            render :error, status: 400
+            render :auth_error, status: 400
           end
         end
       end
