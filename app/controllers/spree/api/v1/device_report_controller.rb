@@ -1,40 +1,26 @@
 module Spree
   module Api
     module V1
-      class DeviceReportController < ApplicationController
-        respond_to :json
+      class DeviceReportController < ApiController
+        
+        before_filter :validate_params!
   
-        skip_before_filter  :verify_authenticity_token
-  
-        before_filter :ensure_device_id!, only: :new
-        before_filter :ensure_auth_token!, only: :new
-  
-        def new
-          @device = Device.find params[:device_id]
-          # TODO verify auth
-          attrs = {
-            device: @device,
-            value: params[:value],
-            setpoint: params[:setpoint]
-          }
-          @device.readings.create! attrs
-        end
-  
-        private
-  
-        def ensure_device_id!
-          if params[:device_id].blank?
-            @authorized = false
-            @message = 'No device id provided'
-            render :new, status: 404
-          end
+        def create
+          SensorReadingsService.record( @device, params[:sensor_index], params[:reading], params[:setpoint] )
         end
         
-        def ensure_auth_token!
-          if params[:auth_token].blank?
-            @authorized = false
-            @message = 'No auth token provided'
-            render :new, status: 404
+        private
+        
+        def validate_params!
+          if params[:sensor_index].blank?
+            @message = 'Sensor index not provided'
+            render :error, status: 400
+          elsif params[:reading].blank?
+            @message = 'Reading not provided'
+            render :error, status: 400
+          elsif params[:setpoint].blank?
+            @message = 'Setpoint not provided'
+            render :error, status: 400
           end
         end
   

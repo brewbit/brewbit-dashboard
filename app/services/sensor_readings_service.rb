@@ -4,11 +4,11 @@ module SensorReadingsService
   class UnknownSensor < Exception ; end
   class UnknownDevice < Exception ; end
 
-  def self.record( reading, setpoint, device, sensor_id )
+  def self.record( device, sensor_index, reading, setpoint )
 
-    raise UnknownDevice if device.blank? || device.class != Device
+    # raise UnknownDevice if device.blank? || device.class != Device
 
-    sensor = device.sensors.find_by sensor_index: sensor_id
+    sensor = device.sensors.find_by sensor_index: sensor_index
     if sensor
       attr = {
         sensor_id: sensor.id,

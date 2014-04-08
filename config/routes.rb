@@ -25,7 +25,7 @@ Spree::Core::Engine.routes.draw do
       resources :devices do
         resources :activation, only: [ :new ]
         resources :auth, only: [ :new ]
-        resources :device_report, only: [ :create ]
+        resources :device_report, path: :reports, as: :reports, only: [ :create ]
       end
     end
   end
