@@ -10,7 +10,7 @@ module Spree
         before_filter :ensure_auth_token!, only: :new
   
         def new
-          @device = Device.find params[:device_id]
+          @device = Device.find_by hardware_identifier: params[:device_id]
           if @device
             if @device.user
               if @device.user.authentication_token == params[:auth_token]
@@ -18,11 +18,11 @@ module Spree
                 @message = 'Auth succeeded'
               else
                 @authorized = false
-                @message = 'Device is not activated'
+                @message = 'Invalid auth token'
               end
             else
               @authorized = false
-              @message = 'Invalid auth token'
+              @message = 'Device is not activated'
             end
           else
             @authorized = false

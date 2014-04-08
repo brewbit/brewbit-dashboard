@@ -24,6 +24,7 @@ Spree::Core::Engine.routes.draw do
     namespace :v1 do
       resources :devices, only: [ :update, :show, :index ]
       resources :activation, only: [ :new ]
+      resources :auth, only: [ :new ]
     end
   end
 end
