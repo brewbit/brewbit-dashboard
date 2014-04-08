@@ -1,4 +1,5 @@
 class DeviceService
+  DEVICE_GATEWAY_API_URL = 'http://localhost:10080'
 
   def self.send_activation_notification(device)
     options = {
@@ -56,10 +57,19 @@ class DeviceService
     device_post device, 'commands', data
   end
   
+  def self.destroy(device)
+    device_delete device
+  end
+  
   private
   
-  def device_post( device, path, query_opts = {} )
+  def self.device_post( device, path, options = {} )
     # TODO resque errors
-    HTTParty.post( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}/#{path}", query: query_opts )
+    # HTTParty.post( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}/#{path}", options )
+  end
+  
+  def self.device_delete( device )
+    # TODO resque errors
+    # HTTParty.delete( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}" )
   end
 end
