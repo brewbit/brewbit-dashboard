@@ -32,13 +32,18 @@ module Spree
 
     # POST /commands
     def create
-      @device_command = DeviceCommand.new(device_command_params)
-
-      if @device_command.save
-        DeviceService.send_command @device, @device_command
-        redirect_to @device, notice: 'Device command was successfully sent.'
+      begin
+        DeviceCommand.transaction do
+          @device_command = DeviceCommand.new(device_command_params)
+          @device_command.save!
+          
+          DeviceService.send_command @device, @device_command
+        end
+      rescue
+        flash[:notice] = 'Command could not be sent to the device.'
+        render action: 'new' 
       else
-        render action: 'new'
+        redirect_to @device, notice: 'Device command was successfully sent.'
       end
     end
 

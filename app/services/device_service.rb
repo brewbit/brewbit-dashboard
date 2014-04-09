@@ -58,7 +58,10 @@ class DeviceService
     end
 
     Rails.logger.debug "Sending device command: #{data.inspect}"
-    device_post device, 'commands', data
+    response = device_post device, 'commands', data
+    unless response.code == 200
+      raise "Error sending command to device: #{JSON.parse(response.body)["message"]}"
+    end
   end
   
   def self.destroy(device)
