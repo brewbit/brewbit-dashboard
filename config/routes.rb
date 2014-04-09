@@ -19,13 +19,14 @@ Spree::Core::Engine.routes.draw do
 
     resources :devices, only: :index
   end
-  
+
   namespace :api do
     namespace :v1 do
       resources :devices do
         resources :activation, only: [ :new ]
         resources :auth, only: [ :new ]
         resources :device_report, path: :reports, as: :reports, only: [ :create ]
+        resources :device_settings, path: :settings, as: :settings, only: [ :create ]
       end
     end
   end
