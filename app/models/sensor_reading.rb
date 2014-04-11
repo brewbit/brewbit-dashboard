@@ -13,7 +13,7 @@ class SensorReading < ActiveRecord::Base
 
   def as_json( options = {} )
     super( options.merge(
-      only: [ :value, :created_at ]
+      only: [ :value, :setpoint, :created_at ]
     ))
   end
 
@@ -25,6 +25,17 @@ class SensorReading < ActiveRecord::Base
       fahrenheit_to_celcius( read_attribute(:value) )
     else
       read_attribute( :value )
+    end
+  end
+
+  def setpoint
+    case sensor.device.user.temperature_scale
+    when 'F'
+      read_attribute( :setpoint )
+    when 'C'
+      fahrenheit_to_celcius( read_attribute(:setpoint) )
+    else
+      read_attribute( :setpoint )
     end
   end
 
