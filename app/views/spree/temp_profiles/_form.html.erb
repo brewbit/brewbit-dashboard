@@ -17,7 +17,7 @@
           <div class="col-sm-3">
             <div class="input-group">
               <%= f.text_field :start_value, class: 'form-control', value: f.object.start_value %>
-              <span class="input-group-addon"><%= spree_current_user.temperature_scale %>&deg;</span>
+              <span class="input-group-addon">&deg;<%= spree_current_user.temperature_scale %></span>
             </div>
           </div>
         </div>
