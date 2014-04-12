@@ -5,7 +5,7 @@ module Spree
 
     # GET /devices
     def index
-      @devices = spree_current_user.devices.includes( [ outputs: [:device], sensors: [:device], commands: [{sensor_settings: [:readings, :sensor, :temp_profile]}] ] )
+      @devices = spree_current_user.devices.includes( [ outputs: [:device], sensors: [:device], commands: [{sensor_settings: [:readings, :temp_profile, sensor: [:device]]}] ] )
       @device = @devices.first
     end
 
