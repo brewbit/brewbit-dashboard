@@ -18,7 +18,7 @@
   <div class='col-sm-8'>
     <div class="input-group">
       <%= s.text_field :static_setpoint, class: 'form-control', value: s.object.static_setpoint %>
-      <span class="input-group-addon"><%= spree_current_user.temperature_scale %>&deg;</span>
+      <span class="input-group-addon">&deg;<%= spree_current_user.temperature_scale %></span>
     </div>
   </div>
 </div>

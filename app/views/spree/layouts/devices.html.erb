@@ -4,10 +4,10 @@
       <li class="<%= 'active' if current_page?(device_path(@device)) || current_page?('/dashboard') %>">
         <%= link_to raw('<span class="glyphicon glyphicon-stats"></span> Status'), device_path(@device) %>
       </li>
-      <li class="<%= 'active' if current_page?(new_device_command_path(@device)) %>">
+      <li class="<%= 'active' if controller.controller_name == 'device_commands' && ['new', 'create'].include?(controller.action_name) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-transfer"></span> Send Commands'), new_device_command_path(@device) %>
       </li>
-      <li class="<%= 'active' if controller.controller_name == 'device_commands' && controller.action_name != 'new' %>">
+      <li class="<%= 'active' if controller.controller_name == 'device_commands' && !['new', 'create'].include?(controller.action_name) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-book"></span> History'), device_commands_path(@device) %>
       </li>
       <li class="navbar-right <%= 'active' if current_page?(edit_device_path(@device)) %>">

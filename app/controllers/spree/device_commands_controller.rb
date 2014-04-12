@@ -1,4 +1,3 @@
-require 'protobuf_messages/messages'
 
 module Spree
   class DeviceCommandsController < Spree::StoreController
@@ -33,13 +32,18 @@ module Spree
 
     # POST /commands
     def create
-      @device_command = DeviceCommand.new(device_command_params)
-
-      if @device_command.save
-        notify_device_with_new_settings
-        redirect_to @device, notice: 'Device command was successfully sent.'
+      begin
+        DeviceCommand.transaction do
+          @device_command = DeviceCommand.new(device_command_params)
+          @device_command.save!
+          
+          DeviceService.send_command @device, @device_command
+        end
+      rescue
+        flash[:notice] = 'Command could not be sent to the device.'
+        render action: 'new' 
       else
-        render action: 'new'
+        redirect_to @device, notice: 'Device command was successfully sent.'
       end
     end
 
@@ -60,61 +64,7 @@ module Spree
       end
 
       def notify_device_with_new_settings
-        connection = DeviceConnection.find_by_device_id( @device.hardware_identifier )
-
-        # no need to send settings to a device that's not connected
-        unless connection
-          logger.warn "Device not connected during settings update #{@device.hardware_identifier}"
-          logger.warn "Connected devices are: #{DeviceConnection.all.inspect}"
-          return
-        end
-
-        data = {
-          name: @device_command.name,
-          outputs: [],
-          sensors: [],
-          temp_profiles: []
-        }
-        @device_command.output_settings.each do |o|
-          output = {
-            index:            o.output.output_index,
-            function:         o.function,
-            cycle_delay:      o.cycle_delay,
-            sensor_index:     o.sensor.sensor_index,
-            output_mode:      o.output_mode
-          }
-          data[:outputs] << output
-        end
-        @device_command.sensor_settings.each do |s|
-          sensor = {
-            index:            s.sensor.sensor_index,
-            setpoint_type:    s.setpoint_type
-          }
-          case s.setpoint_type
-          when Sensor::SETPOINT_TYPE[:static]
-            sensor[:static_setpoint] = s.static_setpoint
-          when Sensor::SETPOINT_TYPE[:temp_profile]
-            sensor[:temp_profile_id] = s.temp_profile_id
-            temp_profile = {
-              id:           s.temp_profile.id,
-              name:         s.temp_profile.name,
-              start_value:  s.temp_profile.start_value,
-              steps:        s.temp_profile.steps.collect { |step| {
-                  duration: step.duration_for_device,
-                  value:    step.value,
-                  type:     step.step_type
-                }
-              }
-            }
-            data[:temp_profiles] << temp_profile
-          end
-          data[:sensors] << sensor
-        end
-
-        type = ProtobufMessages::ApiMessage::Type::DEVICE_SETTINGS_NOTIFICATION
-        message = ProtobufMessages::Builder.build( type, data )
-        logger.debug "Sending Device Settings Notification Message: #{message.inspect}"
-        ProtobufMessages::Sender.send( message, connection )
+        
       end
 
       # Only allow a trusted parameter "white list" through.

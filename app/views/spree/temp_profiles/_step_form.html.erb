@@ -6,7 +6,7 @@
   <td>
     <div class="input-group">
       <%= f.text_field :value, class: 'form-control value', value: f.object.value %>
-      <span class="input-group-addon"><%= spree_current_user.temperature_scale %>&deg;</span>
+      <span class="input-group-addon">&deg;<%= spree_current_user.temperature_scale %></span>
     </div>
   </td>
   <td>
