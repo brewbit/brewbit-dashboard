@@ -15,24 +15,25 @@
       <script type='text/javascript'>
         $(document).ready(function () {
           RELATIVE_LABELS = [];
-          RELATIVE_LABELS[Dygraph.SECONDLY]        = { label: 'sec', mult: 1 };
-          RELATIVE_LABELS[Dygraph.TWO_SECONDLY]    = { label: 'sec', mult: 2 };
-          RELATIVE_LABELS[Dygraph.FIVE_SECONDLY]   = { label: 'sec', mult: 5 };
-          RELATIVE_LABELS[Dygraph.TEN_SECONDLY]    = { label: 'sec', mult: 10 };
-          RELATIVE_LABELS[Dygraph.THIRTY_SECONDLY] = { label: 'sec', mult: 30 };
-          RELATIVE_LABELS[Dygraph.MINUTELY]        = { label: 'min', mult: 1 };
-          RELATIVE_LABELS[Dygraph.TWO_MINUTELY]    = { label: 'min', mult: 2 };
-          RELATIVE_LABELS[Dygraph.FIVE_MINUTELY]   = { label: 'min', mult: 5 };
-          RELATIVE_LABELS[Dygraph.TEN_MINUTELY]    = { label: 'min', mult: 10 };
-          RELATIVE_LABELS[Dygraph.THIRTY_MINUTELY] = { label: 'min', mult: 30 };
-          RELATIVE_LABELS[Dygraph.HOURLY]          = { label: 'hr', mult: 1 };
-          RELATIVE_LABELS[Dygraph.TWO_HOURLY]      = { label: 'hr', mult: 2 };
-          RELATIVE_LABELS[Dygraph.SIX_HOURLY]      = { label: 'hr', mult: 6 };
-          RELATIVE_LABELS[Dygraph.DAILY]           = { label: 'day', mult: 1 };
-          RELATIVE_LABELS[Dygraph.WEEKLY]          = { label: 'week', mult: 1 };
-          RELATIVE_LABELS[Dygraph.MONTHLY]         = { label: 'mon', mult: 1 };
+          RELATIVE_LABELS[Dygraph.SECONDLY]        = { label: 'sec', mult: 1,  unit: 1 };
+          RELATIVE_LABELS[Dygraph.TWO_SECONDLY]    = { label: 'sec', mult: 2,  unit: 1 };
+          RELATIVE_LABELS[Dygraph.FIVE_SECONDLY]   = { label: 'sec', mult: 5,  unit: 1 };
+          RELATIVE_LABELS[Dygraph.TEN_SECONDLY]    = { label: 'sec', mult: 10, unit: 1 };
+          RELATIVE_LABELS[Dygraph.THIRTY_SECONDLY] = { label: 'sec', mult: 30, unit: 1 };
+          RELATIVE_LABELS[Dygraph.MINUTELY]        = { label: 'min', mult: 1,  unit: 60 };
+          RELATIVE_LABELS[Dygraph.TWO_MINUTELY]    = { label: 'min', mult: 2,  unit: 60 };
+          RELATIVE_LABELS[Dygraph.FIVE_MINUTELY]   = { label: 'min', mult: 5,  unit: 60 };
+          RELATIVE_LABELS[Dygraph.TEN_MINUTELY]    = { label: 'min', mult: 10, unit: 60 };
+          RELATIVE_LABELS[Dygraph.THIRTY_MINUTELY] = { label: 'min', mult: 30, unit: 60 };
+          RELATIVE_LABELS[Dygraph.HOURLY]          = { label: 'hr', mult: 1,   unit: 3600 };
+          RELATIVE_LABELS[Dygraph.TWO_HOURLY]      = { label: 'hr', mult: 2,   unit: 3600 };
+          RELATIVE_LABELS[Dygraph.SIX_HOURLY]      = { label: 'hr', mult: 6,   unit: 3600 };
+          RELATIVE_LABELS[Dygraph.DAILY]           = { label: 'day', mult: 1,  unit: 86400 };
+          RELATIVE_LABELS[Dygraph.WEEKLY]          = { label: 'week', mult: 1, unit: 604800 };
+          RELATIVE_LABELS[Dygraph.MONTHLY]         = { label: 'mon', mult: 1,  unit: 2592000 };
 
-          g = new Dygraph(
+          var granularity;
+          var g = new Dygraph(
             document.getElementById("temp-profile-<%= temp_profile.id %>-timeline"),
             <%= temp_profile.steps_graph_data %>,
             {
@@ -43,15 +44,19 @@
               xRangePad: 10,
               axes: {
                 x: {
+                  valueFormatter: function(millis, opts, dygraph) {
+                    var r = RELATIVE_LABELS[granularity];
+                    return '+' + Math.round((millis / r.unit)*10)/10 + r.label;
+                  },
                   ticker: function(min, max, pixels, opts, dygraph, vals) {
-                    var chosen = Dygraph.pickDateTickGranularity(min*1000, max*1000, pixels, opts);
-                    var f = (Dygraph.SHORT_SPACINGS[chosen] / 1000);
+                    granularity = Dygraph.pickDateTickGranularity(min*1000, max*1000, pixels, opts);
+                    var f = (Dygraph.SHORT_SPACINGS[granularity] / 1000);
 
                     var tickers = Dygraph.numericTicks(min / f, max / f, pixels, opts, dygraph, vals);
-
+                    
                     var i;
                     for (i = 0; i < tickers.length; ++i) {
-                      var r = RELATIVE_LABELS[chosen];
+                      var r = RELATIVE_LABELS[granularity];
                       tickers[i].label = '+' + (tickers[i].v * r.mult) + r.label;
                       tickers[i].v = tickers[i].v * f;
                     }
