@@ -1,3 +1,5 @@
+require 'fileutils'
+
 # Attributes:
 # * device_command_id [integer] - - Which device command it belongs to
 # * sensor_id [integer] - - Which sensor it belongs to
@@ -12,10 +14,11 @@ class SensorSettings < ActiveRecord::Base
   belongs_to :device_command
   belongs_to :sensor
 
-  has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading', foreign_key: 'sensor_settings_id'
   belongs_to :temp_profile
 
-  default_scope include: [:sensor, :readings]
+  default_scope include: [:sensor]
+  
+  after_create :create_readings_file
 
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
 
@@ -51,5 +54,9 @@ class SensorSettings < ActiveRecord::Base
 
   def celcius_to_fahrenheit(degrees)
     degrees.to_f * 1.8 + 32
+  end
+  
+  def create_readings_file
+    FileUtils.touch("public/readings/#{self.id}.csv")
   end
 end

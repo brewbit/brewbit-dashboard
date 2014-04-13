@@ -10,14 +10,9 @@ module SensorReadingsService
 
     sensor = device.sensors.find_by sensor_index: sensor_index
     if sensor
-      attr = {
-        sensor_id: sensor.id,
-        value: reading,
-        setpoint: setpoint
-      }
-  
-      reading = sensor.readings.create attr
-      sensor.current_settings.readings << reading
+      File.open("public/readings/#{sensor.current_settings.id}.csv", 'a') do |f|
+        f.write("#{Time.now.to_i * 1000},#{reading},#{setpoint}\n")
+      end
     end
   end
 end

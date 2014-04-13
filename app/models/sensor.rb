@@ -12,8 +12,6 @@ class Sensor < ActiveRecord::Base
 
   has_many :settings, -> { order 'created_at ASC' }, class_name: 'SensorSettings',
                       foreign_key: 'sensor_id', dependent: :destroy
-  has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading',
-                      foreign_key: 'sensor_id', dependent: :destroy
 
   has_many :outputs, through: :output_settings
 

@@ -51,14 +51,7 @@
   $(document).ready(function () {
     g = new Dygraph(
       document.getElementById("sensor-<%= setting.id %>-timeline"),
-      [
-        <% setting.readings.each do |reading| %>
-          [ new Date(<%= reading.created_at.to_i * 1000 %>),
-              <%= TemperatureConverter.convert(spree_current_user.temperature_scale, reading.value) %>,
-              <%= TemperatureConverter.convert(spree_current_user.temperature_scale, reading.setpoint) %>
-          ],
-        <% end %>
-      ],
+      "/readings/<%= setting.id %>.csv",
       {
         rollPeriod: 10,
         labels: ['', 'Reading', 'Setpoint'],
@@ -67,6 +60,14 @@
         showRangeSelector: true,
         legend: 'always',
         labelsDivStyles: { 'textAlign': 'right' },
+        xValueParser: function(x) { return parseInt(x); },
+        axes: {
+          x: {
+            valueFormatter: Dygraph.dateString_,
+            ticker: Dygraph.dateTicker,
+            axisLabelFormatter: Dygraph.dateAxisFormatter
+          }
+        }
       }
     );
   });
