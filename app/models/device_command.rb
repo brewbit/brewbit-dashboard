@@ -15,6 +15,7 @@ class DeviceCommand < ActiveRecord::Base
 
   has_many :sensor_settings, class_name: 'SensorSettings', dependent: :destroy, foreign_key: 'device_command_id'
   has_many :output_settings, class_name: 'OutputSettings', dependent: :destroy, foreign_key: 'device_command_id'
+
   has_many :outputs, through: :output_settings
   has_many :sensors, through: :sensor_settings
 

@@ -31,9 +31,9 @@
             </div>
             <div class="panel-body">
               <h4>
-                <% if setting.sensor.output_settings.last.present? -%>
+                <% if setting.sensor.output_settings.where(device_command: command).present? -%>
                   <%= render partial: 'spree/shared/sensor_settings_outputs',
-                             locals: {settings: setting.sensor.output_settings } %>
+                             locals: {settings: setting.sensor.output_settings.where(device_command: command) } %>
                 <% else -%>
                   <span class="label label-default label-lg">Nothing</span>
                 <% end -%>
