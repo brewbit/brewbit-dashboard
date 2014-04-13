@@ -8,7 +8,9 @@
 class Output < ActiveRecord::Base
   belongs_to :device
   belongs_to :sensor
-  has_many :settings, -> { order 'created_at ASC' }, class_name: 'OutputSettings'
+
+  has_many :settings, -> { order 'created_at ASC' }, class_name: 'OutputSettings',
+                      foreign_key: 'output_id', dependent: :destroy
 
   validates :output_index, allow_blank: true, numericality: { only_integer: true, greater_than: -1 }
 
