@@ -1,6 +1,7 @@
 module Spree
   class DevicesController < Spree::StoreController
-    before_filter :correct_user, except: [:index, :activate, :start_activate]
+    before_filter :correct_user
+    before_filter :correct_device, except: [:index, :activate, :start_activate]
     layout :resolve_layout
 
     # GET /devices
@@ -58,9 +59,13 @@ module Spree
         params.require(:device).permit(:name)
       end
 
-      def correct_user
+      def correct_device
         @device = spree_current_user.devices.find( params[:id] )
         redirect_to root_path, error: 'You can only see your own devices' unless @device
+      end
+
+      def correct_user
+        redirect_to login_path unless spree_current_user
       end
 
       def resolve_layout
