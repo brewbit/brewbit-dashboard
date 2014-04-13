@@ -1,1 +1,4 @@
-<%= render device_command.sensor_settings %>
+<% device_command.sensor_settings.each do |setting| %>
+<%= render partial: 'spree/shared/sensor_settings',
+           locals: { command: device_command, setting: setting } %>
+<% end %>

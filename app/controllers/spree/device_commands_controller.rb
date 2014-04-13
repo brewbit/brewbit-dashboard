@@ -36,12 +36,12 @@ module Spree
         DeviceCommand.transaction do
           @device_command = DeviceCommand.new(device_command_params)
           @device_command.save!
-          
+
           DeviceService.send_command @device, @device_command
         end
       rescue
         flash[:notice] = 'Command could not be sent to the device.'
-        render action: 'new' 
+        render action: 'new'
       else
         redirect_to @device, notice: 'Device command was successfully sent.'
       end
@@ -56,7 +56,7 @@ module Spree
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_device_command
-        @device_command = DeviceCommand.includes( sensor_settings: [:temp_profile, {sensor: [:device]}, {readings: [{sensor: :device}]}]).find(params[:id])
+        @device_command = DeviceCommand.find(params[:id])
       end
 
       def set_device
@@ -64,7 +64,7 @@ module Spree
       end
 
       def notify_device_with_new_settings
-        
+
       end
 
       # Only allow a trusted parameter "white list" through.

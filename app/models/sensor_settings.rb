@@ -15,11 +15,11 @@ class SensorSettings < ActiveRecord::Base
   has_many :readings, -> { order 'created_at ASC' }, class_name: 'SensorReading', foreign_key: 'sensor_settings_id'
   belongs_to :temp_profile
 
+  default_scope include: [:sensor, :readings]
+
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
 
-  def static_setpoint
-    scale = sensor.try( :device ).try( :user ).try( :temperature_scale )
-
+  def static_setpoint(scale)
     case scale
     when 'F'
       read_attribute( :static_setpoint )

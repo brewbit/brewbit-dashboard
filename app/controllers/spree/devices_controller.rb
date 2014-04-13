@@ -5,19 +5,7 @@ module Spree
 
     # GET /devices
     def index
-      @devices = spree_current_user.devices.includes([
-        outputs:  [:device],
-        sensors:  [:device],
-        commands: [
-          {
-            sensor_settings: [
-              :temp_profile,
-              {readings: [:sensor]},
-              {sensor: [:device]}
-            ]
-          }
-        ]
-      ])
+      @devices = spree_current_user.devices
       @device = @devices.first
     end
 
@@ -71,7 +59,7 @@ module Spree
       end
 
       def correct_user
-        @device = spree_current_user.devices.includes(sensors: [:device], commands: [{sensor_settings: [:temp_profile, :sensor, :readings]}]).find( params[:id] )
+        @device = spree_current_user.devices.find( params[:id] )
         redirect_to root_path, error: 'You can only see your own devices' unless @device
       end
 

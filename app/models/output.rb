@@ -15,5 +15,9 @@ class Output < ActiveRecord::Base
   def current_settings
     device.current_command.output_settings.find_by output: self
   end
+
+  def index_name
+    OutputSettings::INDEX_NAME[self.output_index].capitalize
+  end
 end
 
