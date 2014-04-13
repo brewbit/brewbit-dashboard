@@ -19,7 +19,7 @@ class SensorSettings < ActiveRecord::Base
 
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
 
-  def static_setpoint(scale)
+  def static_setpoint(scale = 'F')
     case scale
     when 'F'
       read_attribute( :static_setpoint )
