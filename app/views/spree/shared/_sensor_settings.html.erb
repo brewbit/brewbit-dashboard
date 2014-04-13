@@ -31,14 +31,12 @@
             </div>
             <div class="panel-body">
               <h4>
-                <% unless setting.sensor.outputs.blank? %>
-                  <% setting.sensor.outputs.each do |output| %>
-                    <span class="label label-default label-lg">
-                      <%= output.index_name %> Output - <%= setting.sensor.output_settings.last.function_name %></span>
-                  <% end %>
-                <% else %>
+                <% if setting.sensor.output_settings.last.present? -%>
+                  <%= render partial: 'spree/shared/sensor_settings_outputs',
+                             locals: {settings: setting.sensor.output_settings } %>
+                <% else -%>
                   <span class="label label-default label-lg">Nothing</span>
-                <% end %>
+                <% end -%>
               </h4>
             </div>
           </div>
