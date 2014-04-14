@@ -20,8 +20,16 @@ module Spree
     validates :size, presence: true, numericality: { only_integer: true }
     validates :file, presence: true
 
+    def self.latest( with_data = false )
+      if with_data
+        select(column_names).order( 'version DESC' ).limit(1).first
+      else
+        select_without( [:file] ).order( 'version DESC' ).limit(1).first
+      end
+    end
+    
     def self.is_latest?( version )
-      Spree::Firmware.order( 'version DESC' ).limit(1).pluck( :version ).first == version
+      latest.version == version
     end
 
     def size_in_kb
@@ -32,6 +40,10 @@ module Spree
 
     def set_size
       self.size = file.try( :size )
+    end
+    
+    def self.select_without( columns )
+      select(column_names - columns.map(&:to_s))
     end
   end
 end
