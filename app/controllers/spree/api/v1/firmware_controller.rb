@@ -31,6 +31,17 @@ module Spree
         end
 
         def validate_show_params!
+          if params[:version].blank?
+            @message = 'Current version not provided'
+            render :error, status: 400
+            return
+          end
+          
+          @firmware = Firmware.find_by version: params[:version]
+          unless @firmware
+            @message = 'Firmware version not found'
+            render :error, status: 404
+          end
         end
 
       end

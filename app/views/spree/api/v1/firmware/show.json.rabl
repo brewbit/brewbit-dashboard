@@ -1,6 +1,3 @@
-object false
+object @firmware
 
-node( :update_available ){ @update_available }
-node( :version, :if => lambda { @update_available } ){ @version }
-node( :binary_size, :if => lambda { @update_available } ){ @binary_size }
-      
+attributes :version, :size, :file_b64

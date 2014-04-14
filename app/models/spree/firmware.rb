@@ -35,6 +35,10 @@ module Spree
     def size_in_kb
       ( self.size / 1024.0 ).round( 2 )
     end
+    
+    def file_b64
+      Base64.encode64(file)
+    end
 
     private
 
