@@ -2,13 +2,13 @@
   <div class="bottom-space">
     <ul class="nav nav-pills device-nav">
       <li class="<%= 'active' if current_page?(device_path(@device)) || current_page?('/dashboard') %>">
-        <%= link_to raw('<span class="glyphicon glyphicon-stats"></span> Current Session'), device_path(@device) %>
+        <%= link_to raw('<span class="glyphicon glyphicon-stats"></span> Active Sessions'), device_path(@device) %>
       </li>
-      <li class="<%= 'active' if controller.controller_name == 'device_commands' && ['new', 'create'].include?(controller.action_name) %>">
-        <%= link_to raw('<span class="glyphicon glyphicon-transfer"></span> New Session'), new_device_command_path(@device) %>
+      <li class="<%= 'active' if controller.controller_name == 'device_sessions' && ['new', 'create'].include?(controller.action_name) %>">
+        <%= link_to raw('<span class="glyphicon glyphicon-transfer"></span> New Session'), new_device_session_path(@device) %>
       </li>
-      <li class="<%= 'active' if controller.controller_name == 'device_commands' && !['new', 'create'].include?(controller.action_name) %>">
-        <%= link_to raw('<span class="glyphicon glyphicon-book"></span> Past Sessions'), device_commands_path(@device) %>
+      <li class="<%= 'active' if controller.controller_name == 'device_sessions' && !['new', 'create'].include?(controller.action_name) %>">
+        <%= link_to raw('<span class="glyphicon glyphicon-book"></span> Past Sessions'), device_sessions_path(@device) %>
       </li>
       <li class="navbar-right <%= 'active' if current_page?(edit_device_path(@device)) %>">
         <%= link_to raw('<span class="glyphicon glyphicon-cog"></span> Device Settings'), edit_device_path(@device) %>

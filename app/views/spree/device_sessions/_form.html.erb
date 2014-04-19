@@ -1,0 +1,129 @@
+<%= form_for @device_session, html: { class: 'form-horizontal' } do |f| %>
+  <% if f.object.errors.any? %>
+    <div id="error_explanation">
+      <h3>Validation errors:</h3>
+
+      <ul>
+      <% f.object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :device_id %>
+  
+  <h4>Session Settings</h4>
+
+  <div class="form-group">
+    <div class='col-sm-3 control-label'>
+      <%= f.label :name %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <hr />
+  <h4>Controller Settings</h4>
+  
+  <div class='form-group'>
+    <div class='col-sm-3 control-label'>
+      <%= f.label :sensor_index %>
+    </div>
+    <div class='col-sm-9'>
+      <%= f.select :sensor_index, (0...@device.sensor_count).collect {|i| ["Sensor #{i+1}", i]}, {}, class: 'form-control' %>
+    </div>
+  </div>
+  
+  <div class='form-group'>
+    <div class='col-sm-3 control-label'>
+      <%= f.label :setpoint_type %>
+    </div>
+    <div class='col-sm-9'>
+      <%= f.select :setpoint_type, [['Static',DeviceSession::SETPOINT_TYPE[:static]],['Temp Profile',DeviceSession::SETPOINT_TYPE[:temp_profile]]], {}, class: 'form-control' %>
+    </div>
+  </div>
+  
+  <div id="static-setpoint" class='form-group' style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:temp_profile]%>">
+    <div class='col-sm-3 control-label'>
+      <%= f.label :static_setpoint %>
+    </div>
+    <div class='col-sm-9'>
+      <div class="input-group">
+        <%= f.text_field :static_setpoint, class: 'form-control', value: @device_session.static_setpoint %>
+        <span class="input-group-addon">&deg;<%= spree_current_user.temperature_scale %></span>
+      </div>
+    </div>
+  </div>
+  
+  <div id="temp-profile" class='form-group' style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static]%>">
+    <div class='col-sm-3 control-label'>
+      <%= f.label :temp_profile_id %>
+    </div>
+    <div class='col-sm-9'>
+      <%= f.select :temp_profile_id, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
+    </div>
+  </div>
+  
+  <div class='form-group'>
+    <div class='col-sm-3 control-label'>
+      <%= f.label :outputs %>
+    </div>
+    <div class='col-sm-9'>
+      <div class="btn-group" data-toggle="buttons">
+        <% @device_session.output_settings.each do |output_settings| %>
+          <label class="btn btn-default">
+            <input type="checkbox" class="enabled_outputs" output-index="<%= output_settings.output_index %>"> <%= output_settings.index_name %> Output
+          </label>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <hr />
+  
+  <%= f.fields_for :output_settings do |o| %>
+    <div id="output-<%= o.object.output_index %>" style="display: none;">
+      <%= render partial: 'output', locals: { o: o } %>
+    </div>
+  <% end -%>
+
+  <div class="form-group">
+    <div class="col-sm-3 pull-right">
+      <div class='pull-right'>
+        <%= f.submit "Start Session", class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#device_session_setpoint_type').change(function() {
+        if ($(this).val() == <%= DeviceSession::SETPOINT_TYPE[:static] %>) {
+          $('#static-setpoint').show();
+          $('#temp-profile').hide();
+        }
+        else {
+          $('#static-setpoint').hide();
+          $('#temp-profile').show();
+        }
+      });
+    });
+    
+    $(document).on( 'change', 'input[class="enabled_outputs"]', function(e){
+      var output_index = this.attributes['output-index'].value;
+      var output_index_form = $('#output-' + output_index);
+      var output_destroy_field = output_index_form.find('input[class="destroy"]');
+  
+      if(this.checked){
+        output_index_form.show();
+        output_destroy_field.val(false);
+      }
+      else {
+        output_index_form.hide();
+        output_destroy_field.val(true);
+      }
+    });
+  </script>
+  
+<% end %>

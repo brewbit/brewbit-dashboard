@@ -1,23 +1,23 @@
 <div class="sensor col-md-12">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Controller <%= setting.sensor.sensor_index + 1 %></h3>
+      <h3 class="panel-title">Controller <%= device_session.sensor_index + 1 %> - <%= device_session.name %></h3>
     </div>
     <div class="panel-body">
-      <div id="sensor-<%= setting.id %>-timeline" class="sensor-plot bottom-space"></div>
+      <div id="sensor-<%= device_session.id %>-timeline" class="sensor-plot bottom-space"></div>
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4 class="panel-title">Current command</h4>
+              <h4 class="panel-title">Current session</h4>
             </div>
             <div class="panel-body">
               <h4>
                 <span class="label label-default label-lg">
-                  <% if setting.setpoint_type == Sensor::SETPOINT_TYPE[:static] %>
-                    Static Setpoint - <%= setting.static_setpoint(spree_current_user.temperature_scale) %>&deg; <%= spree_current_user.temperature_scale %>
+                  <% if device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static] %>
+                    Static Setpoint - <%= device_session.static_setpoint(spree_current_user.temperature_scale) %>&deg; <%= spree_current_user.temperature_scale %>
                   <% else %>
-                    Temperature Profile - <%= setting.temp_profile.name %>
+                    Temperature Profile - <%= device_session.temp_profile.name %>
                   <% end %>
                 </span>
               </h4>
@@ -31,9 +31,12 @@
             </div>
             <div class="panel-body">
               <h4>
-                <% if setting.sensor.output_settings.where(device_command: command).present? -%>
-                  <%= render partial: 'spree/shared/sensor_settings_outputs',
-                             locals: {settings: setting.sensor.output_settings.where(device_command: command) } %>
+                <% if device_session.output_settings.present? -%>
+                  <% device_session.output_settings.each do |setting| -%>
+                    <span class="label label-default label-lg">
+                      <%= setting.index_name %> Output - <%= setting.function_name %>
+                    </span>&nbsp;
+                  <% end -%>
                 <% else -%>
                   <span class="label label-default label-lg">Nothing</span>
                 <% end -%>
@@ -50,8 +53,8 @@
 <script type='text/javascript'>
   $(document).ready(function () {
     g = new Dygraph(
-      document.getElementById("sensor-<%= setting.id %>-timeline"),
-      "/readings/<%= setting.id %>.csv",
+      document.getElementById("sensor-<%= device_session.id %>-timeline"),
+      "/readings/<%= device_session.uuid %>.csv",
       {
         rollPeriod: 10,
         labels: ['', 'Reading', 'Setpoint'],

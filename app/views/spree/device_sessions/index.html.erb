@@ -1,0 +1,27 @@
+<h3><%= @device.name %> Sessions</h3>
+
+<div class="col-md-10 col-md-offset-1">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-6">Session Name</th>
+        <th class="col-md-3">Sent</th>
+        <th class="col-md-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @device_sessions.each do |device_session| %>
+        <tr>
+          <td><%= device_session.name %></td>
+          <td><%= device_session.created_at.to_s(:pretty) %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to raw('<span class="glyphicon glyphicon-eye-open"></span>'), device_session_path(@device, device_session), class: 'btn btn-default' %>
+              <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), device_session_path(@device, device_session), method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' } %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

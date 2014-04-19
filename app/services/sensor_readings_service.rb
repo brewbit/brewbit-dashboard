@@ -8,9 +8,9 @@ module SensorReadingsService
 
     # raise UnknownDevice if device.blank? || device.class != Device
 
-    sensor = device.sensors.find_by sensor_index: sensor_index
-    if sensor
-      File.open("public/readings/#{sensor.current_settings.id}.csv", 'a') do |f|
+    session = device.active_session_for(sensor_index)
+    if session
+      File.open("public/readings/#{session.uuid}.csv", 'a') do |f|
         f.write("#{Time.now.to_i * 1000},#{reading},#{setpoint}\n")
       end
     end

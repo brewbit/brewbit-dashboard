@@ -1,26 +1,25 @@
 # Attributes:
-# * device_command_id [integer] - - Which device command it belongs to
+# * device_session_id [integer] - - Which device session it belongs to
 # * output_id [integer] - - Which output it belongs to
 # * function [integer] - - Function of the output [ HEATING, COOLING ]
 # * cycle_delay [integer] - - How much to wait between power cycles of an output in minutes
-# * output_mode [integer] - - Output control mode [PID, ON_OFF]
 # * sensor_id [integer] - - Which sensor it is controlled by
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
 # * updated_at [datetime, not null] - last update time
 class OutputSettings < ActiveRecord::Base
-  belongs_to :device_command
+  belongs_to :device_session
   belongs_to :output
   belongs_to :sensor
 
-  OUTPUT_MODE = { on_off: 0, pid: 1 }
   FUNCTIONS = { heating: 0, cooling: 1 }
   FUNCTION_NAME = [ 'heating', 'cooling' ]
   INDEX_NAME = [ 'left', 'right' ]
 
   MAX_CYCLE_DELAY = 30
 
+  validates :output_index, presence: true
   validates :function, presence: true, inclusion: { in: FUNCTIONS.values }
   validates :cycle_delay, allow_blank: true,
             numericality: { only_integer: true,
@@ -29,6 +28,10 @@ class OutputSettings < ActiveRecord::Base
 
   def function_name
     FUNCTION_NAME[self.function].capitalize
+  end
+  
+  def index_name
+    INDEX_NAME[self.output_index].capitalize
   end
 end
 

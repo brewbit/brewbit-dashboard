@@ -14,38 +14,38 @@ class DeviceService
     end
   end
   
-  def self.send_command(device, command)
+  def self.send_device_settings(device)
     data = {
-      name: command.name,
-      outputs: [],
-      sensors: [],
-      temp_profiles: []
+      name: device.name,
+      control_mode: device.control_mode
     }
-    command.output_settings.each do |o|
-      output = {
-        index:            o.output.output_index,
-        function:         o.function,
-        cycle_delay:      o.cycle_delay,
-        sensor_index:     o.sensor.sensor_index,
-        output_mode:      o.output_mode
-      }
-      data[:outputs] << output
+    
+    Rails.logger.debug "Sending device settings: #{data.inspect}"
+    response = device_post device, 'device_settings', data
+    unless response.code == 200
+      raise "Error sending device settings to device: #{JSON.parse(response.body)["message"]}"
     end
-    command.sensor_settings.each do |s|
-      sensor = {
-        index:            s.sensor.sensor_index,
-        setpoint_type:    s.setpoint_type
+    end
+  
+  def self.send_session(device, session)
+    data = {
+      name: session.name,
+      sensor_index: session.sensor_index,
+      setpoint_type: session.setpoint_type,
+      output_settings: [],
+      temp_profiles: []
       }
-      case s.setpoint_type
-      when Sensor::SETPOINT_TYPE[:static]
-        sensor[:static_setpoint] = s.static_setpoint
-      when Sensor::SETPOINT_TYPE[:temp_profile]
-        sensor[:temp_profile_id] = s.temp_profile_id
+    
+    case session.setpoint_type
+    when DeviceSession::SETPOINT_TYPE[:static]
+      data[:static_setpoint] = session.static_setpoint
+    when DeviceSession::SETPOINT_TYPE[:temp_profile]
+      data[:temp_profile_id] = session.temp_profile_id
         temp_profile = {
-          id:           s.temp_profile.id,
-          name:         s.temp_profile.name,
-          start_value:  s.temp_profile.start_value,
-          steps:        s.temp_profile.steps.collect { |step| {
+        id:           session.temp_profile.id,
+        name:         session.temp_profile.name,
+        start_value:  session.temp_profile.start_value,
+        steps:        session.temp_profile.steps.collect { |step| {
               duration: step.duration_for_device,
               value:    step.value,
               type:     step.step_type
@@ -54,13 +54,20 @@ class DeviceService
         }
         data[:temp_profiles] << temp_profile
       end
-      data[:sensors] << sensor
+    
+    session.output_settings.each do |o|
+      output_settings = {
+        index:            o.output_index,
+        function:         o.function,
+        cycle_delay:      o.cycle_delay
+      }
+      data[:output_settings] << output_settings
     end
 
-    Rails.logger.debug "Sending device command: #{data.inspect}"
-    response = device_post device, 'commands', data
+    Rails.logger.debug "Sending device session: #{data.inspect}"
+    response = device_post device, 'controller_settings', data
     unless response.code == 200
-      raise "Error sending command to device: #{JSON.parse(response.body)["message"]}"
+      raise "Error sending session to device: #{JSON.parse(response.body)["message"]}"
     end
   end
   

@@ -37,10 +37,17 @@ module Spree
 
     # PATCH/PUT /devices/1
     def update
-      if @device.update(device_params)
-        redirect_to @device, notice: 'Device was successfully updated.'
-      else
+      begin
+        Device.transaction do
+          @device.update!(device_params)
+          DeviceService.send_device_settings @device
+        end
+      rescue
+        puts $!.inspect, $@
+        flash[:notice] = 'Device settings could not be sent to the device.'
         render action: 'edit'
+      else
+        redirect_to @device, notice: 'Device was successfully updated.'
       end
     end
 
@@ -56,7 +63,7 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name)
+        params.require(:device).permit(:name, :control_mode)
       end
 
       def correct_device

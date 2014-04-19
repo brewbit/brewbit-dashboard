@@ -19,8 +19,7 @@ module DeviceSettingsService
         output_id: o.id,
         sensor_id: sensor.id,
         function: output[:function],
-        cycle_delay: output[:cycle_delay],
-        output_mode: output[:mode]
+        cycle_delay: output[:cycle_delay]
       }
     end
 
@@ -36,7 +35,7 @@ module DeviceSettingsService
       }
     end
 
-    DeviceCommand.create params
+    DeviceSession.create params
   end
 end
 

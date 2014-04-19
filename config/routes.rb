@@ -5,7 +5,7 @@ Spree::Core::Engine.routes.draw do
     post '/devices/activate' => 'devices#activate'
     resources :devices do
       resources :sensors
-      resources :device_commands, path: :commands, as: :commands, except: [:update]
+      resources :device_sessions, path: :sessions, as: :sessions, except: [:update]
     end
     resources :temp_profiles, except: [:show]
   end
