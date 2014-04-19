@@ -7,8 +7,6 @@ class AbilityDecorator
       can :activate, Device, :user => nil
       can [:index, :show, :edit, :update], Device, :user => user
       
-      can [:show, :edit, :update], Sensor, :device => { :user => user }
-      
       can :create, TempProfile
       can :manage, TempProfile, :user => user
     end
