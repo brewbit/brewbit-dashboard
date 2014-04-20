@@ -11,11 +11,11 @@
   </td>
   <td>
     <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
-    <%= f.hidden_field :duration_type, class: 'duration_type_field', value: (f.object.duration_type || 'minutes') %>
+    <%= f.hidden_field :duration_type, class: 'duration_type_field', value: (f.object.duration_type || 'days') %>
     <div class="input-group">
       <input class="form-control duration" type="number" value="<%= f.object.duration %>">
       <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class='selection'><%= (f.object.duration_type || 'minutes') %></span> <span class="caret"></span></button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class='selection'><%= (f.object.duration_type || 'days') %></span> <span class="caret"></span></button>
         <ul class="dropdown-menu">
           <% TempProfileStep::DURATION_TYPE.each do |d| -%>
             <li><a href="#"><%= d %></a></li>
