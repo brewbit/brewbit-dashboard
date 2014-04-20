@@ -60,6 +60,13 @@
     $(document).on('nested:fieldRemoved', function() {
       num_steps -= 1;
       toggle_remove_link();
+      
+      $(".fields:visible").each(function(index, field) {
+        var index_field = $(field).find('span.step_index');
+        var index_form_field = $(field).find('input.step_index');
+        index_field.text( index+1 );
+        index_form_field.val( index+1 );
+      });
     });
   
     $(document).on('nested:fieldAdded', function(event){
@@ -69,7 +76,7 @@
       var field = event.field;
       var index_field = field.find('span.step_index');
       var index_form_field = field.find('input.step_index');
-      var index = $('.fields').size() ;
+      var index = $('.fields:visible').size() ;
   
       index_field.text( index );
       index_form_field.val( index );
@@ -155,6 +162,8 @@
     swap_value( row_one, row_two );
     swap_duration( row_one, row_two );
     swap_step_type( row_one, row_two );
+    swap_temp_hint( row_one, row_two );
+    swap_duration_hint( row_one, row_two );
   }
 
   function swap_value( row_one, row_two ){
@@ -200,6 +209,20 @@
     row_two.find('.active').removeClass('active');
     row_one.find('.' + two).parent().addClass('active');
     row_two.find('.' + one).parent().addClass('active');
+  }
+
+  function swap_temp_hint( row_one, row_two ){
+    one = row_one.find('.temp-hint').html();
+    two = row_two.find('.temp-hint').html();
+    row_one.find('.temp-hint').html(two);
+    row_two.find('.temp-hint').html(one);
+  }
+
+  function swap_duration_hint( row_one, row_two ){
+    one = row_one.find('.duration-hint').html();
+    two = row_two.find('.duration-hint').html();
+    row_one.find('.duration-hint').html(two);
+    row_two.find('.duration-hint').html(one);
   }
 </script>
 
