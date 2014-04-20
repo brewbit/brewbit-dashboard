@@ -52,7 +52,7 @@ module Spree
         dsp[:output_settings_attributes].each {|id, attrs| attrs.delete '_destroy' }
         @device_session = DeviceSession.new(dsp)
 
-        flash[:notice] = 'Session could not be sent to the device.'
+        flash[:error] = 'Session could not be sent to the device.'
         render action: 'new'
       else
         redirect_to @device, notice: 'Device session was successfully sent.'
@@ -62,7 +62,7 @@ module Spree
     # DELETE /sessions/1
     def destroy
       @device_session.destroy
-      redirect_to device_sessions_url, notice: 'Device session was successfully destroyed.'
+      redirect_to device_sessions_url, error: 'Device session was successfully destroyed.'
     end
 
     private

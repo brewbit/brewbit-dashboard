@@ -7,7 +7,7 @@ module Spree
         before_filter :validate_params!
 
         def create
-          params[:name] ||= "Device-Initiated Session"
+          params[:name] = "Device-Initiated Session" if params[:name].blank?
 
           session = ControllerSettingsService.create( @device, params )
 

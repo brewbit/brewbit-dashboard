@@ -35,7 +35,7 @@ class DeviceService
       setpoint_type: session.setpoint_type,
       output_settings: [],
       temp_profiles: []
-      }
+    }
 
     case session.setpoint_type
     when DeviceSession::SETPOINT_TYPE[:static]
