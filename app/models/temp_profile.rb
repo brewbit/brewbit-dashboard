@@ -16,7 +16,7 @@ class TempProfile < ActiveRecord::Base
   validates :steps, :length => {
     minimum: 1,
     maximum: 32,
-    too_short: "must have at least %{count} steps",
+    too_short: "must have at least %{count} step",
     too_long:  "must have at most %{count} steps"
   }
 
