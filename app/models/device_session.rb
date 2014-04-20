@@ -24,8 +24,6 @@ class DeviceSession < ActiveRecord::Base
 
   has_many :output_settings, class_name: 'OutputSettings', dependent: :destroy, foreign_key: 'device_session_id'
 
-  default_scope { order('created_at DESC') }
-
   validates :device, presence: true
   validates :active, inclusion: [true, false]
   validates :uuid, presence: true

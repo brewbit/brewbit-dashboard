@@ -7,7 +7,7 @@ module Spree
 
     # GET /sessions
     def index
-      @device_sessions = @device.sessions
+      @device_sessions = @device.sessions.order( 'created_at DESC' )
     end
 
     # GET /sessions/1
