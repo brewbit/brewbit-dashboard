@@ -35,15 +35,15 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class='selection'><%= (f.object.duration_type || 'days') %></span> <span class="caret"></span></button>
         <ul class="dropdown-menu">
           <% TempProfileStep::DURATION_TYPE.each do |d| -%>
-            <li><a href="#"><%= d %></a></li>
+            <li><a href="javascript:;"><%= d %></a></li>
           <% end -%>
         </ul>
       </div>
     </div>
   </td>
   <td>
-    <a class="btn btn-default btn-sm move-row-up" href="#"><span class="glyphicon glyphicon-chevron-up"></span></a>
-    <a class="btn btn-default btn-sm move-row-down" href="#"><span class="glyphicon glyphicon-chevron-down"></span></a>
+    <a class="btn btn-default btn-sm move-row-up" href="javascript:;"><span class="glyphicon glyphicon-chevron-up"></span></a>
+    <a class="btn btn-default btn-sm move-row-down" href="javascript:;"><span class="glyphicon glyphicon-chevron-down"></span></a>
     <%= f.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: "btn btn-default btn-sm" %>
   </td>
 </tr>

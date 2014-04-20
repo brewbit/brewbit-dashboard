@@ -121,28 +121,31 @@
   
     $(document).on( 'click', '.move-row-up', function(event){
       var row = $(this).parents('tr');
-      var index = row[0].rowIndex;
+      var index_form_field = row.find('input.step_index');
+      var index = +index_form_field.val();
   
       if( index === 1 ){
         return ;
       }
   
       var prev_index = index - 1;
-      var prev_row = row.parents('table').find('tr:eq(' + prev_index + ')');
+      var prev_row = row.parents('table').find('tr:visible:eq(' + prev_index + ')');
   
       swap_rows( row, prev_row );
     });
   
     $(document).on( 'click', '.move-row-down', function(event){
       var row = $(this).parents('tr');
-      var index = row[0].rowIndex;
+      var index_form_field = row.find('input.step_index');
+      var index = +index_form_field.val();
   
-      if( index === (row.parents('table').find('tr').length - 1) ){
+      var num_rows = row.parents('table').find('tr:visible').length
+      if( index === num_rows - 1 ){
         return ;
       }
   
       var next_index = index + 1;
-      var next_row = row.parents('table').find('tr:eq(' + next_index + ')');
+      var next_row = row.parents('table').find('tr:visible:eq(' + next_index + ')');
   
       swap_rows( row, next_row );
     });
