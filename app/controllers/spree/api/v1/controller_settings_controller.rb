@@ -7,6 +7,8 @@ module Spree
         before_filter :validate_params!
 
         def create
+          params[:name] = "Device-Initiated Session"
+
           session = ControllerSettingsService.create( @device, params )
 
           if session.save
@@ -20,7 +22,7 @@ module Spree
         private
 
         def validate_params!
-          [:name, :sensor_index, :setpoint_type].each do |param|
+          [:sensor_index, :setpoint_type].each do |param|
             if params[param].blank?
               @message = "#{param.to_s.capitalize} not provided"
               render :error, status: 400
