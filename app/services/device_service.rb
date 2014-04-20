@@ -7,26 +7,27 @@ class DeviceService
     options = {
       auth_token: device.user.authentication_token
     }
-    
+
     response = device_post device, 'activation', options
     unless response.code == 200
       raise "Error sending activation notification to device: #{JSON.parse(response.body)["message"]}"
     end
   end
-  
+
   def self.send_device_settings(device)
     data = {
       name: device.name,
-      control_mode: device.control_mode
+      control_mode: device.control_mode,
+      hysteresis: device.hysteresis
     }
-    
+
     Rails.logger.debug "Sending device settings: #{data.inspect}"
     response = device_post device, 'device_settings', data
     unless response.code == 200
       raise "Error sending device settings to device: #{JSON.parse(response.body)["message"]}"
     end
-    end
-  
+  end
+
   def self.send_session(device, session)
     data = {
       name: session.name,
@@ -35,7 +36,7 @@ class DeviceService
       output_settings: [],
       temp_profiles: []
       }
-    
+
     case session.setpoint_type
     when DeviceSession::SETPOINT_TYPE[:static]
       data[:static_setpoint] = session.static_setpoint
@@ -54,7 +55,7 @@ class DeviceService
         }
         data[:temp_profiles] << temp_profile
       end
-    
+
     session.output_settings.each do |o|
       output_settings = {
         index:            o.output_index,
@@ -70,18 +71,18 @@ class DeviceService
       raise "Error sending session to device: #{JSON.parse(response.body)["message"]}"
     end
   end
-  
+
   def self.destroy(device)
     device_delete device
   end
-  
+
   private
-  
+
   def self.device_post( device, path, options = {} )
     # TODO resque errors
     HTTParty.post( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}/#{path}", body: options.to_json )
   end
-  
+
   def self.device_delete( device )
     # TODO resque errors
     HTTParty.delete( "#{DEVICE_GATEWAY_API_URL}/devices/#{device.hardware_identifier}" )

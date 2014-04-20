@@ -12,14 +12,15 @@ class Defaults
       name: "#{name} #{Device.count + 1}",
       output_count: 2,
       sensor_count: 2,
-      control_mode: Device::CONTROL_MODE[:on_off]
+      control_mode: Device::CONTROL_MODE[:on_off],
+      hysteresis: 1
     }
 
     device = Device.new attr
 
     device
   end
-  
+
   def self.build_device_session( device, name = '' )
     attr = {
       device: device,
@@ -29,14 +30,14 @@ class Defaults
       static_setpoint: 68
     }
     device_session = DeviceSession.new attr
-  
+
     (0...device.output_count).each do |output_index|
       build_output_settings( device_session, output_index, OutputSettings::FUNCTIONS[:heating] )
   end
-  
+
     device_session
   end
-  
+
   def self.build_output_settings( device_session, output_index, function = Output::FUNCTIONS[:heating], cycle_delay = 3 )
     attr = {
       device_session: device_session,

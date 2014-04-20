@@ -29,7 +29,7 @@ module Spree
       begin
         device = Activation.user_activates_device(spree_current_user, params[:activation_token])
       rescue Exception => e
-        flash[:notice] = e.message
+        flash[:error] = e.message
       else
         redirect_to device, notice: 'Device was successfully activated.'
       end
@@ -44,7 +44,7 @@ module Spree
         end
       rescue
         puts $!.inspect, $@
-        flash[:notice] = 'Device settings could not be sent to the device.'
+        flash[:error] = 'Device settings could not be sent to the device.'
         render action: 'edit'
       else
         redirect_to @device, notice: 'Device was successfully updated.'
@@ -63,7 +63,7 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name, :control_mode)
+        params.require(:device).permit(:name, :control_mode, :hysteresis)
       end
 
       def correct_device

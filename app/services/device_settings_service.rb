@@ -1,7 +1,7 @@
 
 module DeviceSettingsService
 
-  def self.update( device, settings )
+  def self.create( device, settings )
 
     params = {
       device_id: device.id,
