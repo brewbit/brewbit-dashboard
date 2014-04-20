@@ -52,99 +52,109 @@
 </div>
 
 <script type='text/javascript'>
-  $(document).on('nested:fieldAdded', function(event){
-    var field = event.field;
-    var index_field = field.find('span.step_index');
-    var index_form_field = field.find('input.step_index');
-    var index = $('.fields').size() ;
+  $(function() {
+    // count existing nested fields after page was loaded
+    num_steps = $('form .fields').length;
+    toggle_remove_link();
+    
+    $(document).on('nested:fieldRemoved', function() {
+      num_steps -= 1;
+      toggle_remove_link();
+    });
+  
+    $(document).on('nested:fieldAdded', function(event){
+      num_steps += 1;
+      toggle_remove_link();
+      
+      var field = event.field;
+      var index_field = field.find('span.step_index');
+      var index_form_field = field.find('input.step_index');
+      var index = $('.fields').size() ;
+  
+      index_field.text( index );
+      index_form_field.val( index );
+    }) ;
+  
+    $(document).on( 'change', 'input[name="step_types"]', function(e){
+      var val = this.value;
+      var step_type_form_field = $(this).parents('td').find('input[type="hidden"]');
+      var temp_hint = $(this).parents('tr').find('.temp-hint');
+      var duration_hint = $(this).parents('tr').find('.duration-hint');
+  
+      switch(val){
+        case 'hold':
+          step_type_form_field.val(0);
+          temp_hint.html("at");
+          duration_hint.html("for");
+          break;
+        case 'ramp':
+          step_type_form_field.val(1);
+          temp_hint.html("to");
+          duration_hint.html("over");
+          break;
+      }
+    });
+  
+    $(document).on( 'change', 'input.duration', function(e){
+      var value = $(this).val();
+      var field = $(this).parents('td').find('input.duration_field');
+  
+      set_value( value, field);
+    });
+  
+    $(document).on( 'click', '.dropdown-menu li a', function(){
+      $(this).parents(".input-group-btn").find('.selection').text($(this).text());
+      $(this).parents(".input-group-btn").find('.selection').val($(this).text());
+  
+      var value = $(this).text();
+      var field = $(this).parents('td').find('input.duration_type_field');
+  
+      set_value( value, field);
+    });
+  
+    $(document).on( 'click', '.move-row-up', function(event){
+      var row = $(this).parents('tr');
+      var index = row[0].rowIndex;
+  
+      if( index === 1 ){
+        return ;
+      }
+  
+      var prev_index = index - 1;
+      var prev_row = row.parents('table').find('tr:eq(' + prev_index + ')');
+  
+      swap_rows( row, prev_row );
+    });
+  
+    $(document).on( 'click', '.move-row-down', function(event){
+      var row = $(this).parents('tr');
+      var index = row[0].rowIndex;
+  
+      if( index === (row.parents('table').find('tr').length - 1) ){
+        return ;
+      }
+  
+      var next_index = index + 1;
+      var next_row = row.parents('table').find('tr:eq(' + next_index + ')');
+  
+      swap_rows( row, next_row );
+    });
+  })
 
-    index_field.text( index );
-    index_form_field.val( index );
-  }) ;
+  var num_steps = 1;
 
-  $(document).on( 'change', 'input[name="step_types"]', function(e){
-    var val = this.value;
-    var step_type_form_field = $(this).parents('td').find('input[type="hidden"]');
-    var temp_hint = $(this).parents('tr').find('.temp-hint');
-    var duration_hint = $(this).parents('tr').find('.duration-hint');
-
-    switch(val){
-      case 'hold':
-        step_type_form_field.val(0);
-        temp_hint.html("at");
-        duration_hint.html("for");
-        break;
-      case 'ramp':
-        step_type_form_field.val(1);
-        temp_hint.html("to");
-        duration_hint.html("over");
-        break;
-    }
-  });
-
-  $(document).on( 'change', 'input.duration', function(e){
-    var value = $(this).val();
-    var field = $(this).parents('td').find('input.duration_field');
-
-    set_value( value, field);
-  });
-
-  $(document).on( 'click', '.dropdown-menu li a', function(){
-    $(this).parents(".input-group-btn").find('.selection').text($(this).text());
-    $(this).parents(".input-group-btn").find('.selection').val($(this).text());
-
-    var value = $(this).text();
-    var field = $(this).parents('td').find('input.duration_type_field');
-
-    set_value( value, field);
-  });
-
-  $(document).on( 'click', '.move-row-up', function(event){
-    var row = $(this).parents('tr');
-    var index = row[0].rowIndex;
-
-    if( index === 1 ){
-      return ;
-    }
-
-    var prev_index = index - 1;
-    var prev_row = row.parents('table').find('tr:eq(' + prev_index + ')');
-
-    swap_rows( row, prev_row );
-  });
-
-  $(document).on( 'click', '.move-row-down', function(event){
-    var row = $(this).parents('tr');
-    var index = row[0].rowIndex;
-
-    if( index === (row.parents('table').find('tr').length - 1) ){
-      return ;
-    }
-
-    var next_index = index + 1;
-    var next_row = row.parents('table').find('tr:eq(' + next_index + ')');
-
-    swap_rows( row, next_row );
-  });
-
+  function toggle_remove_link() {
+    $('a.remove_nested_fields').toggleClass('disabled', num_steps <= 1)
+  }
+  
   function set_value( value, field){
     field.val( value );
   }
 
   function swap_rows( row_one, row_two ){
-    swap_index( row_one, row_two );
     swap_value( row_one, row_two );
     swap_duration( row_one, row_two );
     swap_step_type( row_one, row_two );
-  }
-
-  function swap_index( row_one, row_two ){
-    var one = row_one.find('span.step_index').text();
-    var two = row_two.find('span.step_index').text();
-    row_one.find('span.step_index').text(two);
-    row_two.find('span.step_index').text(one);
-    row_one.find('input.step_index').text(two);
-    row_two.find('input.step_index').text(one);
   }
 
   function swap_value( row_one, row_two ){

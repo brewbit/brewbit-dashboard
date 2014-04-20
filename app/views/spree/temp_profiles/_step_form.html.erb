@@ -7,10 +7,10 @@
     <%= f.hidden_field :step_type, class: 'step_type', value: TempProfileStep::STEP_TYPE[:hold] %>
     <div class="btn-group" data-toggle="buttons">
       <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
-        <input type="radio" name="step_types" value="ramp"> Ramp
+        <input type="radio" name="step_types" value="ramp" class="step_type_ramp"> Ramp
       </label>
       <label class="btn btn-default step_type <%= 'active' if f.object.step_type != TempProfileStep::STEP_TYPE[:ramp] %>">
-        <input type="radio" name="step_types" value="hold"> Hold
+        <input type="radio" name="step_types" value="hold" class="step_type_hold"> Hold
       </label>
     </div>
   </td>
@@ -44,7 +44,7 @@
   <td>
     <a class="btn btn-default btn-sm move-row-up" href="#"><span class="glyphicon glyphicon-chevron-up"></span></a>
     <a class="btn btn-default btn-sm move-row-down" href="#"><span class="glyphicon glyphicon-chevron-down"></span></a>
-    <%= f.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: 'btn btn-default btn-sm' %>
+    <%= f.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: "btn btn-default btn-sm" %>
   </td>
 </tr>
 

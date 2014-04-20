@@ -11,6 +11,13 @@ module Spree
     # GET /temp_profiles/new
     def new
       @temp_profile = spree_current_user.temp_profiles.build
+      
+      step_attrs = {
+        step_index: 1,
+        step_type: TempProfileStep::STEP_TYPE[:hold],
+        duration_type: 'days'
+      }
+      @temp_profile.steps << TempProfileStep.new(step_attrs)
     end
 
     # GET /temp_profiles/1/edit
