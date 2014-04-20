@@ -18,12 +18,13 @@ require 'fileutils'
 
 class DeviceSession < ActiveRecord::Base
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
-  
+
   belongs_to :device
   belongs_to :temp_profile
 
   has_many :output_settings, class_name: 'OutputSettings', dependent: :destroy, foreign_key: 'device_session_id'
-  has_many :outputs, through: :output_settings
+
+  default_scope { order('created_at DESC') }
 
   validates :device, presence: true
   validates :active, inclusion: [true, false]
@@ -35,7 +36,7 @@ class DeviceSession < ActiveRecord::Base
   validates :temp_profile, presence: true, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]"
 
   accepts_nested_attributes_for :output_settings
-  
+
   before_validation :generate_uuid
   after_create :create_readings_file
 
@@ -66,11 +67,11 @@ class DeviceSession < ActiveRecord::Base
   def celcius_to_fahrenheit(degrees)
     degrees.to_f * 1.8 + 32
   end
-  
+
   def generate_uuid
     self.uuid = SecureRandom.uuid
   end
-  
+
   def create_readings_file
     # even though the first append would create the file, we want
     # it to be present so that the user does not get a 404 for this
