@@ -13,7 +13,12 @@ class TempProfile < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 100 }
-  validates :steps, :length => { minimum: 1, maximum: 32 }
+  validates :steps, :length => {
+    minimum: 1,
+    maximum: 32,
+    too_short: "must have at least %{count} steps",
+    too_long:  "must have at most %{count} steps"
+  }
 
   def start_value
     scale = self.try( :user ).try( :temperature_scale )
