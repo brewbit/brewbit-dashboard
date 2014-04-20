@@ -1,4 +1,4 @@
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-10 col-md-offset-1">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Edit Temperature Profile</h3>
@@ -25,11 +25,13 @@
         <table id="steps" class="table table-striped">
           <thead>
             <tr>
-              <th class="col-sm-1">#</th>
-              <th class="col-sm-2">Temperature</th>
-              <th class="col-sm-3">Duration</th>
-              <th class="col-sm-2">Type</th>
-              <th class="col-sm-2"><%= f.link_to_add raw('<span class="glyphicon glyphicon-plus"></span> Add Step'), :steps, :data => { :target => "#steps" }, class: 'btn btn-default btn-sm' %></th>
+              <th class="col-sm-1 text-center">#</th>
+              <th class="col-sm-2 text-center">Type</th>
+              <th class="col-sm-1 text-center"></th>
+              <th class="col-sm-2 text-center">Temperature</th>
+              <th class="col-sm-1 text-center"></th>
+              <th class="col-sm-3 text-center">Duration</th>
+              <th class="col-sm-2 text-center"><%= f.link_to_add raw('<span class="glyphicon glyphicon-plus"></span> Add Step'), :steps, :data => { :target => "#steps" }, class: 'btn btn-default btn-sm' %></th>
             </tr>
           </thead>
           <tbody>
@@ -63,13 +65,19 @@
   $(document).on( 'change', 'input[name="step_types"]', function(e){
     var val = this.value;
     var step_type_form_field = $(this).parents('td').find('input[type="hidden"]');
+    var temp_hint = $(this).parents('tr').find('.temp-hint');
+    var duration_hint = $(this).parents('tr').find('.duration-hint');
 
     switch(val){
       case 'hold':
         step_type_form_field.val(0);
+        temp_hint.html("at");
+        duration_hint.html("for");
         break;
       case 'ramp':
         step_type_form_field.val(1);
+        temp_hint.html("to");
+        duration_hint.html("over");
         break;
     }
   });

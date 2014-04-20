@@ -1,15 +1,32 @@
 <tr class="fields">
-  <td>
+  <td class="text-center">
     <span class='step_index'><%= f.object.step_index %></span>
     <%= f.hidden_field :step_index, class: 'step_index' %>
   </td>
-  <td>
+  <td class="text-center">
+    <%= f.hidden_field :step_type, class: 'step_type', value: TempProfileStep::STEP_TYPE[:hold] %>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
+        <input type="radio" name="step_types" value="ramp"> Ramp
+      </label>
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type != TempProfileStep::STEP_TYPE[:ramp] %>">
+        <input type="radio" name="step_types" value="hold"> Hold
+      </label>
+    </div>
+  </td>
+  <td class="temp-hint text-center">
+    at
+  </td>
+  <td class="text-center">
     <div class="input-group">
       <%= f.text_field :value, class: 'form-control value', value: f.object.value %>
       <span class="input-group-addon">&deg;<%= spree_current_user.temperature_scale %></span>
     </div>
   </td>
-  <td>
+  <td class="duration-hint text-center">
+    for
+  </td>
+  <td class="text-center">
     <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
     <%= f.hidden_field :duration_type, class: 'duration_type_field', value: (f.object.duration_type || 'days') %>
     <div class="input-group">
@@ -22,17 +39,6 @@
           <% end -%>
         </ul>
       </div>
-    </div>
-  </td>
-  <td>
-    <%= f.hidden_field :step_type, class: 'step_type' %>
-    <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
-        <input type="radio" name="step_types" value="ramp"> Ramp
-      </label>
-      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:hold] %>">
-        <input type="radio" name="step_types" value="hold"> Hold
-      </label>
     </div>
   </td>
   <td>
