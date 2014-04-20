@@ -14,8 +14,8 @@
       </label>
     </div>
   </td>
-  <td class="temp-hint text-center">
-    at
+  <td class="text-center" style="vertical-align: middle;">
+    <strong class="temp-hint">at</strong>
   </td>
   <td class="text-center">
     <div class="input-group">
@@ -23,8 +23,8 @@
       <span class="input-group-addon">&deg;<%= spree_current_user.temperature_scale %></span>
     </div>
   </td>
-  <td class="duration-hint text-center">
-    for
+  <td class="text-center" style="vertical-align: middle;">
+    <strong class="duration-hint">for</strong>
   </td>
   <td class="text-center">
     <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
