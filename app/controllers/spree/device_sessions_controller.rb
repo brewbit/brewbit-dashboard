@@ -31,14 +31,14 @@ module Spree
           # find and deactivate the old session first
           @device_session = DeviceSession.new(device_session_params)
           @device_session.active = true
-          
+
           # deactivate old session
           old_session = @device.active_session_for @device_session.sensor_index
           if old_session
             old_session.active = false
             old_session.save!
           end
-          
+
           # save the new session
           @device_session.save!
 
@@ -46,12 +46,12 @@ module Spree
         end
       rescue
         puts $!.inspect, $@
-        
+
         # build a new device_session including the outputs that were marked for destruction
         dsp = device_session_params
         dsp[:output_settings_attributes].each {|id, attrs| attrs.delete '_destroy' }
         @device_session = DeviceSession.new(dsp)
-        
+
         flash[:notice] = 'Session could not be sent to the device.'
         render action: 'new'
       else
@@ -79,7 +79,7 @@ module Spree
       def device_session_params
         params.require(:device_session).permit(
           :name, :device_id, :sensor_index, :setpoint_type, :static_setpoint, :temp_profile_id,
-          output_settings_attributes: [:id, :output_index, :function, :cycle_delay, :sensor_id, :_destroy])
+          output_settings_attributes: [:id, :output_index, :function, :cycle_delay, :_destroy])
       end
   end
 end

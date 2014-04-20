@@ -26,7 +26,7 @@ Spree::Core::Engine.routes.draw do
         resources :activation, only: [ :new ]
         resources :auth, only: [ :new ]
         resources :device_report, path: :reports, as: :reports, only: [ :create ]
-        resources :device_settings, path: :settings, as: :settings, only: [ :create ]
+        resources :controller_settings, only: [ :create ]
         get 'firmware/check.json' => 'firmware#check'
         get 'firmware/show.json' => 'firmware#show'
       end
