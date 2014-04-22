@@ -44,8 +44,10 @@ module Spree
             end
           end
 
-          params[:output_settings].each do |output_setting|
-            validate_output_setting( output_setting )
+          unless params[:output_settings].nil?
+            params[:output_settings].each do |output_setting|
+              validate_output_setting( output_setting )
+            end
           end
         end
 

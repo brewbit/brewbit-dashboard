@@ -19,12 +19,14 @@ module ControllerSettingsService
       output_settings_attributes: []
     }
 
-    settings[:output_settings].each do |output_setting|
-      device_session_params[:output_settings_attributes] << {
-        output_index: output_setting[:index],
-        function: output_setting[:function],
-        cycle_delay: output_setting[:cycle_delay]
-      }
+    unless settings[:output_settings].nil?
+      settings[:output_settings].each do |output_setting|
+        device_session_params[:output_settings_attributes] << {
+          output_index: output_setting[:index],
+          function: output_setting[:function],
+          cycle_delay: output_setting[:cycle_delay]
+        }
+      end
     end
 
     device_session = DeviceSession.new(device_session_params)
