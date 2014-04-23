@@ -44,6 +44,12 @@ module Spree
 
           DeviceService.send_session @device, @device_session
         end
+      rescue ActiveRecord::RecordInvalid => invalid
+        dsp = device_session_params
+        dsp[:output_settings_attributes].each {|id, attrs| attrs.delete '_destroy' }
+
+        flash[:error] = invalid.record.errors.full_messages.to_sentence
+        render action: 'new'
       rescue
         puts $!.inspect, $@
 

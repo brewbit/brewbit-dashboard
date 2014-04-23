@@ -24,6 +24,8 @@ class DeviceSession < ActiveRecord::Base
 
   has_many :output_settings, class_name: 'OutputSettings', dependent: :destroy, foreign_key: 'device_session_id'
 
+  validate :output_available
+
   validates :device, presence: true
   validates :active, inclusion: [true, false]
   validates :uuid, presence: true
@@ -75,5 +77,17 @@ class DeviceSession < ActiveRecord::Base
     # it to be present so that the user does not get a 404 for this
     # file when they load the show action
     FileUtils.touch("public/readings/#{self.uuid}.csv")
+  end
+
+  def output_available
+    session_outputs = self.device.active_session_output_info
+    other_output = (self.sensor_index == 0 ? 1 : 0)
+    used_outputs = session_outputs[other_output]
+
+    self.output_settings.each do |output|
+      if used_outputs.include?( output.output_index )
+        errors.add( :output_settings, "#{output.index_name} Output is being used by the other controller" )
+      end
+    end
   end
 end
