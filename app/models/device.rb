@@ -38,6 +38,20 @@ class Device < ActiveRecord::Base
     sessions.find_by active: true, sensor_index: sensor_index
   end
 
+  def active_session_output_info
+    active_sessions = sessions.where( active: true )
+
+    info = {}
+    active_sessions.each do |session|
+      info[session.sensor_index] = []
+      session.output_settings.each do |output|
+        info[session.sensor_index] << output.output_index
+      end
+    end
+
+    info
+  end
+
   def activated?
     !user.blank?
   end

@@ -12,7 +12,7 @@
   <% end %>
 
   <%= f.hidden_field :device_id %>
-  
+
   <h4>Session Settings</h4>
 
   <div class="form-group">
@@ -26,7 +26,7 @@
 
   <hr />
   <h4>Controller Settings</h4>
-  
+
   <div class='form-group'>
     <div class='col-sm-3 control-label'>
       <%= f.label :sensor_index %>
@@ -35,7 +35,7 @@
       <%= f.select :sensor_index, (0...@device.sensor_count).collect {|i| ["Sensor #{i+1}", i]}, {}, class: 'form-control' %>
     </div>
   </div>
-  
+
   <div class='form-group'>
     <div class='col-sm-3 control-label'>
       <%= f.label :setpoint_type %>
@@ -44,7 +44,7 @@
       <%= f.select :setpoint_type, [['Static',DeviceSession::SETPOINT_TYPE[:static]],['Temp Profile',DeviceSession::SETPOINT_TYPE[:temp_profile]]], {}, class: 'form-control' %>
     </div>
   </div>
-  
+
   <div id="static-setpoint" class='form-group' style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:temp_profile]%>">
     <div class='col-sm-3 control-label'>
       <%= f.label :static_setpoint %>
@@ -56,7 +56,7 @@
       </div>
     </div>
   </div>
-  
+
   <div id="temp-profile" class='form-group' style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static]%>">
     <div class='col-sm-3 control-label'>
       <%= f.label :temp_profile_id %>
@@ -65,13 +65,13 @@
       <%= f.select :temp_profile_id, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
     </div>
   </div>
-  
+
   <div class='form-group'>
     <div class='col-sm-3 control-label'>
       <%= f.label :outputs %>
     </div>
     <div class='col-sm-9'>
-      <div class="btn-group" data-toggle="buttons">
+      <div id='outputs' class="btn-group" data-toggle="buttons">
         <% @device_session.output_settings.each do |output_settings| %>
           <label class="btn btn-default">
             <input type="checkbox" class="enabled_outputs" output-index="<%= output_settings.output_index %>"> <%= output_settings.index_name %> Output
@@ -81,7 +81,7 @@
     </div>
   </div>
   <hr />
-  
+
   <%= f.fields_for :output_settings do |o| %>
     <div id="output-<%= o.object.output_index %>" style="display: none;">
       <%= render partial: 'output', locals: { o: o } %>
@@ -95,35 +95,59 @@
       </div>
     </div>
   </div>
-  
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('#device_session_setpoint_type').change(function() {
-        if ($(this).val() == <%= DeviceSession::SETPOINT_TYPE[:static] %>) {
-          $('#static-setpoint').show();
-          $('#temp-profile').hide();
-        }
-        else {
-          $('#static-setpoint').hide();
-          $('#temp-profile').show();
-        }
-      });
-    });
-    
-    $(document).on( 'change', 'input[class="enabled_outputs"]', function(e){
-      var output_index = this.attributes['output-index'].value;
-      var output_index_form = $('#output-' + output_index);
-      var output_destroy_field = output_index_form.find('input[class="destroy"]');
-  
-      if(this.checked){
-        output_index_form.show();
-        output_destroy_field.val(false);
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#device_session_setpoint_type').change(function(e){
+      if ($(this).val() == <%= DeviceSession::SETPOINT_TYPE[:static] %>) {
+        $('#static-setpoint').show();
+        $('#temp-profile').hide();
       }
       else {
-        output_index_form.hide();
-        output_destroy_field.val(true);
+        $('#static-setpoint').hide();
+        $('#temp-profile').show();
       }
     });
-  </script>
-  
-<% end %>
+
+    $('#device_session_sensor_index').change(set_available_outputs_for_controller);
+    set_available_outputs_for_controller();
+  });
+
+  $(document).on( 'change', 'input[class="enabled_outputs"]', function(e){
+    var output_index = this.attributes['output-index'].value;
+    var output_index_form = $('#output-' + output_index);
+    var output_destroy_field = output_index_form.find('input[class="destroy"]');
+
+    if(this.checked){
+      output_index_form.show();
+      output_destroy_field.val(false);
+    }
+    else {
+      output_index_form.hide();
+      output_destroy_field.val(true);
+    }
+  });
+
+  var set_available_outputs_for_controller = function(){
+    var controller_outputs_map = <%= @device.active_session_output_info.to_json.html_safe %>;
+    var val = $('#device_session_sensor_index').val();
+
+    var other_controller = 0;
+    if( 0 == val ){
+      other_controller = 1;
+    }
+
+    var used_outputs = controller_outputs_map[other_controller];
+
+    var outputs = $('#outputs label');
+    for( var i=0; i < outputs.length; ++i ){
+      if( -1 != used_outputs.indexOf(i) ){
+        $(outputs[i]).hide();
+      } else {
+        $(outputs[i]).show();
+      }
+    }
+  }
+</script>
+
