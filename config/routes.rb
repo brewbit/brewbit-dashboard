@@ -1,4 +1,7 @@
 Spree::Core::Engine.routes.draw do
+  
+  get '/sso' => 'discourse_sso#sso'
+  
   scope 'dashboard' do
     get '/' => 'devices#index'
     get '/devices/activate' => 'devices#start_activate'
