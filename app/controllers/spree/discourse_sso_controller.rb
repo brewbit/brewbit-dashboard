@@ -1,11 +1,11 @@
 module Spree
   class DiscourseSsoController < Spree::StoreController
     def sso
-      redirect_to login_path unless spree_current_user
+      user = spree_current_user
+      redirect_to login_path if user.nil?
       
       sso = SingleSignOn.parse(request.query_string)
       
-      user = spree_current_user
       sso.email = user.email
       sso.username = user.login
       sso.external_id = user.id
