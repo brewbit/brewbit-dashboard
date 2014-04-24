@@ -5,7 +5,6 @@ module Spree
       
       user = spree_current_user
       sso.email = user.email
-      #sso.name = "Bill Hicks"
       sso.username = user.login
       sso.external_id = user.id
   
