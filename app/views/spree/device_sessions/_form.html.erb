@@ -141,12 +141,8 @@
     var used_outputs = controller_outputs_map[other_controller];
 
     var outputs = $('#outputs label');
-    for( var i=0; i < outputs.length; ++i ){
-      if( -1 != used_outputs.indexOf(i) ){
-        $(outputs[i]).hide();
-      } else {
-        $(outputs[i]).show();
-      }
+    for( var i = 0; i < outputs.length; ++i ) {
+      $(outputs[i]).toggleClass('disabled', -1 != used_outputs.indexOf(i))
     }
   }
 </script>
