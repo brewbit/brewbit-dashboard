@@ -52,7 +52,7 @@ class DeviceSession < ActiveRecord::Base
     scale = device.try( :user ).try( :temperature_scale )
 
     if scale == 'C'
-      write_attribute( :static_setpoint, celcius_to_fahrenheit(value) )
+      write_attribute( :static_setpoint, fahrenheit_to_celcius(value) )
     else
       write_attribute( :static_setpoint, value )
     end
