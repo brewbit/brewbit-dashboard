@@ -142,7 +142,19 @@
 
     var outputs = $('#outputs label');
     for( var i = 0; i < outputs.length; ++i ) {
-      $(outputs[i]).toggleClass('disabled', -1 != used_outputs.indexOf(i))
+      var output_allowed = (-1 == used_outputs.indexOf(i));
+      // Enable/disable the output selection button
+      $(outputs[i]).toggleClass('disabled', !output_allowed);
+      
+      // Hide the output settings form if its not allowed anymore
+      if (!output_allowed) {
+        var output_settings_form = $('#output-' + i);
+        var output_destroy_field = output_settings_form.find('input[class="destroy"]');
+
+        $(outputs[i]).removeClass('active');
+        output_settings_form.hide();
+        output_destroy_field.val(true);
+      }
     }
   }
 </script>
