@@ -59,7 +59,7 @@
       document.getElementById("sensor-<%= device_session.id %>-timeline"),
       "/readings/<%= device_session.uuid %>.csv",
       {
-        rollPeriod: 10,
+        /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
         labels: ['', 'Reading', 'Setpoint'],
         labelsDivWidth: 500,
         ylabel: 'Temperature',
