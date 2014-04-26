@@ -67,8 +67,19 @@ module Spree
 
     # DELETE /sessions/1
     def destroy
-      @device_session.destroy
-      redirect_to device_sessions_url, error: 'Device session was successfully destroyed.'
+      begin
+        DeviceSession.transaction do
+          @device_session.destroy
+
+          empty_session = Defaults.build_device_session @device
+          empty_session.output_settings = []
+          DeviceService.send_session @device, empty_session
+        end
+
+        redirect_to @device, error: 'Device session was successfully destroyed.'
+      rescue => exception
+        redirect_to @device, error: 'Session could not be sent to the device.'
+      end
     end
 
     private

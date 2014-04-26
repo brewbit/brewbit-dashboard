@@ -6,7 +6,7 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 #no-devices {
 	text-align: center;
   margin-bottom: 25px;
-	
+
 	#blurb {
 		margin-bottom: 25px;
 	}
@@ -15,3 +15,8 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 .bottom-space {
   margin-bottom: 25px;
 }
+
+.session-delete {
+  margin-top: -23px;
+}
+
