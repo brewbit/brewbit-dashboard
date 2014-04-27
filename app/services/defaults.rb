@@ -5,11 +5,11 @@
 # hardware_identifier   - <provided>
 #
 class Defaults
-  def self.build_device( activation_token, hardware_identifier, name = 'Model-T' )
+  def self.build_device( activation_token, hardware_identifier )
     attr = {
       activation_token: activation_token,
       hardware_identifier: hardware_identifier,
-      name: "#{name} #{spree_current_user.devices.count + 1}",
+      name: "Unactivated Device",
       output_count: 2,
       sensor_count: 2,
       control_mode: Device::CONTROL_MODE[:on_off],
