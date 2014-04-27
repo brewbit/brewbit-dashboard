@@ -21,13 +21,13 @@ class Defaults
     device
   end
 
-  def self.build_device_session( device, name = '' )
+  def self.build_device_session( device, scale = 'F', name = '' )
     attr = {
       device: device,
       name: name,
       sensor_index: 0,
       setpoint_type: DeviceSession::SETPOINT_TYPE[:static],
-      static_setpoint: 68
+      static_setpoint: ( 'F' == scale ? 68 : 20 )
     }
     device_session = DeviceSession.new attr
 

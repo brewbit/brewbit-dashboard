@@ -16,7 +16,7 @@ module Spree
 
     # GET /sessions/new
     def new
-      @device_session = Defaults.build_device_session @device
+      @device_session = Defaults.build_device_session @device, spree_current_user.temperature_scale
     end
 
     # GET /sessions/1/edit
