@@ -4,7 +4,7 @@
     <%= f.hidden_field :step_index, class: 'step_index' %>
   </td>
   <td class="text-center">
-    <%= f.hidden_field :step_type, class: 'step_type', value: TempProfileStep::STEP_TYPE[:hold] %>
+    <%= f.hidden_field :step_type, class: 'step_type', value: f.object.step_type %>
     <div class="btn-group" data-toggle="buttons">
       <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
         <input type="radio" name="step_types" value="ramp" class="step_type_ramp"> Ramp
@@ -15,7 +15,9 @@
     </div>
   </td>
   <td class="text-center" style="vertical-align: middle;">
-    <strong class="temp-hint">at</strong>
+    <strong class="temp-hint">
+      <%= f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] ? 'to' : 'at' %>
+    </strong>
   </td>
   <td class="text-center">
     <div class="input-group">
@@ -24,7 +26,9 @@
     </div>
   </td>
   <td class="text-center" style="vertical-align: middle;">
-    <strong class="duration-hint">for</strong>
+    <strong class="duration-hint">
+      <%= f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] ? 'over' : 'for' %>
+    </strong>
   </td>
   <td class="text-center">
     <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
