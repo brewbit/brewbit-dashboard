@@ -25,6 +25,8 @@ module Spree
 
     # POST /sessions
     def create
+      @active_session_output_info = @device.active_session_output_info
+
       begin
         DeviceSession.transaction do
           # create the new session, but don't save it yet because we need to
@@ -45,19 +47,16 @@ module Spree
           DeviceService.send_session @device, @device_session
         end
       rescue ActiveRecord::RecordInvalid => invalid
-        dsp = device_session_params
-        dsp[:output_settings_attributes].each {|id, attrs| attrs.delete '_destroy' }
+        @device_session = reset_device_session_on_error
 
         flash[:error] = invalid.record.errors.full_messages.to_sentence
         render action: 'new'
-      rescue
+      rescue => e
         puts $!.inspect, $@
 
-        # build a new device_session including the outputs that were marked for destruction
-        dsp = device_session_params
-        dsp[:output_settings_attributes].each {|id, attrs| attrs.delete '_destroy' }
-        @device_session = DeviceSession.new(dsp)
+        logger.debug e.inspect
 
+        @device_session = reset_device_session_on_error
         flash[:error] = 'Session could not be sent to the device.'
         render action: 'new'
       else
@@ -97,6 +96,12 @@ module Spree
         params.require(:device_session).permit(
           :name, :device_id, :sensor_index, :setpoint_type, :static_setpoint, :temp_profile_id,
           output_settings_attributes: [:id, :output_index, :function, :cycle_delay, :_destroy])
+      end
+
+      def reset_device_session_on_error
+        dsp = device_session_params
+        dsp[:output_settings_attributes].each {|id, attrs| attrs.delete '_destroy' }
+        DeviceSession.new(dsp)
       end
   end
 end

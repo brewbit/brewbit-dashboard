@@ -84,7 +84,7 @@ class DeviceSession < ActiveRecord::Base
   def output_available
     session_outputs = self.device.active_session_output_info
     other_output = (self.sensor_index == 0 ? 1 : 0)
-    used_outputs = session_outputs[other_output]
+    used_outputs = session_outputs[other_output] || []
 
     self.output_settings.each do |output|
       if used_outputs.include?( output.output_index )

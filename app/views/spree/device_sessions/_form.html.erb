@@ -130,7 +130,7 @@
   });
 
   var set_available_outputs_for_controller = function(){
-    var controller_outputs_map = <%= @device.active_session_output_info.to_json.html_safe %>;
+    var controller_outputs_map = <%= @active_session_output_info.to_json.html_safe %>;
     var val = $('#device_session_sensor_index').val();
 
     var other_controller = 0;
@@ -138,14 +138,14 @@
       other_controller = 1;
     }
 
-    var used_outputs = controller_outputs_map[other_controller];
+    var used_outputs = controller_outputs_map[other_controller] || [];
 
     var outputs = $('#outputs label');
     for( var i = 0; i < outputs.length; ++i ) {
       var output_allowed = (-1 == used_outputs.indexOf(i));
       // Enable/disable the output selection button
       $(outputs[i]).toggleClass('disabled', !output_allowed);
-      
+
       // Hide the output settings form if its not allowed anymore
       if (!output_allowed) {
         var output_settings_form = $('#output-' + i);

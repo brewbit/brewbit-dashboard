@@ -41,12 +41,10 @@ class Device < ActiveRecord::Base
   def active_session_output_info
     info = {}
 
-    (0...self.sensor_count).each do |sensor_index|
-      session = active_session_for(sensor_index)
-      if session
-        info[sensor_index] = session.output_settings.collect { |os| os.output_index }
-      else
-        info[sensor_index] = []
+    active_sessions.each do |session|
+      info[session.sensor_index] = []
+      session.output_settings.each do |output|
+        info[session.sensor_index] << output.output_index
       end
     end
 
