@@ -1,14 +1,16 @@
 Spree::Core::Engine.routes.draw do
-  
+
   get '/sso' => 'discourse_sso#sso'
-  
+
   scope 'dashboard' do
     get '/' => 'devices#index'
     get '/devices/activate' => 'devices#start_activate'
     post '/devices/activate' => 'devices#activate'
     resources :devices do
       resources :sensors
-      resources :device_sessions, path: :sessions, as: :sessions, except: [:update]
+      resources :device_sessions, path: :sessions, as: :sessions, except: [:update] do
+        delete :stop_session, on: :member
+      end
     end
     resources :temp_profiles, except: [:show]
   end

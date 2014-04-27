@@ -3,7 +3,7 @@ module Spree
   class DeviceSessionsController < Spree::StoreController
     layout 'spree/layouts/devices'
     before_action :set_device
-    before_action :set_device_session, only: [:show, :edit, :destroy]
+    before_action :set_device_session, only: [:show, :edit, :destroy, :stop_session]
 
     # GET /sessions
     def index
@@ -66,17 +66,23 @@ module Spree
 
     # DELETE /sessions/1
     def destroy
+      @device_session.destroy
+      redirect_to @device, notice: 'Device session was successfully destroyed.'
+    end
+
+    def stop_session
       begin
         DeviceSession.transaction do
-          @device_session.destroy
-
-          empty_session = Defaults.build_device_session @device
+          empty_session = @device_session.clone
           empty_session.output_settings = []
+
+          @device_session.destroy
           DeviceService.send_session @device, empty_session
         end
 
         redirect_to @device, error: 'Device session was successfully destroyed.'
       rescue => exception
+        logger.debug "--- #{exception.inspect}"
         redirect_to @device, error: 'Session could not be sent to the device.'
       end
     end
