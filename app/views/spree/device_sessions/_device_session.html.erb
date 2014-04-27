@@ -74,7 +74,32 @@
             valueFormatter: Dygraph.dateString_,
             ticker: Dygraph.dateTicker,
             axisLabelFormatter: Dygraph.dateAxisFormatter
-          }
+          },
+          <% if spree_current_user.temperature_scale == 'C' -%>
+            y: {
+              valueFormatter: function(val) {
+                val = ((val - 32) / 1.8);
+                val = Math.round(val * 100) / 100;
+                return val.toString();
+              },
+              ticker: function(a, b, pixels, opts, dygraph, vals) {
+                // convert min/max to celsius
+                a = ((a - 32) / 1.8);
+                b = ((b - 32) / 1.8);
+
+                // generate ticks
+                ticks = Dygraph.numericTicks(a, b, pixels, opts, dygraph, vals);
+                
+                // convert tick values back to fahrenheit so that they can be placed
+                // at the right location
+                for (var i = 0; i < ticks.length; ++i) {
+                  ticks[i].v = ((ticks[i].v * 1.8) + 32);
+                }
+                
+                return ticks;
+              }
+            }
+          <% end -%>
         }
       }
     );
