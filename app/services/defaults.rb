@@ -9,7 +9,7 @@ class Defaults
     attr = {
       activation_token: activation_token,
       hardware_identifier: hardware_identifier,
-      name: "#{name} #{Device.count + 1}",
+      name: "#{name} #{spree_current_user.devices.count + 1}",
       output_count: 2,
       sensor_count: 2,
       control_mode: Device::CONTROL_MODE[:on_off],
