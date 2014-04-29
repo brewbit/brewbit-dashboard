@@ -74,7 +74,7 @@ module Spree
           empty_session = @device_session.clone
           empty_session.output_settings = []
 
-          @device_session.destroy
+          @device_session.save!
           DeviceService.send_session @device, empty_session
         end
 
