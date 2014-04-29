@@ -28,7 +28,6 @@ class DeviceSession < ActiveRecord::Base
 
   validates :device, presence: true
   validates :active, inclusion: [true, false]
-  validates :uuid, presence: true
   validates :name, presence: true, length: { maximum: 100 }
   validates :sensor_index, presence: true
   validates :setpoint_type, presence: true, inclusion: { in: SETPOINT_TYPE.values }
@@ -37,7 +36,7 @@ class DeviceSession < ActiveRecord::Base
 
   accepts_nested_attributes_for :output_settings
 
-  before_validation :generate_uuid
+  before_create :generate_uuid
   after_create :create_readings_file
 
   def static_setpoint
