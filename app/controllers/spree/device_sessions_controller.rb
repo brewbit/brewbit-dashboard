@@ -25,8 +25,6 @@ module Spree
 
     # POST /sessions
     def create
-      @active_session_output_info = @device.active_session_output_info
-
       begin
         DeviceSession.transaction do
           # create the new session, but don't save it yet because we need to
@@ -95,6 +93,7 @@ module Spree
 
       def set_device
         @device = Device.find(params[:device_id])
+        @active_session_output_info = @device.active_session_output_info
       end
 
       # Only allow a trusted parameter "white list" through.
