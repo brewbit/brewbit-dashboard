@@ -9,7 +9,7 @@ Spree::Core::Engine.routes.draw do
     resources :devices do
       resources :sensors
       resources :device_sessions, path: :sessions, as: :sessions, except: [:update] do
-        delete :stop_session, on: :member
+        post :stop_session, on: :member
       end
     end
     resources :temp_profiles, except: [:show]
