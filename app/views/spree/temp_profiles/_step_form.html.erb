@@ -4,7 +4,7 @@
     <%= f.hidden_field :step_index, class: 'step_index' %>
   </td>
   <td class="text-center">
-    <%= f.hidden_field :step_type, class: 'step_type', value: f.object.step_type %>
+    <%= f.hidden_field :step_type, class: 'step_type', value: f.object.step_type || TempProfileStep::STEP_TYPE[:hold] %>
     <div class="btn-group" data-toggle="buttons">
       <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
         <input type="radio" name="step_types" value="ramp" class="step_type_ramp"> Ramp
