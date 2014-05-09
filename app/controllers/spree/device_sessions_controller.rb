@@ -65,7 +65,7 @@ module Spree
     # DELETE /sessions/1
     def destroy
       @device_session.destroy
-      redirect_to @device, notice: 'Device session was successfully destroyed.'
+      redirect_to device_sessions_path, notice: 'Device session was successfully destroyed.'
     end
 
     def stop_session
