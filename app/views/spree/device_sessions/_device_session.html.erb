@@ -3,7 +3,7 @@
     <div class="panel-heading">
       <h3 class="panel-title">Controller <%= device_session.sensor_index + 1 %> - <%= device_session.name %></h3>
       <% if device_session.active -%>
-        <div class='pull-right session-delete'>
+        <div class='pull-right panel-controls'>
           <%= link_to "Stop Session", stop_session_device_session_path(@device, device_session), method: :post, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %>
         </div>
       <% end -%>

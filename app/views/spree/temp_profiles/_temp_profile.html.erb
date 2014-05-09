@@ -1,13 +1,13 @@
 <div class="temp-profile col-md-12">
   <div class="panel panel-default">
 
-    <div class="panel-heading clearfix">
-      <div class='pull-left'>
-        <h3 class="panel-title"><%= temp_profile.name %></h3>
-      </div>
-      <div class="btn-group pull-right">
-        <%= link_to raw('<span class="glyphicon glyphicon-pencil"></span>'), edit_temp_profile_path(temp_profile), class: 'btn btn-default' %>
-        <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), temp_profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    <div class="panel-heading">
+      <h3 class="panel-title"><%= temp_profile.name %></h3>
+      <div class="pull-right panel-controls">
+        <div class="btn-group">
+          <%= link_to raw('<span class="glyphicon glyphicon-pencil"></span>'), edit_temp_profile_path(temp_profile), class: 'btn btn-default btn-sm' %>
+          <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), temp_profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+        </div>
       </div>
     </div>
     <div class="panel-body">
