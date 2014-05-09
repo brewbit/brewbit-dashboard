@@ -17,7 +17,7 @@ module Activation
 
     device = Device.find_by activation_token: activation_token
     raise 'A device with that activation token could not be found.' if !device
-    raise 'That device is already activated.' if device.user != user
+    raise 'That device is already activated.' if device.user != nil && device.user != user
 
     begin
       if device.name == 'Unactivated Device'
