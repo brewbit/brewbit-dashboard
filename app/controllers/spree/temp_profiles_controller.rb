@@ -1,6 +1,6 @@
 module Spree
   class TempProfilesController < Spree::StoreController
-    layout 'spree/layouts/dashboard'
+    layout 'spree/layouts/temp_profiles'
     before_filter :correct_user, only: [:edit, :update, :destroy]
 
     # GET /temp_profiles

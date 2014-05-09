@@ -1,0 +1,14 @@
+<% content_for :dashboard_content do %>
+  <div class="bottom-space">
+    <ul class="nav nav-pills">
+      <li class="<%= 'active' if current_page?(temp_profiles_path) %>">
+        <%= link_to 'Temp Profiles', temp_profiles_path %>
+      </li>
+      <li class="<%= 'active' if !current_page?(temp_profiles_path) %>">
+        <%= link_to 'New Temp Profile', new_temp_profile_path %>
+      </li>
+    </ul>
+  </div>
+  <%= yield %>
+<% end %>
+<%= render template: 'spree/layouts/dashboard' %>

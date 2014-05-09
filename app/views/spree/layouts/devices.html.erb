@@ -1,6 +1,6 @@
 <% content_for :dashboard_content do %>
   <div class="bottom-space">
-    <ul class="nav nav-pills device-nav">
+    <ul class="nav nav-pills">
       <li class="<%= 'active' if current_page?(device_path(@device)) || current_page?('/dashboard') %>">
         <%= link_to raw('<span class="glyphicon glyphicon-stats"></span> Active Sessions'), device_path(@device) %>
       </li>

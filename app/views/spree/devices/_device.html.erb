@@ -1,7 +1,7 @@
 <% unless device.active_sessions.blank? %>
   <%= render device.active_sessions %>
 <% else %>
-  <div id="no-devices">
+  <div id="no-stuff">
     <h1 id="blurb">This device does not have any active sessions.</h1>
     <%= link_to "Start One!", new_device_session_path(device), class: 'btn btn-primary btn-lg' %>
   </div>
