@@ -20,10 +20,13 @@ module Activation
     raise 'That device is already activated.' if device.user != user
 
     begin
-      device.name = 'Model-T'
-      if user.devices.count > 0
-        device.name += " (#{user.devices.count})"
+      if device.name == 'Unactivated Device'
+        device.name = 'Model-T'
+        if user.devices.count > 0
+          device.name += " (#{user.devices.count})"
+        end
       end
+      
       device.user = user
       device.save!
       
