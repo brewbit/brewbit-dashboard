@@ -20,7 +20,7 @@
               <h4>
                 <span class="label label-default label-lg">
                   <% if device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static] %>
-                    Static Setpoint - <%= device_session.static_setpoint %>&deg; <%= spree_current_user.temperature_scale %>
+                    Static Setpoint - <%= device_session.static_setpoint.round(1) %>&deg; <%= spree_current_user.temperature_scale %>
                   <% else %>
                     Temperature Profile - <%= device_session.temp_profile.name %>
                   <% end %>
