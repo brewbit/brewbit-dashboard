@@ -1,13 +1,13 @@
 <div class="col-md-10 col-md-offset-1">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Edit Temperature Profile</h3>
+      <h3 class="panel-title"><%= @temp_profile.id ? 'Edit' : 'New' %> Temperature Profile</h3>
     </div>
     <div class="panel-body">
       <%= nested_form_for @temp_profile, html: { class: 'form-horizontal' } do |f| %>
         <div class="form-group">
           <%= f.label :name, class: 'col-sm-2 control-label' %>
-          <div class="col-sm-10">
+          <div class="col-sm-6">
             <%= f.text_field :name, class: 'form-control' %>
           </div>
         </div>
@@ -43,7 +43,7 @@
 
         <div class="form-group">
           <div class="col-md-offset-8 col-md-4">
-            <%= f.submit 'Update Temperature Profile', class: 'btn btn-primary' %>
+            <%= f.submit "#{@temp_profile.id ? 'Update' : 'Create'} Temperature Profile", class: 'btn btn-primary' %>
           </div>
         </div>
       <% end %>
