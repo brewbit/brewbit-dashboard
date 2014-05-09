@@ -12,12 +12,12 @@ module Activation
   end
 
   def self.user_activates_device( user, activation_token )
-    raise 'Invalid user specified' if user.blank?
+    raise 'Invalid user specified' if user.blank? || user.nil?
     raise 'Invalid activation token specified' if activation_token.blank?
 
     device = Device.find_by activation_token: activation_token
     raise 'A device with that activation token could not be found.' if !device
-    raise 'That device is already activated.' if device.user
+    raise 'That device is already activated.' if device.user != user
 
     begin
       device.name = 'Model-T'
