@@ -14,6 +14,10 @@ module SensorReadingsService
       session.last_setpoint = setpoint
       session.save
       
+      # manually touch to ensure that the updated_at is updated even if
+      # the new reading/setpoint is identical to the previous
+      session.touch
+      
       File.open("public/readings/#{session.uuid}.csv", 'a') do |f|
         f.write("#{Time.now.to_i * 1000},#{reading},#{setpoint}\n")
       end
