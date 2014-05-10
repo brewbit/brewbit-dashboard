@@ -58,6 +58,26 @@ class DeviceSession < ActiveRecord::Base
       write_attribute( :static_setpoint, value )
     end
   end
+  
+  def last_reading
+    scale = device.try( :user ).try( :temperature_scale )
+
+    if scale == 'C'
+      fahrenheit_to_celcius( read_attribute(:last_reading) )
+    else
+      read_attribute( :last_reading )
+    end
+  end
+  
+  def last_setpoint
+    scale = device.try( :user ).try( :temperature_scale )
+
+    if scale == 'C'
+      fahrenheit_to_celcius( read_attribute(:last_setpoint) )
+    else
+      read_attribute( :last_setpoint )
+    end
+  end
 
   private
 
