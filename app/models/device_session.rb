@@ -19,7 +19,7 @@ require 'fileutils'
 class DeviceSession < ActiveRecord::Base
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
 
-  belongs_to :device
+  belongs_to :device, touch: true
   belongs_to :temp_profile
 
   has_many :output_settings, class_name: 'OutputSettings', dependent: :destroy, foreign_key: 'device_session_id'

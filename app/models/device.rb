@@ -54,6 +54,10 @@ class Device < ActiveRecord::Base
   def activated?
     !user.blank?
   end
+  
+  def connected?
+    updated_at > 1.minute.ago
+  end
 
   def hysteresis
     scale = self.try( :user ).try( :temperature_scale )

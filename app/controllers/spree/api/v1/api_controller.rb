@@ -11,8 +11,13 @@ module Spree
         before_filter :ensure_device_exists!
         before_filter :ensure_device_activated!
         before_filter :ensure_auth_token_matches!
+        before_filter :touch_device!
         
         private
+        
+        def touch_device!
+          @device.touch
+        end
         
         def ensure_auth_token_matches!
           unless @device.user.authentication_token == params[:auth_token]

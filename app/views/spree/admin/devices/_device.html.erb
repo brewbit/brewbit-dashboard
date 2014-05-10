@@ -3,5 +3,5 @@
   <td class='align-center'><%= device.name %></td>
   <td class='align-center'><%= link_to( device.user.email, edit_admin_user_url(device.user) ) if device.user %></td>
   <td class='align-center'><span class='icon-<%= device.activated? ? 'ok' : 'ban' %>-circle'></span></td>
-  <td class='align-center'><span class='icon-<%= device.updated_at < 1.minute.ago ? 'ok' : 'ban' %>-circle'></span></td>
+  <td class='align-center'><span class='icon-<%= device.connected? ? 'ok' : 'ban' %>-circle'></span></td>
 </tr>
