@@ -1,3 +1,5 @@
-object @firmware
+object false
 
-attributes :version, :size, :file_b64
+@chunk.keys.each do |key|
+  node(key){ @chunk[key] }
+end

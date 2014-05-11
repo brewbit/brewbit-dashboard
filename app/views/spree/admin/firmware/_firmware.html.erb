@@ -1,16 +1,14 @@
 <tr>
-  <td>
-  </td>
-  <td>
+  <td class="align-center">
     <%= firmware.version %>
   </td>
-  <td>
+  <td class="align-center">
     <%= firmware.size_in_kb %> Kb
   </td>
-  <td>
-    <%= link_to '<i class="icon-white icon-download"></i> Download'.html_safe, serve_admin_firmware_path(firmware), class: 'btn btn-info' %>
+  <td class="align-center">
+    <%= firmware.channel %>
   </td>
-  <td>
-    <%= link_to '<i class="icon-white icon-remove-circle"></i> Delete'.html_safe, admin_firmware_path(firmware), method: :delete, class: 'btn btn-danger' %>
+  <td class="actions">
+    <%= link_to '', admin_firmware_path(firmware), class: 'icon_link icon-trash no-text', method: :delete %>
   </td>
 </tr>

@@ -29,6 +29,7 @@ class Device < ActiveRecord::Base
   validates :hardware_identifier, uniqueness: { case_sensitive: true }
   validates :hysteresis, presence: true,
             numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: MAX_HYSTERESIS }
+  validates :update_channel, presence: true, inclusion: ['stable', 'unstable']
 
   def active_sessions
     sessions.order(sensor_index: :asc).where(active: true)

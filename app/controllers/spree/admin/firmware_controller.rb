@@ -4,7 +4,7 @@ module Spree
 
       class FirmwareParams
         def self.build( params )
-          params.require( :firmware ).permit( :version, :file )
+          params.require( :firmware ).permit( :version, :file, :channel )
         end
       end
 

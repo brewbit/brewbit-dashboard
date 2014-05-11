@@ -30,7 +30,12 @@
             <%= f.text_field :version, class: 'fullwidth' %>
           <% end %>
         </div>
-        <div class="omega two columns">&nbsp;</div>
+        <div class="alpha four columns">
+          <%= f.field_container :channel do %>
+            <%= f.label :channel %><br>
+            <%= f.select :channel, ['stable', 'unstable'], {}, {class: 'fullwidth'} %>
+          <% end %>
+        </div>
         <div class="omega five columns">
           <%= f.field_container :file do %>
             <%= f.label :file, 'Firmware Binary' %><br>
@@ -48,3 +53,6 @@
   </fieldset>
 <% end -%>
 
+<script>
+  $('#firmware_channel').select2();
+</script>

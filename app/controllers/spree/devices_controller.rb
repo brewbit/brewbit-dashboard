@@ -63,7 +63,7 @@ module Spree
     private
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name, :control_mode, :hysteresis)
+        params.require(:device).permit(:name, :control_mode, :hysteresis, :update_channel)
       end
 
       def correct_device

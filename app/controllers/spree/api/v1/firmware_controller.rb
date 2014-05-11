@@ -7,10 +7,10 @@ module Spree
         before_filter :validate_show_params!, :only => :show
 
         def check
-          if Firmware.is_latest? params[:current_version]
+          if Firmware.is_latest?(@device.update_channel, params[:current_version])
             @update_available = false
           else
-            update = Firmware.latest
+            update = Firmware.latest @device.update_channel
             @update_available = true
             @version = update.version
             @binary_size = update.size
@@ -37,11 +37,36 @@ module Spree
             return
           end
           
-          @firmware = Firmware.find_by version: params[:version]
+          if params[:offset].blank?
+            @message = 'Offset not provided'
+            render :error, status: 400
+            return
+          end
+          
+          if params[:size].blank?
+            @message = 'Size not provided'
+            render :error, status: 400
+            return
+          end
+          
+          if @device.update_channel == 'stable'
+            @firmware = Firmware.find_by version: params[:version], channel: 'stable'
+          else
+            # on the unstable channel, search for ANY newer version
+            @firmware = Firmware.find_by version: params[:version]
+          end
           unless @firmware
             @message = 'Firmware version not found'
             render :error, status: 404
+            return
           end
+          
+          @chunk = {
+            version: params[:version],
+            offset: params[:offset],
+            size: params[:size],
+            data: @firmware.chunk(params[:offset], params[:size])
+          }
         end
 
       end
