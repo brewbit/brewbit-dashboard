@@ -2,7 +2,15 @@
   <td class='align-center'><%= device.id %></td>
   <td class='align-center'><%= device.name %></td>
   <td class='align-center'><%= link_to( device.user.email, edit_admin_user_url(device.user) ) if device.user %></td>
-  <td class='align-center'><span class='icon-<%= device.activated? ? 'ok' : 'ban' %>-circle'></span></td>
-  <td class='align-center'><span class='icon-<%= device.connected? ? 'ok' : 'ban' %>-circle'></span></td>
+  <% if device.activated? %>
+    <td class='align-center' style="color: limegreen"><span class='icon-ok-circle'></span></td>
+  <% else %>
+    <td class='align-center' style="color: orangered"><span class='icon-ban-circle'></span></td>
+  <% end %>
+  <% if device.connected? %>
+    <td class='align-center' style="color: limegreen"><span class='icon-ok-circle'></span></td>
+  <% else %>
+    <td class='align-center' style="color: orangered"><span class='icon-ban-circle'></span></td>
+  <% end %>
   <td class='align-center'><%= device.update_channel %></span></td>
 </tr>
