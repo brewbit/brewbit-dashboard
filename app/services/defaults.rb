@@ -13,7 +13,8 @@ class Defaults
       output_count: 2,
       sensor_count: 2,
       control_mode: Device::CONTROL_MODE[:on_off],
-      hysteresis: 1
+      hysteresis: 1,
+      update_channel: 'stable'
     }
 
     device = Device.new attr

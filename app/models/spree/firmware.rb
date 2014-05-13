@@ -22,10 +22,10 @@ module Spree
     validates :file, presence: true
 
     def self.latest( channel, with_data = false )
-      if channel == 'stable'
-        channels = 'stable'
-      else
+      if channel == 'unstable'
         channels = ['stable', 'unstable']
+      else
+        channels = 'stable'
       end
       
       if with_data

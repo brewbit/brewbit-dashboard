@@ -49,11 +49,11 @@ module Spree
             return
           end
           
-          if @device.update_channel == 'stable'
-            @firmware = Firmware.find_by version: params[:version], channel: 'stable'
-          else
+          if @device.update_channel == 'unstable'
             # on the unstable channel, search for ANY newer version
             @firmware = Firmware.find_by version: params[:version]
+          else
+            @firmware = Firmware.find_by version: params[:version], channel: 'stable'
           end
           unless @firmware
             @message = 'Firmware version not found'
