@@ -5,7 +5,7 @@
     <thead>
       <tr>
         <th class="col-md-6">Session Name</th>
-        <th class="col-md-3">Sent</th>
+        <th class="col-md-3">Started</th>
         <th class="col-md-2"></th>
       </tr>
     </thead>
@@ -13,7 +13,7 @@
       <% @device_sessions.each do |device_session| %>
         <tr>
           <td><%= link_to device_session.name, device_session_path(@device, device_session) %></td>
-          <td><%= device_session.created_at.to_s(:pretty) %></td>
+          <td><span title="<%= device_session.created_at.to_s(:pretty) %>"><%= time_ago_in_words(device_session.created_at) %> ago</span></td>
           <td>
             <div class="btn-group">
               <%= link_to raw('<span class="glyphicon glyphicon-eye-open"></span>'), device_session_path(@device, device_session), 'class' => 'tool-link btn btn-default', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'View Session' %>
