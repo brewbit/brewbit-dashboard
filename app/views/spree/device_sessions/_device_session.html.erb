@@ -5,63 +5,67 @@
         Controller <%= device_session.sensor_index + 1 %> - <%= device_session.name %>
         <span class="status-header">updated <%= time_ago_in_words(device_session.updated_at) %> ago</span>
       </h3>
-      <% if device_session.active -%>
-        <div class='pull-right panel-controls'>
+      <div class='pull-right panel-controls'>
+        <% if device_session.active -%>
           <%= link_to "Stop Session", stop_session_device_session_path(@device, device_session), method: :post, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %>
-        </div>
-      <% end -%>
+        <% else -%>
+          <%= link_to raw('<span class="glyphicon glyphicon-download-alt"></span>'), "/readings/#{device_session.uuid}.csv", 'class' => 'download-link btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Download CSV' %>
+        <% end -%>
+      </div>
     </div>
     <div class="panel-body">
       
-      <div class="row">
-        <div class="col-md-3  col-sm-3 col-md-offset-1 col-sm-offset-0">
-          <div class="status-header">Temperature</div>
-          <div class="status-temp-value">
-            <% if device_session.last_reading.nil? %>
-              --.-
+      <% if device_session.active -%>
+        <div class="row">
+          <div class="col-md-3  col-sm-3 col-md-offset-1 col-sm-offset-0">
+            <div class="status-header">Temperature</div>
+            <div class="status-temp-value">
+              <% if device_session.last_reading.nil? %>
+                --.-
+              <% else %>
+                <%= device_session.last_reading.round(1) %>
+              <% end %>
+            </div>
+            <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <% if device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static] %>
+              <div class="status-header">Setpoint (Static)</div>
+              <div class="status-temp-value">
+                <% if device_session.last_setpoint.nil? %>
+                  --.-
+                <% else %>
+                  <%= device_session.last_setpoint.round(1) %>
+                <% end %>
+              </div>
+              <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
             <% else %>
-              <%= device_session.last_reading.round(1) %>
+              <div class="status-header">Setpoint (Temp Profile)</div>
+              <div class="status-temp-value">
+                <% if device_session.last_setpoint.nil? %>
+                  --.-
+                <% else %>
+                  <%= device_session.last_setpoint.round(1) %>
+                <% end %>
+              </div>
+              <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
+              <div class="status-header"><%= device_session.temp_profile.name %></div>
             <% end %>
           </div>
-          <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
-        </div>
-        <div class="col-md-3 col-sm-3">
-          <% if device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static] %>
-            <div class="status-header">Setpoint (Static)</div>
-            <div class="status-temp-value">
-              <% if device_session.last_setpoint.nil? %>
-                --.-
-              <% else %>
-                <%= device_session.last_setpoint.round(1) %>
-              <% end %>
-            </div>
-            <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
-          <% else %>
-            <div class="status-header">Setpoint (Temp Profile)</div>
-            <div class="status-temp-value">
-              <% if device_session.last_setpoint.nil? %>
-                --.-
-              <% else %>
-                <%= device_session.last_setpoint.round(1) %>
-              <% end %>
-            </div>
-            <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
-            <div class="status-header"><%= device_session.temp_profile.name %></div>
-          <% end %>
-        </div>
-        <div class="col-md-3 col-sm-3">
-          <div class="status-header">Controlling</div>
-          <% if device_session.output_settings.present? -%>
-            <% device_session.output_settings.each do |setting| -%>
-              <span class="label label-default label-lg">
-                <%= setting.index_name %> Output - <%= setting.function_name %>
-              </span>&nbsp;
+          <div class="col-md-3 col-sm-3">
+            <div class="status-header">Controlling</div>
+            <% if device_session.output_settings.present? -%>
+              <% device_session.output_settings.each do |setting| -%>
+                <span class="label label-default label-lg">
+                  <%= setting.index_name %> Output - <%= setting.function_name %>
+                </span>&nbsp;
+              <% end -%>
+            <% else -%>
+              <span class="label label-default label-lg">Nothing</span>
             <% end -%>
-          <% else -%>
-            <span class="label label-default label-lg">Nothing</span>
-          <% end -%>
+          </div>
         </div>
-      </div>
+      <% end -%>
       
       <div id="sensor-<%= device_session.id %>-timeline" class="sensor-plot bottom-space"></div>
     </div>
@@ -70,6 +74,7 @@
 
 <script type='text/javascript'>
   $(document).ready(function () {
+    $('.download-link').tooltip({html: 'asdf'});
     g = new Dygraph(
       document.getElementById("sensor-<%= device_session.id %>-timeline"),
       "/readings/<%= device_session.uuid %>.csv",
