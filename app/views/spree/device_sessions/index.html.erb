@@ -16,9 +16,9 @@
           <td><span title="<%= device_session.created_at.to_s(:pretty) %>"><%= time_ago_in_words(device_session.created_at) %> ago</span></td>
           <td>
             <div class="btn-group">
-              <%= link_to raw('<span class="glyphicon glyphicon-eye-open"></span>'), device_session_path(@device, device_session), 'class' => 'tool-link btn btn-default', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'View Session' %>
-              <%= link_to raw('<span class="glyphicon glyphicon-download-alt"></span>'), "/readings/#{device_session.uuid}.csv", 'class' => 'tool-link btn btn-default', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Download CSV' %>
-              <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), device_session_path(@device, device_session), 'method' => :delete, 'class' => 'tool-link btn btn-danger', 'data' => { confirm: 'Are you sure?' }, 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete Session' %>
+              <%= link_to raw('<span class="glyphicon glyphicon-eye-open"></span>'), device_session_path(@device, device_session), 'class' => 'btn btn-default', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'View Session' %>
+              <%= link_to raw('<span class="glyphicon glyphicon-download-alt"></span>'), "/readings/#{device_session.uuid}.csv", 'class' => 'btn btn-default', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Download CSV' %>
+              <%= link_to raw('<span class="glyphicon glyphicon-trash"></span>'), device_session_path(@device, device_session), 'method' => :delete, 'class' => 'btn btn-danger', 'data' => { confirm: 'Are you sure?' }, 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete Session' %>
             </div>
           </td>
         </tr>
@@ -30,6 +30,8 @@
 
 <script type='text/javascript'>
   $(document).ready(function () {
-    $('.tool-link').tooltip({html: 'asdf'});
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   });
 </script>

@@ -5,11 +5,27 @@
         Controller <%= device_session.sensor_index + 1 %> - <%= device_session.name %>
         <span class="status-header">updated <%= time_ago_in_words(device_session.updated_at) %> ago</span>
       </h3>
-      <div class='pull-right panel-controls'>
+      <div class='pull-right panel-controls btn-group'>
+        <%= link_to raw('<span class="glyphicon glyphicon-share-alt"></span>'), 
+                    'javascript:;',
+                    'class' => 'share-link btn btn-default btn-sm',
+                    'data-toggle' => 'tooltip',
+                    'title' => 'Share Session',
+                    'data-content' => '<div class="input-group"><input type="text" class="form-control" value="' + device_session_url(@device, device_session, token: device_session.access_token) + '" readonly><span class="input-group-btn"><button class="copy-share-link btn btn-default" type="button" data-toggle="tooltip" title="copy to clipboard" data-clipboard-text="' + device_session_url(@device, device_session, token: device_session.access_token) + '"><span class="glyphicon glyphicon-link"></span></button></span></div>' %>
         <% if device_session.active -%>
-          <%= link_to "Stop Session", stop_session_device_session_path(@device, device_session), method: :post, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %>
+          <%= link_to raw('<span class="glyphicon glyphicon-off"></span>'),
+                      stop_session_device_session_path(@device, device_session),
+                      method: :post,
+                      class: 'btn btn-danger btn-sm',
+                      data: { confirm: 'Are you sure?' },
+                      'data-toggle' => 'tooltip',
+                      'title' => 'Stop Session' %>
         <% else -%>
-          <%= link_to raw('<span class="glyphicon glyphicon-download-alt"></span>'), "/readings/#{device_session.uuid}.csv", 'class' => 'download-link btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Download CSV' %>
+          <%= link_to raw('<span class="glyphicon glyphicon-download-alt"></span>'),
+                      "/readings/#{device_session.uuid}.csv",
+                      'class' => 'btn btn-default btn-sm',
+                      'data-toggle' => 'tooltip',
+                      'title' => 'Download CSV' %>
         <% end -%>
       </div>
     </div>
@@ -74,7 +90,44 @@
 
 <script type='text/javascript'>
   $(document).ready(function () {
-    $('.download-link').tooltip({html: 'asdf'});
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body',
+      placement: 'top'
+    });
+    $('.share-link').popover({
+        trigger: 'click',
+        container: 'body',
+        placement: 'top',
+        show: true,
+        html: true
+    });
+    $('.share-link').on('show.bs.popover', function () {
+      $(this).tooltip('destroy');
+    });
+    $('.share-link').on('shown.bs.popover', function () {
+      ZeroClipboard.config({
+        forceHandCursor: true
+      });
+      var clip = new ZeroClipboard($(".copy-share-link"));
+      clip.on( 'mouseover', function ( event ) {
+        $('.copy-share-link').tooltip({
+          container: 'body',
+          placement: 'top'
+        });
+        $('.copy-share-link').tooltip('show');
+      });
+      clip.on( 'mouseout', function ( event ) {
+        $('.copy-share-link').tooltip('destroy');
+      });
+    });
+    $('.share-link').on('hide.bs.popover', function () {
+      $(this).tooltip({
+        container: 'body',
+        placement: 'top'
+      });
+      $(this).tooltip('show');
+    });
+    
     g = new Dygraph(
       document.getElementById("sensor-<%= device_session.id %>-timeline"),
       "/readings/<%= device_session.uuid %>.csv",

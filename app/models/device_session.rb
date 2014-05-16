@@ -33,9 +33,11 @@ class DeviceSession < ActiveRecord::Base
   validates :setpoint_type, presence: true, inclusion: { in: SETPOINT_TYPE.values }
   validates :static_setpoint, presence: true, if: "setpoint_type == SETPOINT_TYPE[:static]"
   validates :temp_profile, presence: true, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]"
+  validates :access_token, presence: true
 
   accepts_nested_attributes_for :output_settings
 
+  before_validation :generate_access_token
   before_create :generate_uuid
   after_create :create_readings_file
 
@@ -92,6 +94,15 @@ class DeviceSession < ActiveRecord::Base
   def generate_uuid
     self.uuid = SecureRandom.uuid
   end
+  
+  def generate_access_token
+    if self.access_token.nil?
+      begin
+        self.access_token = SecureRandom.hex
+      end while self.class.exists?(access_token: access_token)
+    end
+  end
+
 
   def create_readings_file
     # even though the first append would create the file, we want
