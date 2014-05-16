@@ -11,7 +11,7 @@
                     'class' => 'share-link btn btn-default btn-sm',
                     'data-toggle' => 'tooltip',
                     'title' => 'Share Session',
-                    'data-content' => '<div class="input-group"><input type="text" class="form-control" value="' + device_session_url(@device, device_session, token: device_session.access_token) + '" readonly><span class="input-group-btn"><button class="copy-share-link btn btn-default" type="button" data-toggle="tooltip" title="copy to clipboard" data-clipboard-text="' + device_session_url(@device, device_session, token: device_session.access_token) + '"><span class="glyphicon glyphicon-link"></span></button></span></div>' %>
+                    'data-content' => '<p><small>Share this link with your friends to let them check out your brew!</small></p><div class="input-group"><input type="text" class="form-control" value="' + device_session_url(@device, device_session, token: device_session.access_token) + '" readonly><span class="input-group-btn"><button class="copy-share-link btn btn-default" type="button" data-toggle="tooltip" title="copy to clipboard" data-clipboard-text="' + device_session_url(@device, device_session, token: device_session.access_token) + '"><span class="glyphicon glyphicon-link"></span></button></span></div>' %>
         <% if device_session.active -%>
           <%= link_to raw('<span class="glyphicon glyphicon-off"></span>'),
                       stop_session_device_session_path(@device, device_session),
