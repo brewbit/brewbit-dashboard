@@ -1,7 +1,6 @@
-module BrewbitDashboard
+module Brewbit
   class Engine < Rails::Engine
-    require 'spree/core'
-    isolate_namespace Spree
+    isolate_namespace Brewbit
     engine_name 'brewbit_dashboard'
 
     # use rspec for tests
