@@ -1,0 +1,23 @@
+<div class="col-md-6 col-md-offset-3">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Activate Device</h3>
+    </div>
+    <div class="panel-body">
+<%= form_tag nil, { class: 'form-horizontal' } do %>
+  <div class="form-group">
+    <%= label_tag 'activation_token', 'Activation Token', class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8">
+      <%= text_field_tag 'activation_token', nil, class: 'form-control', autofocus: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-8">
+      <%= submit_tag 'Activate Device', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+    </div>
+  </div>
+</div>

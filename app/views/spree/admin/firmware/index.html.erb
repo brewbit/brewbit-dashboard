@@ -1,0 +1,26 @@
+<% content_for :page_title do %>
+  Firmware Binaries
+<% end %>
+
+<%= render partial: 'spree/admin/shared/devices_sub_menu' %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to 'new firmware', new_admin_firmware_path, :icon => 'icon-plus' %>
+  </li>
+<% end %>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Size</th>
+      <th>Channel</th>
+      <th class="actions"></th>
+    </tr>
+  </thead>
+  <% @firmware_list.each do |firmware| -%>
+    <%= render partial: 'firmware', locals: { firmware: firmware } %>
+  <% end -%>
+</table>
+

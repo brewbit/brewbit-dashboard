@@ -1,0 +1,27 @@
+<h4><%= o.object.index_name %> Output Settings</h4>
+
+<%= o.hidden_field :output_index %>
+<%= o.hidden_field :_destroy, value: true, class: 'destroy' %>
+    
+<div class='form-group'>
+  <div class='col-sm-3 control-label'>
+    <%= o.label :function %>
+  </div>
+  <div class='col-sm-9'>
+    <%= o.select :function, OutputSettings::FUNCTIONS.map {|k,v| [k.capitalize, v]}, {}, class: 'form-control' %>
+  </div>
+</div>
+
+<div class='form-group'>
+  <div class='col-sm-3 control-label'>
+    <%= o.label :cycle_delay %>
+  </div>
+  <div class='col-sm-9'>
+    <div class="input-group">
+      <%= o.text_field :cycle_delay, class: 'form-control' %>
+      <span class="input-group-addon">minutes</span>
+    </div>
+  </div>
+</div>
+
+<hr />

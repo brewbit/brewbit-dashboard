@@ -1,0 +1,14 @@
+<tr>
+  <td class="align-center">
+    <%= firmware.version %>
+  </td>
+  <td class="align-center">
+    <%= firmware.size_in_kb %> Kb
+  </td>
+  <td class="align-center">
+    <%= firmware.channel %>
+  </td>
+  <td class="actions">
+    <%= link_to '', admin_firmware_path(firmware), class: 'icon_link icon-trash no-text', method: :delete %>
+  </td>
+</tr>

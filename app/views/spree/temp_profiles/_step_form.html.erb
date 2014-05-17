@@ -1,0 +1,54 @@
+<tr class="fields">
+  <td class="text-center">
+    <span class='step_index'><%= f.object.step_index %></span>
+    <%= f.hidden_field :step_index, class: 'step_index' %>
+  </td>
+  <td class="text-center">
+    <%= f.hidden_field :step_type, class: 'step_type', value: f.object.step_type || TempProfileStep::STEP_TYPE[:hold] %>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] %>">
+        <input type="radio" name="step_types" value="ramp" class="step_type_ramp"> Ramp
+      </label>
+      <label class="btn btn-default step_type <%= 'active' if f.object.step_type != TempProfileStep::STEP_TYPE[:ramp] %>">
+        <input type="radio" name="step_types" value="hold" class="step_type_hold"> Hold
+      </label>
+    </div>
+  </td>
+  <td class="text-center" style="vertical-align: middle;">
+    <strong class="temp-hint">
+      <%= f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] ? 'to' : 'at' %>
+    </strong>
+  </td>
+  <td class="text-center">
+    <div class="input-group">
+      <%= f.text_field :value, class: 'form-control value', value: f.object.value %>
+      <span class="input-group-addon">&deg;<%= spree_current_user.temperature_scale %></span>
+    </div>
+  </td>
+  <td class="text-center" style="vertical-align: middle;">
+    <strong class="duration-hint">
+      <%= f.object.step_type == TempProfileStep::STEP_TYPE[:ramp] ? 'over' : 'for' %>
+    </strong>
+  </td>
+  <td class="text-center">
+    <%= f.hidden_field :duration, class: 'duration_field', value: f.object.duration %>
+    <%= f.hidden_field :duration_type, class: 'duration_type_field', value: (f.object.duration_type || 'days') %>
+    <div class="input-group">
+      <input class="form-control duration" type="number" value="<%= f.object.duration %>">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class='selection'><%= (f.object.duration_type || 'days') %></span> <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <% TempProfileStep::DURATION_TYPE.each do |d| -%>
+            <li><a href="javascript:;"><%= d %></a></li>
+          <% end -%>
+        </ul>
+      </div>
+    </div>
+  </td>
+  <td>
+    <a class="btn btn-default btn-sm move-row-up" href="javascript:;"><span class="glyphicon glyphicon-chevron-up"></span></a>
+    <a class="btn btn-default btn-sm move-row-down" href="javascript:;"><span class="glyphicon glyphicon-chevron-down"></span></a>
+    <%= f.link_to_remove raw('<span class="glyphicon glyphicon-remove"></span>'), class: "btn btn-default btn-sm" %>
+  </td>
+</tr>
+
