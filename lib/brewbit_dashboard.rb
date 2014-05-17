@@ -1,5 +1,4 @@
 require 'spree_core'
 require 'brewbit_dashboard/engine'
-require 'brewbit_dashboard/discourse_sso'
 require 'nested_form'
 require 'zeroclipboard-rails'
