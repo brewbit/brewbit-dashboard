@@ -1,4 +1,4 @@
-module SpreeBrewbitDashboard
+module BrewbitDashboard
   class Engine < Rails::Engine
     require 'spree/core'
     isolate_namespace Spree
