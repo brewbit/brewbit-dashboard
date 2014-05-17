@@ -1,7 +1,7 @@
 # encoding: UTF-8
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
-  s.name        = 'spree_brewbit_dashboard'
+  s.name        = 'brewbit_dashboard'
   s.version     = '2.2.0'
   s.summary     = 'BrewBit Model-T dashboard'
   s.description = 'The BrewBit dashboard allows for remote control and monitoring of the BrewBit Model-T'

@@ -2,7 +2,7 @@ module SpreeBrewbitDashboard
   class Engine < Rails::Engine
     require 'spree/core'
     isolate_namespace Spree
-    engine_name 'spree_brewbit_dashboard'
+    engine_name 'brewbit_dashboard'
 
     # use rspec for tests
     config.generators do |g|

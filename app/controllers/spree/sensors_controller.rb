@@ -14,7 +14,7 @@ module Spree
     # PATCH/PUT /devices/1/sensors/1
     def update
       if @sensor.update(sensor_params)
-        redirect_to spree_brewbit_dashboard_path, notice: 'Sensor was successfully updated.'
+        redirect_to brewbit_dashboard_path, notice: 'Sensor was successfully updated.'
       else
         render action: 'edit'
       end

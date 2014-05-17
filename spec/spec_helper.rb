@@ -29,8 +29,8 @@ require 'spree/testing_support/controller_requests'
 require 'spree/testing_support/authorization_helpers'
 require 'spree/testing_support/url_helpers'
 
-# Requires factories defined in lib/spree_brewbit_dashboard/factories.rb
-require 'spree_brewbit_dashboard/factories'
+# Requires factories defined in lib/brewbit_dashboard/factories.rb
+require 'brewbit_dashboard/factories'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
