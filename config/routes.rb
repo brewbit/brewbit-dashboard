@@ -1,4 +1,4 @@
-Spree::Core::Engine.routes.draw do
+Brewbit::Engine.routes.draw do
 
   scope 'dashboard' do
     get '/' => 'devices#index'
@@ -14,14 +14,6 @@ Spree::Core::Engine.routes.draw do
   end
   get  '/activate' => 'devices#start_activate'
   post '/activate' => 'devices#activate'
-
-  namespace 'admin' do
-    resources :firmware, only: [:index, :create, :destroy, :new] do
-      get 'serve', on: :member
-    end
-
-    resources :devices, only: :index
-  end
 
   namespace :api do
     namespace :v1 do
