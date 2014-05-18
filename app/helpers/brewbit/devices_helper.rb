@@ -1,0 +1,2 @@
+module Brewbit::DevicesHelper
+end

@@ -1,0 +1,2 @@
+module Brewbit::FirmwareHelper
+end

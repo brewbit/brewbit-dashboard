@@ -1,8 +1,0 @@
-<% unless @temp_profiles.blank? %>
-  <%= render @temp_profiles %>
-<% else %>
-  <div id="no-stuff">
-    <h1 id="blurb">You do not have any temperature profiles.</h1>
-    <%= link_to "Create One!", new_temp_profile_path, class: 'btn btn-primary btn-lg' %>
-  </div>
-<% end %>

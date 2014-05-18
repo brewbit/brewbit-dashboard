@@ -16,8 +16,6 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 2.2.0'
-  s.add_dependency 'beefcake'
   s.add_dependency 'nested_form'
   s.add_dependency 'zeroclipboard-rails'
 

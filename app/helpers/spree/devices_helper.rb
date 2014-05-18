@@ -1,2 +1,0 @@
-module Spree::DevicesHelper
-end

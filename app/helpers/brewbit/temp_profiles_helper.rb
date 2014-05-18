@@ -1,0 +1,2 @@
+module Brewbit::TempProfilesHelper
+end

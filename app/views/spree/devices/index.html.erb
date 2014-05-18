@@ -1,8 +1,0 @@
-<% unless @devices.blank? %>
-  <%= render @devices.first %>
-<% else %>
-	<div id="no-stuff">
-		<h1 id="blurb">No devices have been added to your account.</h1>
-		<%= link_to "Add One!", activate_path, class: 'btn btn-primary btn-lg' %>
-	</div>
-<% end %>
