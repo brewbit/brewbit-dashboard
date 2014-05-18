@@ -3,7 +3,7 @@
     <div class="bottom-space">
       <ul class="nav nav-tabs">
         <% brewbit_current_user.devices.each do |cur_device| %>
-          <li class="<%= 'active' if @device == cur_device %>">
+          <li class="<%= 'active' if @device and @device.id == cur_device.id %>">
             <%= link_to cur_device.name, cur_device %>
           </li>
         <% end %>
