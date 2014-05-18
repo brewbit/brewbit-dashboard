@@ -20,7 +20,7 @@ class Device < ActiveRecord::Base
   CONTROL_MODE = { on_off: 0, pid: 1 }
   MAX_HYSTERESIS = 10
 
-  belongs_to :user, class_name: "Spree::User"
+  belongs_to :user, class_name: Brewbit.user_class
 
   has_many :sessions, class_name: 'DeviceSession', dependent: :destroy, foreign_key: 'device_id'
 

@@ -1,7 +1,7 @@
 class ApiKey < ActiveRecord::Base
   before_validation :generate_token
 
-  belongs_to :user, class_name: 'Spree::User'
+  belongs_to :user, class_name: Brewbit.user_class
 
   private
 

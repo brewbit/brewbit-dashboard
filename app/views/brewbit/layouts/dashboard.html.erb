@@ -16,4 +16,4 @@
   </div>
   <%= content_for?(:dashboard_content) ? yield(:dashboard_content) : yield %>
 <% end %>
-<%= render template: 'spree/layouts/spree_application' %>
+<%= render template: Brewbit.layout %>
