@@ -1,10 +1,7 @@
-
 module Brewbit
   class DeviceSessionsController < ApplicationController
     layout 'brewbit/layouts/devices'
-    before_action :correct_user
-    before_action :correct_device
-    before_action :correct_device_session, only: [:show, :edit, :destroy, :stop_session]
+    before_action :authorize_action
 
     # GET /sessions
     def index
@@ -88,21 +85,22 @@ module Brewbit
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def correct_device_session
-        @device_session = @device.sessions.find(params[:id])
-        redirect_to root_path, error: 'You can only see your own sessions' unless @device_session
-      end
-
-      def correct_device
-        @device = brewbit_current_user.devices.find(params[:device_id])
-        redirect_to root_path, error: 'You can only see your own devices' unless @device
-        
+      def authorize_action
+        @device = Device.find(params[:device_id])
         @active_session_output_info = @device.active_session_output_info
-      end
-      
-      def correct_user
-        redirect_to login_path unless brewbit_current_user
+        
+        unless ['new', 'create', 'index'].include? action_name
+          @device_session = @device.sessions.find(params[:id])
+          @token_authenticated = action_name == 'show' && params[:token] && @device_session.access_token == params[:token]
+        end
+        
+        user = brewbit_current_user
+        @user_authenticated = user && @device.user == user
+        
+        unless @user_authenticated or @token_authenticated
+          flash[:error] = "You don't have access to that resource"
+          redirect_to '/'
+        end
       end
 
       # Only allow a trusted parameter "white list" through.
