@@ -8,9 +8,11 @@
         <span class="session-title-sep">/</span>
         <span><%= device_session.name %></span>
       </h3>
-        <div class='pull-right panel-controls'>
-        <span class="status-header">updated <%= time_ago_in_words(device_session.updated_at) %> ago</span>
-        <% if !@token_authenticated %>
+      <div class='pull-right panel-controls'>
+        <% if device_session.active -%>
+          <span class="status-header">updated <%= time_ago_in_words(device_session.updated_at) %> ago</span>
+        <% end %>
+        <% if !@token_authenticated -%>
           <div class="btn-group session-controls">
             <%= link_to raw('<span class="glyphicon glyphicon-share-alt"></span>'), 
                         'javascript:;',
