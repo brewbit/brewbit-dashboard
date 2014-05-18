@@ -16,7 +16,7 @@ module Brewbit
 
     # GET /sessions/new
     def new
-      @device_session = Defaults.build_device_session @device, spree_current_user.temperature_scale
+      @device_session = Defaults.build_device_session @device, brewbit_current_user.temperature_scale
     end
 
     # GET /sessions/1/edit

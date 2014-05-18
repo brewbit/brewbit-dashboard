@@ -42,7 +42,7 @@
                 <%= device_session.last_reading.round(1) %>
               <% end %>
             </div>
-            <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
+            <div class="status-temp-scale">&deg;<%= brewbit_current_user.temperature_scale -%></div>
           </div>
           <div class="col-md-3 col-sm-3">
             <% if device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static] %>
@@ -54,7 +54,7 @@
                   <%= device_session.last_setpoint.round(1) %>
                 <% end %>
               </div>
-              <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
+              <div class="status-temp-scale">&deg;<%= brewbit_current_user.temperature_scale -%></div>
             <% else %>
               <div class="status-header">Setpoint (Temp Profile)</div>
               <div class="status-temp-value">
@@ -64,7 +64,7 @@
                   <%= device_session.last_setpoint.round(1) %>
                 <% end %>
               </div>
-              <div class="status-temp-scale">&deg;<%= spree_current_user.temperature_scale -%></div>
+              <div class="status-temp-scale">&deg;<%= brewbit_current_user.temperature_scale -%></div>
               <div class="status-header"><%= device_session.temp_profile.name %></div>
             <% end %>
           </div>
@@ -149,7 +149,7 @@
             ticker: Dygraph.dateTicker,
             axisLabelFormatter: Dygraph.dateAxisFormatter
           },
-          <% if spree_current_user.temperature_scale == 'C' -%>
+          <% if brewbit_current_user.temperature_scale == 'C' -%>
             y: {
               valueFormatter: function(val) {
                 val = ((val - 32) / 1.8);

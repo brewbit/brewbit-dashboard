@@ -5,12 +5,12 @@ module Brewbit
 
     # GET /temp_profiles
     def index
-      @temp_profiles = spree_current_user.temp_profiles.includes( steps: :temp_profile )
+      @temp_profiles = brewbit_current_user.temp_profiles.includes( steps: :temp_profile )
     end
 
     # GET /temp_profiles/new
     def new
-      @temp_profile = spree_current_user.temp_profiles.build
+      @temp_profile = brewbit_current_user.temp_profiles.build
       
       step_attrs = {
         step_index: 1,
@@ -27,7 +27,7 @@ module Brewbit
     # POST /temp_profiles
     def create
       @temp_profile = TempProfile.new(temp_profile_params)
-      @temp_profile.user = spree_current_user
+      @temp_profile.user = brewbit_current_user
 
       if @temp_profile.save
         redirect_to temp_profiles_url, notice: 'Temperature profile was successfully created.'
@@ -61,7 +61,7 @@ module Brewbit
       end
 
       def correct_user
-        @temp_profile = spree_current_user.temp_profiles.includes( steps: :temp_profile ).find_by( id: params[:id] )
+        @temp_profile = brewbit_current_user.temp_profiles.includes( steps: :temp_profile ).find_by( id: params[:id] )
         redirect_to root_path, error: 'You can only see your temperature profiles' unless @temp_profile
       end
   end

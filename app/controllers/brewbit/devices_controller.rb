@@ -6,13 +6,13 @@ module Brewbit
 
     # GET /devices
     def index
-      @devices = spree_current_user.devices
+      @devices = brewbit_current_user.devices
       @device = @devices.first
     end
 
     # GET /devices/1
     def show
-      @devices = spree_current_user.devices
+      @devices = brewbit_current_user.devices
     end
 
     # GET /devices/1/edit
@@ -27,7 +27,7 @@ module Brewbit
     # POST /devices/activate
     def activate
       begin
-        device = Activation.user_activates_device(spree_current_user, params[:activation_token])
+        device = Activation.user_activates_device(brewbit_current_user, params[:activation_token])
       rescue Exception => e
         flash[:error] = e.message
       else
@@ -67,12 +67,12 @@ module Brewbit
       end
 
       def correct_device
-        @device = spree_current_user.devices.find( params[:id] )
+        @device = brewbit_current_user.devices.find( params[:id] )
         redirect_to root_path, error: 'You can only see your own devices' unless @device
       end
 
       def correct_user
-        redirect_to login_path unless spree_current_user
+        redirect_to login_path unless brewbit_current_user
       end
 
       def resolve_layout
