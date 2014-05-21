@@ -7,7 +7,11 @@ module Brewbit
   
         def create
           params[:controller_reports].each do |report|
-            SensorReadingsService.record( @device, report[:controller_index], report[:sensor_reading], report[:setpoint] )
+            SensorReadingsService.record( @device,
+                report[:controller_index],
+                report[:sensor_reading],
+                report[:setpoint],
+                report[:timestamp] )
           end
         end
         
