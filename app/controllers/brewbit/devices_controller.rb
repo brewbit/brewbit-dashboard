@@ -72,7 +72,9 @@ module Brewbit
       end
 
       def correct_user
-        redirect_to login_path unless brewbit_current_user
+        # TODO why doesn't this work?
+        # redirect_to main_app.login_path unless brewbit_current_user
+        redirect_to '/login' unless brewbit_current_user
       end
 
       def resolve_layout
