@@ -13,6 +13,7 @@ class TempProfile < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 100 }
+  validates :start_value, presence: true
   validates :steps, :length => {
     minimum: 1,
     maximum: 32,
