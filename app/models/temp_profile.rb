@@ -21,8 +21,8 @@ class TempProfile < ActiveRecord::Base
     too_long:  "must have at most %{count} steps"
   }
 
-  def start_value
-    scale = self.try( :user ).try( :temperature_scale )
+  def start_value(scale = nil)
+    scale ||= self.try( :user ).try( :temperature_scale )
 
     case scale
     when 'F'

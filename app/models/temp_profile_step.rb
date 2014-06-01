@@ -45,8 +45,8 @@ class TempProfileStep < ActiveRecord::Base
     self.duration * multiplier
   end
 
-  def value
-    scale = temp_profile.try( :user ).try( :temperature_scale )
+  def value(scale = nil)
+    scale ||= temp_profile.try( :user ).try( :temperature_scale )
 
     value = 0
     case scale

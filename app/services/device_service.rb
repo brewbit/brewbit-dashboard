@@ -39,16 +39,16 @@ class DeviceService
 
     case session.setpoint_type
     when DeviceSession::SETPOINT_TYPE[:static]
-      data[:static_setpoint] = session.static_setpoint
+      data[:static_setpoint] = session.static_setpoint('F')
     when DeviceSession::SETPOINT_TYPE[:temp_profile]
       data[:temp_profile_id] = session.temp_profile_id
         temp_profile = {
         id:           session.temp_profile.id,
         name:         session.temp_profile.name,
-        start_value:  session.temp_profile.start_value,
+        start_value:  session.temp_profile.start_value('F'),
         steps:        session.temp_profile.steps.collect { |step| {
               duration: step.duration_for_device,
-              value:    step.value,
+              value:    step.value('F'),
               type:     step.step_type
             }
           }

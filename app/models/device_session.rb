@@ -41,8 +41,8 @@ class DeviceSession < ActiveRecord::Base
   before_create :generate_uuid
   after_create :create_readings_file
 
-  def static_setpoint
-    scale = device.try( :user ).try( :temperature_scale )
+  def static_setpoint(scale = nil)
+    scale ||= device.try( :user ).try( :temperature_scale )
 
     if scale == 'C'
       fahrenheit_to_celcius( read_attribute(:static_setpoint) )
