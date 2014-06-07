@@ -56,8 +56,14 @@ module Brewbit
 
     # DELETE /temp_profiles/1
     def destroy
-      @temp_profile.destroy
-      redirect_to temp_profiles_url, notice: 'Temperature profile was successfully destroyed.'
+      temp_profile_references = DeviceSession.where(temp_profile: @temp_profile).count
+      if temp_profile_references == 0
+        @temp_profile.destroy
+        redirect_to temp_profiles_url, notice: 'Temperature profile was successfully destroyed.'
+      else
+        flash[:error] = 'Temp profile could not be deleted because it is referenced by one or more sessions'
+        redirect_to temp_profiles_url
+      end
     end
 
     private
