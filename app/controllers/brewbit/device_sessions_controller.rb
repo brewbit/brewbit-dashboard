@@ -44,7 +44,7 @@ module Brewbit
           # save the new session
           @device_session.save!
 
-          # DeviceService.send_session @device, @device_session
+          DeviceService.send_session @device, @device_session
         end
       rescue ActiveRecord::RecordInvalid => invalid
         @device_session = reset_device_session_on_error
