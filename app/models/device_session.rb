@@ -45,7 +45,7 @@ class DeviceSession < ActiveRecord::Base
     scale ||= device.try( :user ).try( :temperature_scale )
 
     if scale == 'C'
-      fahrenheit_to_celcius( read_attribute(:static_setpoint) )
+      fahrenheit_to_celsius( read_attribute(:static_setpoint) )
     else
       read_attribute( :static_setpoint )
     end
@@ -55,7 +55,7 @@ class DeviceSession < ActiveRecord::Base
     scale = device.try( :user ).try( :temperature_scale )
 
     if scale == 'C'
-      write_attribute( :static_setpoint, celcius_to_fahrenheit(value) )
+      write_attribute( :static_setpoint, celsius_to_fahrenheit(value) )
     else
       write_attribute( :static_setpoint, value )
     end
@@ -65,7 +65,7 @@ class DeviceSession < ActiveRecord::Base
     scale = device.try( :user ).try( :temperature_scale )
 
     if scale == 'C'
-      fahrenheit_to_celcius( read_attribute(:last_reading) )
+      fahrenheit_to_celsius( read_attribute(:last_reading) )
     else
       read_attribute( :last_reading )
     end
@@ -75,7 +75,7 @@ class DeviceSession < ActiveRecord::Base
     scale = device.try( :user ).try( :temperature_scale )
 
     if scale == 'C'
-      fahrenheit_to_celcius( read_attribute(:last_setpoint) )
+      fahrenheit_to_celsius( read_attribute(:last_setpoint) )
     else
       read_attribute( :last_setpoint )
     end
@@ -83,11 +83,11 @@ class DeviceSession < ActiveRecord::Base
 
   private
 
-  def fahrenheit_to_celcius(degrees)
+  def fahrenheit_to_celsius(degrees)
     (degrees.to_f - 32) / 1.8
   end
 
-  def celcius_to_fahrenheit(degrees)
+  def celsius_to_fahrenheit(degrees)
     degrees.to_f * 1.8 + 32
   end
 

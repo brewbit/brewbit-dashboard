@@ -25,6 +25,10 @@ module Brewbit
     def create
       begin
         DeviceSession.transaction do
+          if brewbit_current_user.temperature_scale == 'C'
+            params[:device_session][:static_setpoint] = TemperatureConverter.celsius_to_fahrenheit params[:device_session][:static_setpoint]
+          end
+      
           # create the new session, but don't save it yet because we need to
           # find and deactivate the old session first
           @device_session = DeviceSession.new(device_session_params)

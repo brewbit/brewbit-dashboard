@@ -28,7 +28,7 @@ class TempProfile < ActiveRecord::Base
     when 'F'
       read_attribute( :start_value )
     when 'C'
-      fahrenheit_to_celcius( read_attribute(:start_value) )
+      fahrenheit_to_celsius( read_attribute(:start_value) )
     else
       read_attribute( :start_value )
     end
@@ -41,7 +41,7 @@ class TempProfile < ActiveRecord::Base
     when 'F'
       write_attribute( :start_value, val )
     when 'C'
-      write_attribute( :start_value, celcius_to_fahrenheit(val) )
+      write_attribute( :start_value, celsius_to_fahrenheit(val) )
     else
       write_attribute( :start_value, val )
     end
@@ -77,11 +77,11 @@ class TempProfile < ActiveRecord::Base
     end
   end
 
-  def fahrenheit_to_celcius(degrees)
+  def fahrenheit_to_celsius(degrees)
     (degrees.to_f - 32) / 1.8
   end
 
-  def celcius_to_fahrenheit(degrees)
+  def celsius_to_fahrenheit(degrees)
     degrees.to_f * 1.8 + 32
   end
 end

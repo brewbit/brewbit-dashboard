@@ -26,6 +26,13 @@ module Brewbit
 
     # POST /temp_profiles
     def create
+      if brewbit_current_user.temperature_scale == 'C'
+        params[:temp_profile][:start_value] = TemperatureConverter.celsius_to_fahrenheit params[:temp_profile][:start_value]
+        params[:temp_profile][:steps_attributes].each do |id, step_params|
+          step_params[:value] = TemperatureConverter.celsius_to_fahrenheit step_params[:value]
+        end
+      end
+      
       @temp_profile = TempProfile.new(temp_profile_params)
       @temp_profile.user = brewbit_current_user
 

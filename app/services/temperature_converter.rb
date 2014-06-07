@@ -5,14 +5,18 @@ module TemperatureConverter
     when 'F'
       temperature
     when 'C'
-      fahrenheit_to_celcius( temperature )
+      fahrenheit_to_celsius( temperature )
     else
       temperature
     end
   end
 
-  def self.fahrenheit_to_celcius(degrees)
+  def self.fahrenheit_to_celsius(degrees)
     (degrees.to_f - 32) / 1.8
+  end
+
+  def self.celsius_to_fahrenheit(degrees)
+    (degrees.to_f * 1.8) + 32
   end
 end
 
