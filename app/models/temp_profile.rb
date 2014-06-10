@@ -23,15 +23,13 @@ class TempProfile < ActiveRecord::Base
 
   def start_value(scale = nil)
     scale ||= self.try( :user ).try( :temperature_scale )
+    val = read_attribute( :start_value )
 
-    case scale
-    when 'F'
-      read_attribute( :start_value )
-    when 'C'
-      fahrenheit_to_celsius( read_attribute(:start_value) )
-    else
-      read_attribute( :start_value )
+    if !val.nil? && scale == 'C'
+      val = fahrenheit_to_celsius( val )
     end
+    
+    val
   end
 
   def start_value=(val)
