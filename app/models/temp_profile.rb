@@ -29,7 +29,7 @@ class TempProfile < ActiveRecord::Base
       val = fahrenheit_to_celsius( val )
     end
     
-    val
+    val.try( :round, 2 )
   end
 
   def start_value=(val)
