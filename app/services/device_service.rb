@@ -42,19 +42,19 @@ class DeviceService
       data[:static_setpoint] = session.static_setpoint('F')
     when DeviceSession::SETPOINT_TYPE[:temp_profile]
       data[:temp_profile_id] = session.temp_profile_id
-        temp_profile = {
+      temp_profile = {
         id:           session.temp_profile.id,
         name:         session.temp_profile.name,
         start_value:  session.temp_profile.start_value('F'),
         steps:        session.temp_profile.steps.collect { |step| {
-              duration: step.duration_for_device,
-              value:    step.value('F'),
-              type:     step.step_type
-            }
+            duration: step.duration_for_device,
+            value:    step.value('F'),
+            type:     step.step_type
           }
         }
-        data[:temp_profiles] << temp_profile
-      end
+      }
+      data[:temp_profiles] << temp_profile
+    end
 
     session.output_settings.each do |o|
       output_settings = {
