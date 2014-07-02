@@ -29,7 +29,7 @@
     <%= f.label :hysteresis, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
       <div class="input-group">
-        <%= f.text_field :hysteresis, class: 'form-control' %>
+        <%= f.text_field :hysteresis, class: 'form-control', value: @device.hysteresis %>
         <span class="input-group-addon">&deg;<%= brewbit_current_user.temperature_scale %></span>
       </div>
     </div>
