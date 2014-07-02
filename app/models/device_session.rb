@@ -64,20 +64,18 @@ class DeviceSession < ActiveRecord::Base
   def last_reading
     scale = device.try( :user ).try( :temperature_scale )
 
-    if scale == 'C'
-      fahrenheit_to_celsius( read_attribute(:last_reading) )
-    else
-      read_attribute( :last_reading )
+    reading = read_attribute(:last_reading)
+    if !reading.nil? && scale == 'C'
+      fahrenheit_to_celsius( reading )
     end
   end
   
   def last_setpoint
     scale = device.try( :user ).try( :temperature_scale )
 
-    if scale == 'C'
-      fahrenheit_to_celsius( read_attribute(:last_setpoint) )
-    else
-      read_attribute( :last_setpoint )
+    sp = read_attribute( :last_setpoint )
+    if !sp.nil? && scale == 'C'
+      fahrenheit_to_celsius( sp )
     end
   end
 
