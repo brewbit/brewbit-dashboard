@@ -35,7 +35,7 @@ class DeviceSession < ActiveRecord::Base
   validates :temp_profile, presence: true, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]"
   validates :access_token, presence: true
 
-  accepts_nested_attributes_for :output_settings
+  accepts_nested_attributes_for :output_settings, allow_destroy: true
 
   before_validation :generate_access_token
   before_create :generate_uuid

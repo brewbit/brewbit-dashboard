@@ -6,7 +6,7 @@ Brewbit::Engine.routes.draw do
     post '/devices/activate' => 'devices#activate'
     resources :devices do
       resources :sensors
-      resources :device_sessions, path: :sessions, as: :sessions, except: [:update] do
+      resources :device_sessions, path: :sessions, as: :sessions do
         post :stop_session, on: :member
       end
     end

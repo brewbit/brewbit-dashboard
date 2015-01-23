@@ -1,7 +1,7 @@
 <h4><%= o.object.index_name %> Output Settings</h4>
 
 <%= o.hidden_field :output_index %>
-<%= o.hidden_field :_destroy, value: true, class: 'destroy' %>
+<%= o.hidden_field :_destroy, value: !o.object.persisted?, class: 'destroy' %>
     
 <div class='form-group'>
   <div class='col-sm-3 control-label'>

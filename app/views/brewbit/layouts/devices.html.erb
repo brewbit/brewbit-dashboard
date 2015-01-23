@@ -2,13 +2,13 @@
   <% if !@token_authenticated %>
     <div class="bottom-space">
       <ul class="nav nav-pills">
-        <li class="<%= 'active' if current_page?(device_path(@device)) || current_page?('/dashboard') %>">
+        <li class="<%= 'active' if current_page?(device_path(@device)) || current_page?('/dashboard') || controller.controller_name == 'device_sessions' && controller.action_name == 'edit' %>">
           <%= link_to raw('<span class="glyphicon glyphicon-stats"></span> Active Sessions'), device_path(@device) %>
         </li>
         <li class="<%= 'active' if controller.controller_name == 'device_sessions' && ['new', 'create'].include?(controller.action_name) %>">
           <%= link_to raw('<span class="glyphicon glyphicon-transfer"></span> New Session'), new_device_session_path(@device) %>
         </li>
-        <li class="<%= 'active' if controller.controller_name == 'device_sessions' && !['new', 'create'].include?(controller.action_name) %>">
+        <li class="<%= 'active' if controller.controller_name == 'device_sessions' && !['new', 'create', 'edit'].include?(controller.action_name) %>">
           <%= link_to raw('<span class="glyphicon glyphicon-book"></span> Past Sessions'), device_sessions_path(@device) %>
         </li>
         <li class="navbar-right <%= 'active' if current_page?(edit_device_path(@device)) %>">

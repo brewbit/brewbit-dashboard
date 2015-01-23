@@ -1,4 +1,4 @@
-<%= form_for @device_session, html: { class: 'form-horizontal' } do |f| %>
+
   <% if f.object.errors.any? %>
     <div id="error_explanation">
       <h3>Validation errors:</h3>
@@ -32,7 +32,7 @@
       <%= f.label :sensor_index %>
     </div>
     <div class='col-sm-9'>
-      <%= f.select :sensor_index, (0...@device.sensor_count).collect {|i| ["Sensor #{i+1}", i]}, {}, class: 'form-control' %>
+      <%= f.select :sensor_index, (0...@device.sensor_count).collect {|i| ["Sensor #{i+1}", i]}, {}, disabled: @device_session.persisted?, class: 'form-control' %>
     </div>
   </div>
 
@@ -72,9 +72,9 @@
     </div>
     <div class='col-sm-9'>
       <div id='outputs' class="btn-group" data-toggle="buttons">
-        <% @device_session.output_settings.each do |output_settings| %>
-          <label class="btn btn-default">
-            <input type="checkbox" class="enabled_outputs" output-index="<%= output_settings.output_index %>"> <%= output_settings.index_name %> Output
+        <% @device_session.output_settings.sort_by(&:output_index).each do |output_settings| %>
+          <label class="btn btn-default <%= "active" if output_settings.persisted? %>">
+            <input type="checkbox" class="enabled_outputs" output-index="<%= output_settings.output_index %>" <%= "checked" if output_settings.persisted? %>> <%= output_settings.index_name %> Output
           </label>
         <% end %>
       </div>
@@ -82,8 +82,8 @@
   </div>
   <hr />
 
-  <%= f.fields_for :output_settings do |o| %>
-    <div id="output-<%= o.object.output_index %>" style="display: none;">
+  <%= f.fields_for :output_settings, @device_session.output_settings.sort_by(&:output_index) do |o| %>
+    <div id="output-<%= o.object.output_index %>" style="<%= "display: none;" if !o.object.persisted? %>">
       <%= render partial: 'output', locals: { o: o } %>
     </div>
   <% end -%>
@@ -91,11 +91,11 @@
   <div class="form-group">
     <div class="col-sm-3 pull-right">
       <div class='pull-right'>
-        <%= f.submit "Start Session", class: 'btn btn-primary' %>
+        <%= f.submit submit_text, class: 'btn btn-primary' %>
       </div>
     </div>
   </div>
-<% end %>
+
 
 <script type="text/javascript">
   $(document).ready(function() {

@@ -19,6 +19,36 @@ module Brewbit
 
     # GET /sessions/1/edit
     def edit
+      # Add any missing output settings objects so they appear on the edit form      
+      (0...@device.output_count).each do |output_index|
+        if @device_session.output_settings.none?{|os| os.output_index == output_index}
+          Defaults.build_output_settings( @device_session, output_index, OutputSettings::FUNCTIONS[:heating] )
+        end
+      end
+      @active_session_output_info = @active_session_output_info.except(@device_session.sensor_index)
+    end
+
+    # PUT/PATCH /sessions/1
+    def update
+      begin
+        DeviceSession.transaction do
+          @device_session.update!(device_session_params)
+
+          DeviceService.send_session @device, @device_session
+        end
+      rescue ActiveRecord::RecordInvalid => invalid
+        flash[:error] = invalid.record.errors.full_messages.to_sentence
+        render action: 'edit'
+      rescue => e
+        puts $!.inspect, $@
+
+        logger.debug e.inspect
+
+        flash[:error] = 'Session could not be sent to the device.'
+        render action: 'edit'
+      else
+        redirect_to @device, notice: 'Session was successfully updated.'
+      end
     end
 
     # POST /sessions
@@ -56,14 +86,14 @@ module Brewbit
         flash[:error] = 'Session could not be sent to the device.'
         render action: 'new'
       else
-        redirect_to @device, notice: 'Device session was successfully sent.'
+        redirect_to @device, notice: 'Session was successfully sent.'
       end
     end
 
     # DELETE /sessions/1
     def destroy
       @device_session.destroy
-      redirect_to device_sessions_path, notice: 'Device session was successfully destroyed.'
+      redirect_to device_sessions_path, notice: 'Session was successfully destroyed.'
     end
 
     def stop_session
@@ -77,10 +107,12 @@ module Brewbit
           DeviceService.send_session @device, empty_session
         end
 
-        redirect_to @device, error: 'Device session was successfully destroyed.'
+        flash[:notice] = 'Session was successfully stopped.'
+        redirect_to @device
       rescue => exception
         logger.debug "--- #{exception.inspect}"
-        redirect_to @device, error: 'Session could not be sent to the device.'
+        flash[:error] = 'Session could not be stopped because the device is not connected.'
+        redirect_to @device
       end
     end
 

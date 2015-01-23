@@ -34,20 +34,16 @@ class Defaults
 
     (0...device.output_count).each do |output_index|
       build_output_settings( device_session, output_index, OutputSettings::FUNCTIONS[:heating] )
-  end
+    end
 
     device_session
   end
 
   def self.build_output_settings( device_session, output_index, function = Output::FUNCTIONS[:heating], cycle_delay = 3 )
-    attr = {
-      device_session: device_session,
+    device_session.output_settings.build(
       output_index: output_index,
       function: function,
-      cycle_delay: cycle_delay
-    }
-    output_settings = OutputSettings.new attr
-    device_session.output_settings << output_settings
+      cycle_delay: cycle_delay)
   end
 end
 
