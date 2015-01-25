@@ -19,12 +19,7 @@ module Brewbit
 
     # GET /sessions/1/edit
     def edit
-      # Add any missing output settings objects so they appear on the edit form      
-      (0...@device.output_count).each do |output_index|
-        if @device_session.output_settings.none?{|os| os.output_index == output_index}
-          Defaults.build_output_settings( @device_session, output_index, OutputSettings::FUNCTIONS[:heating] )
-        end
-      end
+      populate_output_settings
       @active_session_output_info = @active_session_output_info.except(@device_session.sensor_index)
     end
 
@@ -37,6 +32,7 @@ module Brewbit
           DeviceService.send_session @device, @device_session
         end
       rescue ActiveRecord::RecordInvalid => invalid
+        populate_output_settings
         flash[:error] = invalid.record.errors.full_messages.to_sentence
         render action: 'edit'
       rescue => e
@@ -44,6 +40,7 @@ module Brewbit
 
         logger.debug e.inspect
 
+        populate_output_settings
         flash[:error] = 'Session could not be sent to the device.'
         render action: 'edit'
       else
@@ -140,6 +137,15 @@ module Brewbit
         params.require(:device_session).permit(
           :name, :device_id, :sensor_index, :setpoint_type, :static_setpoint, :temp_profile_id, :temp_profile_completion_action, :temp_profile_start_point,
           output_settings_attributes: [:id, :output_index, :function, :cycle_delay, :_destroy])
+      end
+
+      def populate_output_settings
+        # Add any missing output settings objects so they appear on the edit form      
+        (0...@device.output_count).each do |output_index|
+          if @device_session.output_settings.none?{|os| os.output_index == output_index}
+            Defaults.build_output_settings( @device_session, output_index, OutputSettings::FUNCTIONS[:heating] )
+          end
+        end
       end
 
       def reset_device_session_on_error
