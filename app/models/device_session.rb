@@ -11,6 +11,7 @@ require 'fileutils'
 # * setpoint_type [integer] - - Static setpoint or temp profile
 # * static_setpoint [float] - - The static setpoint value
 # * temp_profile_id [integer] - - The active temp profile
+# * temp_profile_completion_action [integer] - - What to do after the temp profile is finished
 #
 # * id [integer, primary, not null] - primary key
 # * created_at [datetime, not null] - creation time
@@ -18,6 +19,7 @@ require 'fileutils'
 
 class DeviceSession < ActiveRecord::Base
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
+  COMPLETION_ACTION = { hold_last: 0, start_over: 1 }
 
   belongs_to :device, touch: true
   belongs_to :temp_profile
@@ -33,6 +35,8 @@ class DeviceSession < ActiveRecord::Base
   validates :setpoint_type, presence: true, inclusion: { in: SETPOINT_TYPE.values }
   validates :static_setpoint, presence: true, if: "setpoint_type == SETPOINT_TYPE[:static]"
   validates :temp_profile, presence: true, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]"
+  validates :temp_profile_completion_action, presence: true, inclusion: { in: COMPLETION_ACTION.values }
+  validates :temp_profile_start_point, presence: true
   validates :access_token, presence: true
 
   accepts_nested_attributes_for :output_settings, allow_destroy: true
@@ -40,6 +44,13 @@ class DeviceSession < ActiveRecord::Base
   before_validation :generate_access_token
   before_create :generate_uuid
   after_create :create_readings_file
+
+  # virtual attribute to receive transient "start point" field from new/edit session form
+  attr_accessor :temp_profile_start_point
+
+  after_initialize do |session|
+    @temp_profile_start_point = 0
+  end
 
   def static_setpoint(scale = nil)
     scale ||= device.try( :user ).try( :temperature_scale )

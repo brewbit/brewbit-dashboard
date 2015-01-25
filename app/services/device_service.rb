@@ -42,6 +42,8 @@ class DeviceService
       data[:static_setpoint] = session.static_setpoint('F')
     when DeviceSession::SETPOINT_TYPE[:temp_profile]
       data[:temp_profile_id] = session.temp_profile_id
+      data[:temp_profile_start_point] = session.temp_profile_start_point.to_i
+      data[:temp_profile_completion_action] = session.temp_profile_completion_action
       temp_profile = {
         id:           session.temp_profile.id,
         name:         session.temp_profile.name,

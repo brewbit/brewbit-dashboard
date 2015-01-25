@@ -138,7 +138,7 @@ module Brewbit
       # Only allow a trusted parameter "white list" through.
       def device_session_params
         params.require(:device_session).permit(
-          :name, :device_id, :sensor_index, :setpoint_type, :static_setpoint, :temp_profile_id,
+          :name, :device_id, :sensor_index, :setpoint_type, :static_setpoint, :temp_profile_id, :temp_profile_completion_action, :temp_profile_start_point,
           output_settings_attributes: [:id, :output_index, :function, :cycle_delay, :_destroy])
       end
 

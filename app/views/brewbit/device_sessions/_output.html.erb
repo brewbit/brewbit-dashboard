@@ -8,7 +8,14 @@
     <%= o.label :function %>
   </div>
   <div class='col-sm-9'>
-    <%= o.select :function, OutputSettings::FUNCTIONS.map {|k,v| [k.capitalize, v]}, {}, class: 'form-control' %>
+    <div class="btn-group btn-group-justified" data-toggle="buttons">
+      <label class="btn btn-default <%= "active" if o.object.function == OutputSettings::FUNCTIONS[:heating] %>">
+        <%= o.radio_button :function, OutputSettings::FUNCTIONS[:heating], checked: o.object.function == OutputSettings::FUNCTIONS[:heating], autocomplete: "off" %> Heating
+      </label>
+      <label class="btn btn-default <%= "active" if o.object.function == OutputSettings::FUNCTIONS[:cooling] %>">
+        <%= o.radio_button :function, OutputSettings::FUNCTIONS[:cooling], checked: o.object.function == OutputSettings::FUNCTIONS[:cooling], autocomplete: "off" %> Cooling
+      </label>
+    </div>
   </div>
 </div>
 

@@ -32,7 +32,18 @@
       <%= f.label :sensor_index %>
     </div>
     <div class='col-sm-9'>
-      <%= f.select :sensor_index, (0...@device.sensor_count).collect {|i| ["Sensor #{i+1}", i]}, {}, disabled: @device_session.persisted?, class: 'form-control' %>
+      <div class="btn-group btn-group-justified" data-toggle="buttons">
+        <%if !@device_session.persisted? || @device_session.sensor_index == 0 %>
+        <label class="btn btn-default <%= "active" if @device_session.sensor_index == 0 %>">
+          <%= f.radio_button :sensor_index, "0", checked: @device_session.sensor_index == 0, autocomplete: "off" %> Sensor 1
+        </label>
+        <% end %>
+        <%if !@device_session.persisted? || @device_session.sensor_index == 1 %>
+        <label class="btn btn-default <%= "active" if @device_session.sensor_index == 1 %>">
+          <%= f.radio_button :sensor_index, "1", checked: @device_session.sensor_index == 1, autocomplete: "off" %> Sensor 2
+        </label>
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -41,28 +52,14 @@
       <%= f.label :setpoint_type %>
     </div>
     <div class='col-sm-9'>
-      <%= f.select :setpoint_type, [['Static',DeviceSession::SETPOINT_TYPE[:static]],['Temp Profile',DeviceSession::SETPOINT_TYPE[:temp_profile]]], {}, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div id="static-setpoint" class='form-group' style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:temp_profile]%>">
-    <div class='col-sm-3 control-label'>
-      <%= f.label :static_setpoint %>
-    </div>
-    <div class='col-sm-9'>
-      <div class="input-group">
-        <%= f.text_field :static_setpoint, class: 'form-control', value: @device_session.static_setpoint %>
-        <span class="input-group-addon">&deg;<%= brewbit_current_user.temperature_scale %></span>
+      <div class="btn-group btn-group-justified" data-toggle="buttons">
+        <label class="btn btn-default <%= "active" if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static] %>">
+          <%= f.radio_button :setpoint_type, DeviceSession::SETPOINT_TYPE[:static], checked: @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static], autocomplete: "off" %> Static
+        </label>
+        <label class="btn btn-default <%= "active" if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:temp_profile] %>">
+          <%= f.radio_button :setpoint_type, DeviceSession::SETPOINT_TYPE[:temp_profile], checked: @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:temp_profile], autocomplete: "off" %> Temp Profile
+        </label>
       </div>
-    </div>
-  </div>
-
-  <div id="temp-profile" class='form-group' style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static]%>">
-    <div class='col-sm-3 control-label'>
-      <%= f.label :temp_profile_id %>
-    </div>
-    <div class='col-sm-9'>
-      <%= f.select :temp_profile_id, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
     </div>
   </div>
 
@@ -71,7 +68,7 @@
       <%= f.label :outputs %>
     </div>
     <div class='col-sm-9'>
-      <div id='outputs' class="btn-group" data-toggle="buttons">
+      <div id='outputs' class="btn-group btn-group-justified" data-toggle="buttons">
         <% @device_session.output_settings.sort_by(&:output_index).each do |output_settings| %>
           <label class="btn btn-default <%= "active" if output_settings.persisted? %>">
             <input type="checkbox" class="enabled_outputs" output-index="<%= output_settings.output_index %>" <%= "checked" if output_settings.persisted? %>> <%= output_settings.index_name %> Output
@@ -81,6 +78,53 @@
     </div>
   </div>
   <hr />
+
+  <div id="static-setpoint" style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:temp_profile]%>">
+    <h4>Static Setpoint Settings</h4>
+    <div class="form-group">
+      <div class='col-sm-3 control-label'>
+        <%= f.label :static_setpoint %>
+      </div>
+      <div class='col-sm-9'>
+        <div class="input-group">
+          <%= f.text_field :static_setpoint, class: 'form-control', value: @device_session.static_setpoint %>
+          <span class="input-group-addon">&deg;<%= brewbit_current_user.temperature_scale %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="temp-profile" style="<%= 'display: none;' if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static]%>">
+    <h4>Temp Profile Settings</h4>
+    <div class="form-group">
+      <div class='col-sm-3 control-label'>
+        <%= f.label :temp_profile_id %>
+      </div>
+      <div class='col-sm-9'>
+        <%= f.select :temp_profile_id, @device.user.temp_profiles.collect{|x| [x.name, x.id]}, {}, class: 'form-control' %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class='col-sm-3 control-label'>
+        <%= f.label 'Start from' %>
+      </div>
+      <div class='col-sm-9'>
+        <%= f.select :temp_profile_start_point, [], {}, class: 'form-control' %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class='col-sm-3 control-label'>
+        <%= f.label 'After profile' %>
+      </div>
+      <div class='col-sm-9'>
+        <%= f.select :temp_profile_completion_action, [['Hold Last Temp', DeviceSession::COMPLETION_ACTION[:hold_last]], ['Start Over', DeviceSession::COMPLETION_ACTION[:start_over]]], {}, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+  
+    <hr />
 
   <%= f.fields_for :output_settings, @device_session.output_settings.sort_by(&:output_index) do |o| %>
     <div id="output-<%= o.object.output_index %>" style="<%= "display: none;" if !o.object.persisted? %>">
@@ -99,7 +143,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#device_session_setpoint_type').change(function(e){
+    $('#device_session_setpoint_type_0, #device_session_setpoint_type_1').change(function(e){
       if ($(this).val() == <%= DeviceSession::SETPOINT_TYPE[:static] %>) {
         $('#static-setpoint').show();
         $('#temp-profile').hide();
@@ -109,11 +153,13 @@
         $('#temp-profile').show();
       }
     });
-
-    $('#device_session_sensor_index').change(set_available_outputs_for_controller);
+    
+    $('#device_session_temp_profile_id').change(set_start_points_for_profile);
+    $('#device_session_sensor_index_0, #device_session_sensor_index_1').change(set_available_outputs_for_controller);
+    set_start_points_for_profile();
     set_available_outputs_for_controller();
   });
-
+  
   $(document).on( 'change', 'input[class="enabled_outputs"]', function(e){
     var output_index = this.attributes['output-index'].value;
     var output_index_form = $('#output-' + output_index);
@@ -128,10 +174,36 @@
       output_destroy_field.val(true);
     }
   });
+  
+  var set_start_points_for_profile = function() {
+    var selected_temp_profile_id = $('#device_session_temp_profile_id').val();
+    var selected_temp_profile_name = $('#device_session_temp_profile_id option:selected').text();
+    
+    var temp_profiles = <%= @device.user.temp_profiles.collect{|tp| [tp.id, tp.steps.length] }.to_json.html_safe %>;
+    var temp_profile_len;
+    for (i = 0; i < temp_profiles.length; i++) {
+      if (temp_profiles[i][0] == selected_temp_profile_id) {
+        temp_profile_len = temp_profiles[i][1];
+      }
+    }
+    
+    var start_point_options = $('#device_session_temp_profile_start_point');
+    start_point_options.empty();
+    
+    <% if @device_session.temp_profile %>
+    if (selected_temp_profile_id == <%= @device_session.temp_profile.id %>) {
+      start_point_options.append(new Option('Current position in ' + selected_temp_profile_name, -1));
+    }
+    <% end %>
+    
+    for (i = 0; i < temp_profile_len; i++) {
+      start_point_options.append(new Option(selected_temp_profile_name + ' Step ' + (i + 1), i));
+    }
+  }
 
   var set_available_outputs_for_controller = function(){
     var controller_outputs_map = <%= @active_session_output_info.to_json.html_safe %>;
-    var val = $('#device_session_sensor_index').val();
+    var val = $('input[name="device_session[sensor_index]"]:radio:checked').val();
 
     var other_controller = 0;
     if( 0 == val ){
