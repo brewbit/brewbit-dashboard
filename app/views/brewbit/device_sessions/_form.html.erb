@@ -190,7 +190,7 @@
     var start_point_options = $('#device_session_temp_profile_start_point');
     start_point_options.empty();
     
-    <% if @device_session.temp_profile %>
+    <% if @device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:temp_profile] %>
     if (selected_temp_profile_id == <%= @device_session.temp_profile.id %>) {
       start_point_options.append(new Option('Current position in ' + selected_temp_profile_name, -1));
     }
