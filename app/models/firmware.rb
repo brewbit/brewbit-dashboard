@@ -14,6 +14,7 @@ class Firmware < ActiveRecord::Base
   before_validation :set_size
 
   validates :version, presence: true,
+                      uniqueness: { scope: :channel },
                       format: { with: /[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}(-[0-9a-fA-F]{7,40})?/,
                                 message: 'Please use semantic versioning format' }
   validates :size, presence: true, numericality: { only_integer: true }

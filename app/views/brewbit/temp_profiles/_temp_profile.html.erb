@@ -56,7 +56,7 @@
                   },
                   ticker: function(min, max, pixels, opts, dygraph, vals) {
                     granularity = Dygraph.pickDateTickGranularity(min*1000, max*1000, pixels, opts);
-                    var f = (Dygraph.SHORT_SPACINGS[granularity] / 1000);
+                    var f = (Dygraph.TICK_PLACEMENT[granularity].spacing / 1000);
 
                     var tickers = Dygraph.numericTicks(min / f, max / f, pixels, opts, dygraph, vals);
                     

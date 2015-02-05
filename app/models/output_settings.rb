@@ -8,6 +8,7 @@
 # * updated_at [datetime, not null] - last update time
 class OutputSettings < ActiveRecord::Base
   belongs_to :device_session
+  audited :associated_with => :device_session
 
   FUNCTIONS = { heating: 0, cooling: 1 }
   FUNCTION_NAME = [ 'heating', 'cooling' ]

@@ -103,6 +103,10 @@
   </div>
 </div>
 
+<div id="event-template" class="event-info" style="display:none">
+  <div class="session-event" data-toggle="tooltip" data-placement="top" title="{{text}}"></div>
+</div>
+
 <script type='text/javascript'>
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip({
@@ -143,16 +147,19 @@
       $(this).tooltip('show');
     });
     
+    events = new Dygraph.Plugins.Events();
+    
     g = new Dygraph(
       document.getElementById("sensor-<%= device_session.id %>-timeline"),
       "/readings/<%= device_session.uuid %>.csv",
       {
+        plugins: [ events, Dygraph.Plugins.Unzoom ],
         /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
         labels: ['', 'Reading', 'Setpoint'],
+        dateWindow: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at.to_i * 1000 %>],
         labelsDivWidth: 500,
         xAxisLabelWidth: 75,
         ylabel: 'Temperature',
-        showRangeSelector: true,
         legend: 'always',
         labelsDivStyles: { 'textAlign': 'right',
                            'background-color': 'rgba(0, 0, 0, 0)',
@@ -192,5 +199,29 @@
         }
       }
     );
+    
+    g.ready(function() {
+      events.set([
+      <% device_session.audits.each do |audit| %>
+        {
+          xval: <%= audit.created_at.to_i * 1000 %>,
+          text: "<%= summarize_audit audit %>",
+        },
+      <% end %>
+      <% device_session.associated_audits.each do |audit| %>
+        {
+          xval: <%= audit.created_at.to_i * 1000 %>,
+          text: "<%= summarize_audit audit %>",
+        },
+      <% end %>
+      ]);
+      
+      $('.session-event').tooltip({
+        container: 'body',
+        placement: 'top'
+      });
+    });
+    
   });
 </script>
+
