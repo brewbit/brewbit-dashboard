@@ -54,7 +54,11 @@ module Brewbit
     def translate_field_value(field_name, field_value)
       case field_name
       when 'temp_profile_id'
-        "'" + TempProfile.find(field_value).name + "'"
+        begin
+          "'" + TempProfile.find(field_value).name + "'"
+        rescue
+          "'???'"
+        end
       when 'setpoint_type'
         ["static", "temp profile"][field_value]
       when 'function'
