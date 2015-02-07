@@ -115,7 +115,7 @@ events.prototype.updateEventDivPositions = function() {
     var left = g.toDomXCoord(h.xval);
     h.domX = left;  // See comments in this.dataDidUpdate
     $(h.infoDiv).css({
-      'left': left + 'px',
+      'left': left-5 + 'px',
       'bottom': '16px',
     });
 
