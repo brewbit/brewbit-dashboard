@@ -187,7 +187,8 @@
             valueFormatter: function(val) {
               return (val == 0) ? 'OFF' : 'ON';
             },
-            axisLabelFormatter: function() { return ''; }
+            axisLabelFormatter: function() { return ''; },
+            drawHighlightPointCallback: function() {}
           },
           <% if @device.user.temperature_scale == 'C' -%>
             y: {
