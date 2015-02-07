@@ -3,5 +3,6 @@
 //= require jquery_nested_form
 //= require zeroclipboard
 //= require dygraph-combined
-//= require extras/unzoom
 //= require dygraph-events
+//= require dygraph-reset-zoom
+//= require device_sessions

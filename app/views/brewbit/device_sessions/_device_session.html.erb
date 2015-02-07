@@ -147,26 +147,34 @@
       $(this).tooltip('show');
     });
     
-    events = new Dygraph.Plugins.Events();
-    
     g = new Dygraph(
       document.getElementById("sensor-<%= device_session.id %>-timeline"),
       "/readings/<%= device_session.uuid %>.csv",
       {
-        plugins: [ events, Dygraph.Plugins.Unzoom ],
+        plugins: [ Dygraph.Plugins.Events, Dygraph.Plugins.ResetZoom ],
         /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
         labels: ['', 'Reading', 'Setpoint'],
+        dateWindowLimits: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at.to_i * 1000 %>],
         dateWindow: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at.to_i * 1000 %>],
         labelsDivWidth: 500,
-        xAxisLabelWidth: 75,
         ylabel: 'Temperature',
         legend: 'always',
+        interactionModel : {
+          'mouseenter': session_graph_mouseenter,
+          'mouseleave': session_graph_mouseleave,
+          'mousedown':  session_graph_mousedown,
+          'mousemove':  session_graph_mousemove,
+          'mouseup':    session_graph_mouseup,
+          'dblclick':   session_graph_dblclick,
+          'mousewheel': session_graph_scroll
+        },
         labelsDivStyles: { 'textAlign': 'right',
                            'background-color': 'rgba(0, 0, 0, 0)',
                            'text-shadow': '-2px -2px 0 #FFF, 2px -2px 0 #FFF, -2px 2px 0 #FFF, 2px 2px 0 #FFF' },
         xValueParser: function(x) { return parseInt(x); },
         axes: {
           x: {
+            axisLabelWidth: 75,
             valueFormatter: Dygraph.dateString_,
             ticker: Dygraph.dateTicker,
             axisLabelFormatter: Dygraph.dateAxisFormatter
@@ -200,8 +208,8 @@
       }
     );
     
-    g.ready(function() {
-      events.set([
+    g.ready(function(g) {
+      g.getPluginInstance_(Dygraph.Plugins.Events).set([
       <% (device_session.audits + device_session.associated_audits).group_by{|a| a.created_at.to_i }.each do |created_at, audits| %>
         {
           xval: <%= created_at * 1000 %>,
