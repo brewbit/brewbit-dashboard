@@ -21,7 +21,7 @@ class DeviceSession < ActiveRecord::Base
   SETPOINT_TYPE = { static: 0, temp_profile: 1 }
   COMPLETION_ACTION = { hold_last: 0, start_over: 1 }
 
-  audited except: [ :last_reading, :last_setpoint ]
+  audited except: [ :last_reading, :last_setpoint, :device_id, :sensor_index, :active, :uuid, :access_token ]
   has_associated_audits
 
   belongs_to :device, touch: true
