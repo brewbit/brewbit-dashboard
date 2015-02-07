@@ -72,6 +72,9 @@ events.prototype.createEvent = function(props) {
   $infoDiv.on('click', function() {
     that.moveEventToTop(h);
   });
+  $infoDiv.hover(function() {
+    that.moveEventToTop(h);
+  });
 
   $infoDiv.html(this.getTemplateHTML(templateDiv, props));
 
