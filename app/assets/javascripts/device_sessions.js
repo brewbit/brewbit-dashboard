@@ -122,3 +122,39 @@ function zoom(g, zoomInPercentage, xBias) {
     dateWindow: newWindow
   });
 }
+
+function output_status_plotter(e) {
+  var ctx = e.drawingContext;
+  var points = e.points;
+  var area = e.dygraph.getArea();
+ 
+  ctx.fillStyle = e.color;
+  ctx.globalAlpha = e.dygraph.getOption('fillAlpha');
+  
+  for (var i = 0; i < points.length; i++) {
+    // find the next ON point
+    while ((i < points.length) && (points[i].yval != 1)) {
+      i++;
+    }
+    if (i < points.length) {
+      x_on = points[i].canvasx;
+    }
+    else {
+      break;
+    }
+
+    // find OFF point
+    while ((i < points.length) && (points[i].yval == 1)) {
+      i++;
+    }
+    if (i < points.length) {
+      x_off = points[i].canvasx;
+    }
+    else {
+      x_off = (area.x + area.w);
+    }
+    
+    ctx.fillRect(x_on, area.y, x_off - x_on, area.h);
+    ctx.strokeRect(x_on, area.y, x_off - x_on, area.h);
+  }
+}

@@ -153,7 +153,7 @@
       {
         plugins: [ Dygraph.Plugins.Events, Dygraph.Plugins.ResetZoom ],
         /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
-        labels: ['', 'Reading', 'Setpoint'],
+        labels: ['', 'Reading', 'Setpoint', 'Left Output', 'Right Output'],
         dateWindowLimits: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at.to_i * 1000 %>],
         dateWindow: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at.to_i * 1000 %>],
         labelsDivWidth: 500,
@@ -172,12 +172,22 @@
                            'background-color': 'rgba(0, 0, 0, 0)',
                            'text-shadow': '-2px -2px 0 #FFF, 2px -2px 0 #FFF, -2px 2px 0 #FFF, 2px 2px 0 #FFF' },
         xValueParser: function(x) { return parseInt(x); },
+        series: {
+          'Left Output': { plotter: output_status_plotter, axis: 'y2' },
+          'Right Output': { plotter: output_status_plotter, axis: 'y2' },
+        },
         axes: {
           x: {
             axisLabelWidth: 75,
             valueFormatter: Dygraph.dateString_,
             ticker: Dygraph.dateTicker,
             axisLabelFormatter: Dygraph.dateAxisFormatter
+          },
+          y2: {
+            valueFormatter: function(val) {
+              return (val == 0) ? 'OFF' : 'ON';
+            },
+            axisLabelFormatter: function() { return ''; }
           },
           <% if @device.user.temperature_scale == 'C' -%>
             y: {

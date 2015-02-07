@@ -11,7 +11,8 @@ module Brewbit
                 report[:controller_index],
                 report[:sensor_reading],
                 report[:setpoint],
-                report[:timestamp] )
+                report[:timestamp],
+                report[:output_status] )
           end
         end
         
