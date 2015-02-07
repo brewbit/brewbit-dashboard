@@ -27,7 +27,22 @@ module Brewbit
     def update
       begin
         DeviceSession.transaction do
-          @device_session.update!(device_session_params)
+          # ensure that the last modified timestamp is updated even if only dependencies
+          # will be changing with this update
+          @device_session.touch
+          
+          @device_session.attributes = device_session_params
+          
+          # if there are associated audits, save the full state of that object
+          # as an audit comment so that if it is deleted later, we can inspect
+          # the state of the object at the time of the audit.
+          @device_session.output_settings.each do |os|
+            if os.changed?
+              os.audit_comment = os.to_json
+            end
+          end
+          
+          @device_session.save!
 
           DeviceService.send_session @device, @device_session
         end

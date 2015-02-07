@@ -205,13 +205,13 @@
       <% device_session.audits.each do |audit| %>
         {
           xval: <%= audit.created_at.to_i * 1000 %>,
-          text: "<%= summarize_audit audit %>",
+          text: "<%= summarize_session_audit audit %>",
         },
       <% end %>
       <% device_session.associated_audits.each do |audit| %>
         {
           xval: <%= audit.created_at.to_i * 1000 %>,
-          text: "<%= summarize_audit audit %>",
+          text: "<%= summarize_output_audit audit %>",
         },
       <% end %>
       ]);
