@@ -9,16 +9,19 @@ module SensorReadingsService
     if session
       session.last_reading = reading
       session.last_setpoint = setpoint
+      # TODO email if this constitutes comms reestablishment?
+      session.comms_loss_alert_triggered = false
+      AlertService.check session
       session.save
+      
+      # manually touch to ensure that the updated_at is updated even if
+      # the new reading/setpoint is identical to the previous
+      session.touch
       
       output_states = [nil, nil]
       if !output_status.nil?
         output_status.each { |os| output_states[os[:output_index]] = (os[:status] ? 1 : 0) }
       end
-      
-      # manually touch to ensure that the updated_at is updated even if
-      # the new reading/setpoint is identical to the previous
-      session.touch
       
       timestamp ||= Time.now.to_i
       File.open("public/readings/#{session.uuid}.csv", 'a') do |f|
@@ -26,5 +29,6 @@ module SensorReadingsService
       end
     end
   end
+
 end
 

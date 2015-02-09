@@ -1,0 +1,17 @@
+High Temperature Alert
+
+The temperature of your session '<%= @session.name %>' rose above your high temperature alert threshold.
+
+High temp alert threshold: <%= @high_temp_threshold.round(1) %> °F
+
+Current temperature: <%= @session.last_reading.round(1) %> °F
+
+View Session at <%= device_session_url(@session.device, @session) %>
+
+We recommend that you inspect your Model-T and cooling device(s) to ensure they are operating correctly.
+
+( https://twitter.com/TheBrewBit )
+( http://www.facebook.com/BrewBit )
+( mailto:brewbit@brewbit.com )
+
+© 2015 Inebriated Innovations, LLC

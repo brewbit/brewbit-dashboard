@@ -1,0 +1,23 @@
+<% content_for :title do %>
+Low Temperature Alert from your BrewBit Model-T
+<% end %>
+
+<% content_for :heading do %>
+Low Temperature Alert
+<% end %>
+
+<% content_for :summary do %>
+The temperature of your session '<%= @session.name %>' fell below your low temperature alert threshold.
+<% end %>
+
+<% content_for :threshold do %>
+Low temp alert threshold: <%= @temp_threshold.round(1) %> F
+<% end %>
+
+<% content_for :current_value do %>
+Current temperature: <%= @session.last_reading.round(1) %> F
+<% end %>
+
+<% content_for :recommendation do %>
+We recommend that you inspect your Model-T and heating/cooling device(s) to ensure they are operating correctly.
+<% end %>

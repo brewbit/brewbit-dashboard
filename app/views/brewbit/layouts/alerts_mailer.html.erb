@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>High Temperature Alert from your BrewBit Model-T</title>
+  </head>
+  <body bgcolor="#f8f8f8" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0;">
+		<div style="margin-bottom: 20px; background-color: white; padding: 20px;">
+			<div style="max-width: 500px; margin-left: auto; margin-right: auto;">
+				<img id="logo" src="https://s3-us-west-2.amazonaws.com/brewbit-static/brewbit-logo.png" />
+			</div>
+		</div>
+
+		<div>
+			<div style="max-width: 500px; margin-left: auto; margin-right: auto;">
+				<span class="h1" style="font-size: 24px; font-weight: 500;">High Temperature Alert</span>
+				<p>
+					The temperature of your session '<%= @session.name %>' rose above your high temperature alert threshold.<br />
+				</p>
+				<table width="100%">
+					<tr>
+						<td align="center">High temp alert threshold: <span style="font-weight: bold;"><%= @high_temp_threshold.round(1) %> &deg;F</span></td>
+					</tr>
+					<tr>
+						<td align="center">Current temperature: <span style="font-weight: bold;"><%= @session.last_reading.round(1) %> &deg;F</span></td>
+					</tr>
+					<tr>
+						<td align="center">
+							<p>
+								<a style="margin-left: auto; margin-right: auto; width: 150px; display: inline-block; background-color: #428bca; border-radius: 6px; text-align: center; font-size: 16px; color: white; text-decoration: none; padding: 12px; border: 1px solid #357ebd;" href="<%= device_session_url(@session.device, @session) %>">View Session</a>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							We recommend that you inspect your Model-T and cooling device(s) to ensure they are operating correctly.
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<div style="background-color: white; padding: 20px;">
+			<div style="max-width: 500px; margin-left: auto; margin-right: auto;">
+				<table width="100%">
+					<tr>
+						<td align="center">
+							<a href="https://twitter.com/TheBrewBit"><img src="https://s3-us-west-2.amazonaws.com/brewbit-static/twitter.png" /></a>
+							<a href="http://www.facebook.com/BrewBit"><img src="https://s3-us-west-2.amazonaws.com/brewbit-static/facebook.png" /></a>
+							<a href="mailto:brewbit@brewbit.com"><img src="https://s3-us-west-2.amazonaws.com/brewbit-static/email.png" /></a>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" style="font-size: 13px;">&copy; 2015 Inebriated Innovations, LLC</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

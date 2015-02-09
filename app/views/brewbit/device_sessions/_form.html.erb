@@ -132,6 +132,54 @@
     </div>
   <% end -%>
 
+  <div>
+    <h4>Alert Settings</h4>
+    <div class="form-group">
+      <div class='col-sm-3 control-label'>
+        <%= f.label :high_temp %>
+      </div>
+      <div class='col-sm-9'>
+        <div class="input-group">
+          <span class="input-group-addon">
+            <input id="high-temp-threshold-enable" type="checkbox" <%= 'checked' if !@device_session.high_temp_threshold.nil? %>>
+          </span>
+          <%= f.text_field :high_temp_threshold, class: 'form-control', readonly: @device_session.high_temp_threshold.nil? %>
+          <span class="input-group-addon">&deg;F above setpoint</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class='col-sm-3 control-label'>
+        <%= f.label :low_temp %>
+      </div>
+      <div class='col-sm-9'>
+        <div class="input-group">
+          <span class="input-group-addon">
+            <input id="low-temp-threshold-enable" type="checkbox" <%= 'checked' if !@device_session.low_temp_threshold.nil? %>>
+          </span>
+          <%= f.text_field :low_temp_threshold, class: 'form-control', readonly: @device_session.low_temp_threshold.nil? %>
+          <span class="input-group-addon">&deg;F below setpoint</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class='col-sm-3 control-label'>
+        <%= f.label :connection_loss %>
+      </div>
+      <div class='col-sm-9'>
+        <div class="input-group">
+          <span class="input-group-addon">
+            <input id="comms-loss-threshold-enable" type="checkbox" <%= 'checked' if !@device_session.comms_loss_threshold.nil? %>>
+          </span>
+          <%= f.text_field :comms_loss_threshold, class: 'form-control', readonly: @device_session.comms_loss_threshold.nil? %>
+          <span class="input-group-addon">minutes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="form-group">
     <div class="col-sm-3 pull-right">
       <div class='pull-right'>
@@ -160,6 +208,21 @@
     set_available_outputs_for_controller();
   });
   
+  $("#high-temp-threshold-enable").change(function() {
+    $('#device_session_high_temp_threshold').attr('readonly', !this.checked);
+    $('#device_session_high_temp_threshold').val('');
+  });
+  
+  $("#low-temp-threshold-enable").change(function() {
+    $('#device_session_low_temp_threshold').attr('readonly', !this.checked);
+    $('#device_session_low_temp_threshold').val('');
+  });
+  
+  $("#comms-loss-threshold-enable").change(function() {
+    $('#device_session_comms_loss_threshold').attr('readonly', !this.checked);
+    $('#device_session_comms_loss_threshold').val('');
+  });
+
   $(document).on( 'change', 'input[class="enabled_outputs"]', function(e){
     var output_index = this.attributes['output-index'].value;
     var output_index_form = $('#output-' + output_index);
