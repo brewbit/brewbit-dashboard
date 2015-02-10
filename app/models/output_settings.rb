@@ -8,14 +8,13 @@
 # * updated_at [datetime, not null] - last update time
 class OutputSettings < ActiveRecord::Base
   belongs_to :device_session
-  audited associated_with: :device_session, except: [ :device_session_id ]
 
   FUNCTIONS = { heating: 0, cooling: 1 }
   FUNCTION_NAME = [ 'heating', 'cooling' ]
   INDEX_NAME = [ 'left', 'right' ]
 
   MAX_CYCLE_DELAY = 30
-
+  
   validates :output_index, presence: true
   validates :function, presence: true, inclusion: { in: FUNCTIONS.values }
   validates :cycle_delay, allow_blank: true,

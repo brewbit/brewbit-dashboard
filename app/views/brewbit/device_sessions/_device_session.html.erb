@@ -221,10 +221,10 @@
     
     g.ready(function(g) {
       g.getPluginInstance_(Dygraph.Plugins.Events).set([
-      <% (device_session.audits + device_session.associated_audits).group_by{|a| a.created_at.to_i }.each do |created_at, audits| %>
+      <% device_session.session_events.each do |event| %>
         {
-          xval: <%= created_at * 1000 %>,
-          text: "<%= audits.map { |audit| summarize_session_audit audit }.join('; ') %>",
+          xval: <%= event.created_at.to_i * 1000 %>,
+          text: "<%= summarize_session_event event %>",
         },
       <% end %>
       ]);
