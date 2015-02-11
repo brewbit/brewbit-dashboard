@@ -3,35 +3,32 @@ var active_graph = null;
 
 function session_graph_mouseenter(event, g, context) {
   active_graph = g;
+  $('.sensor-plot').css('cursor', '-webkit-grab');
 }
 
 function session_graph_mouseleave(event, g, context) {
   active_graph = null;
+  $('.sensor-plot').css('cursor', '');
 }
 
 function session_graph_mousedown(event, g, context) {
   context.initializeMouseDown(event, g, context);
-  if (event.altKey || event.shiftKey) {
-    Dygraph.startZoom(event, g, context);
-  } else {
-    Dygraph.startPan(event, g, context);
-  }
+  Dygraph.startPan(event, g, context);
+  $('.sensor-plot').css('cursor', '-webkit-grabbing');
   context.boundedDates = g.getOption('dateWindowLimits') || g.xAxisExtremes();
 }
 
 function session_graph_mousemove(event, g, context) {
   if (context.isPanning) {
+    $('.sensor-plot').css('cursor', '-webkit-grabbing');
     Dygraph.movePan(event, g, context);
-  } else if (context.isZooming) {
-    Dygraph.moveZoom(event, g, context);
   }
 }
 
 function session_graph_mouseup(event, g, context) {
+  $('.sensor-plot').css('cursor', '-webkit-grab');
   if (context.isPanning) {
     Dygraph.endPan(event, g, context);
-  } else if (context.isZooming) {
-    Dygraph.endZoom(event, g, context);
   }
 }
 

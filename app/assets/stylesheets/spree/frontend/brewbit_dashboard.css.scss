@@ -3,12 +3,12 @@ Placeholder manifest file.
 */
 
 #no-stuff {
-	text-align: center;
+  text-align: center;
   margin-bottom: 25px;
 
-	#blurb {
-		margin-bottom: 25px;
-	}
+  #blurb {
+    margin-bottom: 25px;
+  }
 }
 
 .bottom-space {
@@ -35,4 +35,9 @@ Placeholder manifest file.
   border-radius: 10px;
   background-color: #E1974C;
   border: 1px solid black;
+  cursor: pointer;
+}
+
+.dygraph-label, .dygraph-axis-label {
+  pointer-events: none;
 }
