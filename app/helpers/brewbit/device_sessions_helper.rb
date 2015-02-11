@@ -56,6 +56,8 @@ module Brewbit
         else
           "'Step #{field_value.to_i + 1}'"
         end
+      when 'static_setpoint'
+        field_value.round(1)
       else
         field_value
       end

@@ -36,7 +36,7 @@ class DeviceSession < ActiveRecord::Base
   validates :setpoint_type, presence: true, inclusion: { in: SETPOINT_TYPE.values }
   validates :static_setpoint, presence: true, if: "setpoint_type == SETPOINT_TYPE[:static]"
   validates :temp_profile, presence: true, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]"
-  validates :temp_profile_completion_action, presence: true, inclusion: { in: COMPLETION_ACTION.values }
+  validates :temp_profile_completion_action, presence: true, inclusion: { in: COMPLETION_ACTION.values }, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]" 
   validates :access_token, presence: true
 
   accepts_nested_attributes_for :output_settings, allow_destroy: true
