@@ -98,7 +98,7 @@
         </div>
       <% end -%>
       
-      <div id="sensor-<%= device_session.id %>-timeline" class="sensor-plot bottom-space"></div>
+      <div id="sensor-<%= device_session.id %>-timeline" class="sensor-plot grabbable bottom-space"></div>
     </div>
   </div>
 </div>
@@ -167,6 +167,7 @@
           'mouseup':    session_graph_mouseup,
           'dblclick':   session_graph_dblclick,
           'mousewheel': session_graph_scroll,
+          'DOMMouseScroll': session_graph_scroll,
           'touchstart': session_graph_touchstart,
           'touchmove': session_graph_touchmove,
           'touchend': session_graph_touchend
