@@ -15,6 +15,9 @@
       <label class="btn btn-default <%= "active" if o.object.function == OutputSettings::FUNCTIONS[:cooling] %>">
         <%= o.radio_button :function, OutputSettings::FUNCTIONS[:cooling], checked: o.object.function == OutputSettings::FUNCTIONS[:cooling], autocomplete: "off" %> Cooling
       </label>
+      <label class="btn btn-default <%= "active" if o.object.function == OutputSettings::FUNCTIONS[:manual] %>">
+        <%= o.radio_button :function, OutputSettings::FUNCTIONS[:manual], checked: o.object.function == OutputSettings::FUNCTIONS[:manual], autocomplete: "off" %> Manual
+      </label>
     </div>
   </div>
 </div>

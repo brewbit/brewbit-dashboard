@@ -1,6 +1,6 @@
 # Attributes:
 # * device_session_id [integer] - - Which device session it belongs to
-# * function [integer] - - Function of the output [ HEATING, COOLING ]
+# * function [integer] - - Function of the output [ HEATING, COOLING, MANUAL ]
 # * cycle_delay [integer] - - How much to wait between power cycles of an output in minutes
 #
 # * id [integer, primary, not null] - primary key
@@ -9,8 +9,8 @@
 class OutputSettings < ActiveRecord::Base
   belongs_to :device_session
 
-  FUNCTIONS = { heating: 0, cooling: 1 }
-  FUNCTION_NAME = [ 'heating', 'cooling' ]
+  FUNCTIONS = { heating: 0, cooling: 1, manual: 2 }
+  FUNCTION_NAME = [ 'heating', 'cooling', 'manual' ]
   INDEX_NAME = [ 'left', 'right' ]
 
   MAX_CYCLE_DELAY = 30

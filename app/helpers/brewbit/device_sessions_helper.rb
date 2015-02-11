@@ -47,7 +47,7 @@ module Brewbit
       when 'setpoint_type'
         ["static", "temp profile"][field_value]
       when 'function'
-        ["heating", "cooling"][field_value]
+        ["heating", "cooling", "manual"][field_value]
       when 'temp_profile_completion_action'
         ["'hold last temp'", "'start over'"][field_value]
       when 'temp_profile_start_point'
