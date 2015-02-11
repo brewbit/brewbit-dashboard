@@ -32,6 +32,19 @@ function session_graph_mouseup(event, g, context) {
   }
 }
 
+function session_graph_touchstart(event, g, context) {
+  Dygraph.Interaction.startTouch(event, g, context);
+  context.touchDirections.y = false;
+}
+
+function session_graph_touchmove(event, g, context) {
+  Dygraph.Interaction.moveTouch(event, g, context);
+}
+
+function session_graph_touchend(event, g, context) {
+  Dygraph.Interaction.endTouch(event, g, context);
+}
+
 // Take the offset of a mouse event on the dygraph canvas and
 // convert it to a percentage of the width of the graph.
 function offsetToPercentage(g, offsetX) {
