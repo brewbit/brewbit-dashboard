@@ -70,23 +70,6 @@ function offsetToPercentage(g, offsetX) {
   return xPct;
 }
 
-function session_graph_dblclick(event, g, context) {
-  // Reducing by 20% makes it 80% the original size, which means
-  // to restore to original size it must grow by 25%
-
-  if (!event.offsetX){
-    event.offsetX = event.layerX - event.target.offsetLeft;
-  }
-
-  var xPct = offsetToPercentage(g, event.offsetX);
-
-  if (event.ctrlKey) {
-    zoom(g, -.25, xPct);
-  } else {
-    zoom(g, +.2, xPct);
-  }
-}
-
 function session_graph_scroll(event, g, context) {
   if (active_graph != g) {
     return;
