@@ -29,6 +29,18 @@ Placeholder manifest file.
   margin-left: 15px;
 }
 
+.sensor-plot {
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: grab;
+}
+
+.dragging {
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;
+}
+
 .session-event {
   width: 10px;
   height: 10px;

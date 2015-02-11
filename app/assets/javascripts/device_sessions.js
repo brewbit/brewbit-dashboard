@@ -3,33 +3,33 @@ var active_graph = null;
 
 function session_graph_mouseenter(event, g, context) {
   active_graph = g;
-  $('.sensor-plot').css('cursor', '-webkit-grab');
+  if (!context.isPanning) {
+    $(event.srcElement).removeClass('dragging');
+  }
 }
 
 function session_graph_mouseleave(event, g, context) {
   active_graph = null;
-  $('.sensor-plot').css('cursor', '');
 }
 
 function session_graph_mousedown(event, g, context) {
   context.initializeMouseDown(event, g, context);
   Dygraph.startPan(event, g, context);
-  $('.sensor-plot').css('cursor', '-webkit-grabbing');
   context.boundedDates = g.getOption('dateWindowLimits') || g.xAxisExtremes();
+  $(event.srcElement).addClass('dragging');
 }
 
 function session_graph_mousemove(event, g, context) {
   if (context.isPanning) {
-    $('.sensor-plot').css('cursor', '-webkit-grabbing');
     Dygraph.movePan(event, g, context);
   }
 }
 
 function session_graph_mouseup(event, g, context) {
-  $('.sensor-plot').css('cursor', '-webkit-grab');
   if (context.isPanning) {
     Dygraph.endPan(event, g, context);
   }
+  $(event.srcElement).removeClass('dragging');
 }
 
 function session_graph_touchstart(event, g, context) {
