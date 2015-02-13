@@ -53,3 +53,10 @@ Placeholder manifest file.
 .dygraph-label, .dygraph-axis-label {
   pointer-events: none;
 }
+
+.dygraph-legend {
+  text-align: right !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  text-shadow: -2px -2px 0 #FFF, 2px -2px 0 #FFF, -2px 2px 0 #FFF, 2px 2px 0 #FFF;
+  pointer-events: none;
+}
