@@ -154,8 +154,8 @@
         plugins: [ Dygraph.Plugins.Events, Dygraph.Plugins.ResetZoom ],
         /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
         labels: ['', 'Reading', 'Setpoint', 'Left Output', 'Right Output'],
-        dateWindowLimits: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at.to_i * 1000 %>],
-        dateWindow: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at.to_i * 1000 %>],
+        dateWindowLimits: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at == device_session.created_at ? (device_session.created_at + 10.minutes).to_i * 1000 : device_session.updated_at.to_i * 1000 %>],
+        dateWindow: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at == device_session.created_at ? (device_session.created_at + 10.minutes).to_i * 1000 : device_session.updated_at.to_i * 1000 %>],
         labelsDivWidth: 600,
         ylabel: 'Temperature',
         legend: 'always',
