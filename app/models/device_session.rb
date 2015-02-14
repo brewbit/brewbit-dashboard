@@ -184,7 +184,6 @@ class DeviceSession < ActiveRecord::Base
     end
   end
 
-
   def create_readings_file
     # even though the first append would create the file, we want
     # it to be present so that the user does not get a 404 for this

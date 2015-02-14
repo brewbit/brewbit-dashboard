@@ -18,5 +18,12 @@ module Brewbit
 
       mail(to: @user.email, subject: 'High Temperature Alert from your BrewBit Model-T')
     end
+
+    def comms_loss_alert(session)
+      @user = session.device.user
+      @session = session
+
+      mail(to: @user.email, subject: 'Connection Loss Alert from your BrewBit Model-T')
+    end
   end
 end

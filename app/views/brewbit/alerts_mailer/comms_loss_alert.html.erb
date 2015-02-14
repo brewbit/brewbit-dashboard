@@ -1,0 +1,22 @@
+<% content_for :title do %>
+Connection Loss Alert from your BrewBit Model-T
+<% end %>
+
+<% content_for :heading do %>
+Connection Loss Alert
+<% end %>
+
+<% content_for :summary do %>
+The connection to your BrewBit Model-T was lost while executing your session '<%= @session.name %>'.
+<% end %>
+
+<% content_for :threshold do %>
+Connection loss alert threshold: <span style="font-weight: bold;"><%= pluralize(@session.comms_loss_threshold, 'minute') %></span>
+<% end %>
+
+<% content_for :current_value do %>
+<% end %>
+
+<% content_for :recommendation do %>
+We recommend that you inspect your Model-T and network equipment to ensure they are operating correctly.
+<% end %>

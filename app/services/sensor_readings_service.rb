@@ -11,6 +11,11 @@ module SensorReadingsService
       session.last_setpoint = setpoint
       # TODO email if this constitutes comms reestablishment?
       session.comms_loss_alert_triggered = false
+      if session.comms_loss_threshold.nil?
+        session.comms_lost_at = nil
+      else
+        session.comms_lost_at = DateTime.now + session.comms_loss_threshold.minutes
+      end
       AlertService.check session
       session.save
       
