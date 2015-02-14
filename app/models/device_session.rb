@@ -46,6 +46,7 @@ class DeviceSession < ActiveRecord::Base
   before_create :generate_create_event
   before_update :generate_update_event
   after_create :create_readings_file
+  before_save :update_comms_lost_at
 
   # virtual attribute to receive transient "start point" field from new/edit session form
   attr_accessor :temp_profile_start_point
@@ -181,6 +182,15 @@ class DeviceSession < ActiveRecord::Base
       begin
         self.access_token = SecureRandom.hex
       end while self.class.exists?(access_token: access_token)
+    end
+  end
+  
+  def update_comms_lost_at
+    self.comms_loss_alert_triggered = false
+    if self.comms_loss_threshold.nil?
+      self.comms_lost_at = nil
+    else
+      self.comms_lost_at = DateTime.now + self.comms_loss_threshold.minutes
     end
   end
 
