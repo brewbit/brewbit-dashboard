@@ -28,7 +28,7 @@ module Brewbit
         def update_session(device, settings)
           current_session = device.active_session_for settings[:sensor_index]
           if current_session
-            current_session.output_settings.destroy
+            current_session.output_settings.destroy_all
             current_session.attributes = settings
             current_session
           else
