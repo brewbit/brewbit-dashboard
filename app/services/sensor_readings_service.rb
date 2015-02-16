@@ -9,13 +9,6 @@ module SensorReadingsService
     if session
       session.last_reading = reading
       session.last_setpoint = setpoint
-
-      session.comms_loss_alert_triggered = false
-      if session.comms_loss_threshold.nil?
-        session.comms_lost_at = nil
-      else
-        session.comms_lost_at = DateTime.now + session.comms_loss_threshold.minutes
-      end
       AlertService.check session
       session.save
       

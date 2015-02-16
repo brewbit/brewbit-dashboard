@@ -1,0 +1,23 @@
+<% content_for :title do %>
+Normal Temperature Alert from your BrewBit Model-T
+<% end %>
+
+<% content_for :heading do %>
+Normal Temperature Alert
+<% end %>
+
+<% content_for :summary do %>
+The temperature of your session '<%= @session.name %>' has returned to normal.
+<% end %>
+
+<% content_for :threshold do %>
+Low temp alert threshold: <%= @temp_threshold.round(1) %> F
+<% end %>
+
+<% content_for :current_value do %>
+Current temperature: <%= @session.last_reading.round(1) %> F
+<% end %>
+
+<% content_for :recommendation do %>
+Your Model-T and heating/cooling devices appear to be operating normally.
+<% end %>

@@ -7,7 +7,7 @@ namespace :brewbit do
       session.comms_loss_alert_triggered = true
       session.save!
       
-      Brewbit::AlertsMailer.comms_loss_alert(session).deliver
+      Brewbit::AlertsMailer.comms_loss_alert_triggered(session).deliver
     end
   end
 end

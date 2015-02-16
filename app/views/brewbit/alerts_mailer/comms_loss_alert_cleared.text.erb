@@ -1,0 +1,22 @@
+<% content_for :title do %>
+Connection Regained Alert from your BrewBit Model-T
+<% end %>
+
+<% content_for :heading do %>
+Connection Regained Alert
+<% end %>
+
+<% content_for :summary do %>
+The connection to your BrewBit Model-T has been regained. Your session '<%= @session.name %>' is now executing normally.
+<% end %>
+
+<% content_for :threshold do %>
+Connection loss alert threshold: <%= pluralize(@session.comms_loss_threshold, 'minute') %>
+<% end %>
+
+<% content_for :current_value do %>
+<% end %>
+
+<% content_for :recommendation do %>
+Your Model-T and network equipment appear to be operating normally.
+<% end %>
