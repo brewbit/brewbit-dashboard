@@ -46,7 +46,7 @@ module Brewbit
       @user = session.device.user
       @session = session
 
-      mail(to: @user.email, subject: 'Connection Regained Alert from your BrewBit Model-T')
+      mail(to: @user.email, subject: 'Connection Restored Alert from your BrewBit Model-T')
     end
   end
 end
