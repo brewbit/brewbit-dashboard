@@ -38,6 +38,9 @@ class DeviceSession < ActiveRecord::Base
   validates :temp_profile, presence: true, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]"
   validates :temp_profile_completion_action, presence: true, inclusion: { in: COMPLETION_ACTION.values }, if: "setpoint_type == SETPOINT_TYPE[:temp_profile]" 
   validates :access_token, presence: true
+  validates :high_temp_threshold, numericality: { greater_than: 0, allow_nil: true }
+  validates :low_temp_threshold, numericality: { greater_than: 0, allow_nil: true }
+  validates :comms_loss_threshold, numericality: { only_integer: true, greater_than_or_equal_to: 1, allow_nil: true }
 
   accepts_nested_attributes_for :output_settings, allow_destroy: true
 
