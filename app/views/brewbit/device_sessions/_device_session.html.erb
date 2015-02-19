@@ -193,7 +193,7 @@
               var dateWindow = g.getOption('dateWindow');
               var dateWindowLimits = g.getOption('dateWindowLimits');
               if ((dateWindow[0] == dateWindowLimits[0]) && (dateWindow[1] == dateWindowLimits[1])) {
-                options.dateWindow = dateWindowLimits;
+                options.dateWindow = options.dateWindowLimits;
               }
 
               g.updateOptions(options);
