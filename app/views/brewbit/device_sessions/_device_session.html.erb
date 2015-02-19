@@ -147,9 +147,67 @@
       $(this).tooltip('show');
     });
     
+    var readings = [];
+    var g = undefined;
+    
+    function parse_readings(data) {
+      var lines = data.split("\n");
+      for (var idx = 0; idx < lines.length; idx++) {
+        var line = lines[idx];
+        // Oftentimes there's a blank line at the end. Ignore it.
+        if (line.length == 0) {
+          continue;
+        }
+        var row = line.split(",");
+        // Special processing for every row except the header.
+        row[0] = new Date(parseInt(row[0])); // Turn the string date into a Date.
+        for (var rowIdx = 1; rowIdx < row.length; rowIdx++) {
+          // Turn "123" into 123.
+          row[rowIdx] = parseFloat(row[rowIdx]);
+        }
+        readings.push(row);
+      }
+    }
+    
+    $.get('/readings/<%= device_session.uuid %>.csv', function(data) {
+      parse_readings(data);
+      make_graph();
+      
+      <% if device_session.active %>
+      var last_pos = <%= device_session.readings_pos %>;
+      function poll_session() {
+        $.getJSON('<%= poll_device_session_path(@device, device_session) %>', { pos: last_pos }, function(data, status) {
+          last_pos = data.pos;
+          if (data.reports.length > 0) {
+            for (var i = 0; i < data.reports.length; i++) {
+              data.reports[i][0] = new Date(data.reports[i][0]);
+              readings.push(data.reports[i]);
+            }
+            var options = {
+              file: readings,
+              dateWindowLimits: [<%= device_session.created_at.to_i * 1000 %>, readings[readings.length-1][0].valueOf()],
+            };
+            
+            // Update dateWindow to include new point if currently zoomed all the way out
+            var dateWindow = g.getOption('dateWindow');            
+            var dateWindowLimits = g.getOption('dateWindowLimits');
+            if ((dateWindow[0] == dateWindowLimits[0]) && (dateWindow[1] == dateWindowLimits[1])) {
+              options.dateWindow = dateWindowLimits;
+            }
+            
+            g.updateOptions(options);
+          }
+        });
+        setTimeout(poll_session, 30000);
+      }
+      setTimeout(poll_session, 30000);
+      <% end %>
+    });
+    
+    function make_graph() {
     g = new Dygraph(
       document.getElementById("sensor-<%= device_session.id %>-timeline"),
-      "/readings/<%= device_session.uuid %>.csv",
+      readings,
       {
         plugins: [ Dygraph.Plugins.Events, Dygraph.Plugins.ResetZoom ],
         /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
@@ -236,7 +294,7 @@
         placement: 'top'
       });
     });
-    
+    }
   });
 </script>
 

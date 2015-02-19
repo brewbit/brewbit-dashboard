@@ -96,6 +96,37 @@ class DeviceSession < ActiveRecord::Base
     end
     sp
   end
+  
+  def readings_path
+    "public/readings/#{self.uuid}.csv"
+  end
+  
+  def readings_pos
+    File.open(readings_path, 'r') do |f|
+      f.flock(File::LOCK_EX)
+      cur_pos = f.size
+    end
+  end
+  
+  def new_readings(pos)
+    File.open(readings_path, 'r') do |f|
+      f.flock(File::LOCK_EX)
+      f.pos = pos
+      reports = f.readlines.collect do |report|
+        report_elements = report.strip.split(',', -1)
+        report_elements[0] = report_elements[0].to_i
+        for i in 1...report_elements.length
+          if report_elements[i].blank?
+            report_elements[i] = Float::NAN
+          else
+            report_elements[i] = report_elements[i].to_f
+          end
+        end 
+        report_elements
+      end
+      { pos: f.pos, reports: reports }
+    end
+  end
 
   private
 
@@ -191,7 +222,7 @@ class DeviceSession < ActiveRecord::Base
     # even though the first append would create the file, we want
     # it to be present so that the user does not get a 404 for this
     # file when they load the show action
-    FileUtils.touch("public/readings/#{self.uuid}.csv")
+    FileUtils.touch(readings_path)
   end
 
   def output_available

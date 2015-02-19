@@ -22,7 +22,8 @@ module SensorReadingsService
       end
       
       timestamp ||= Time.now.to_i
-      File.open("public/readings/#{session.uuid}.csv", 'a') do |f|
+      File.open(session.readings_path, 'a') do |f|
+        f.flock(File::LOCK_EX)
         f.write("#{timestamp * 1000},#{reading},#{setpoint},#{output_states[0]},#{output_states[1]}\n")
       end
     end

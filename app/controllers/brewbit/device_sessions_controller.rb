@@ -12,6 +12,11 @@ module Brewbit
     def show
     end
 
+    # GET /sessions/1/poll
+    def poll
+      render json: @device_session.new_readings(params.require(:pos).to_i)
+    end
+
     # GET /sessions/new
     def new
       @device_session = Defaults.build_device_session @device, brewbit_current_user.temperature_scale
@@ -125,7 +130,7 @@ module Brewbit
         
         unless ['new', 'create', 'index'].include? action_name
           @device_session = @device.sessions.find(params[:id])
-          @token_authenticated = action_name == 'show' && params[:token] && @device_session.access_token == params[:token]
+          @token_authenticated = (action_name == 'show' || action_name == 'poll') && params[:token] && @device_session.access_token == params[:token]
         end
         
         user = brewbit_current_user
