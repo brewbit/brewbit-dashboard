@@ -175,10 +175,12 @@
       
       <% if device_session.active %>
       var last_pos = <%= device_session.readings_pos %>;
+      var active = true;
       function poll_session() {
         $.getJSON('<%= poll_device_session_path(@device, device_session) %>', { pos: last_pos }, function(data, status) {
           if (status == 'success') {
             last_pos = data.pos;
+            active = data.active;
             if (data.reports.length > 0) {
               for (var i = 0; i < data.reports.length; i++) {
                 data.reports[i][0] = new Date(data.reports[i][0]);
@@ -199,11 +201,11 @@
               g.updateOptions(options);
             }
           }
-
-          if (status != 'success' || data.active) {
-            setTimeout(poll_session, 30000);
-          }
         });
+
+        if (active) {
+          setTimeout(poll_session, 30000);
+        }
       }
       setTimeout(poll_session, 30000);
       <% end %>
