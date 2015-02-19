@@ -124,7 +124,7 @@ class DeviceSession < ActiveRecord::Base
         end 
         report_elements
       end
-      { pos: f.pos, reports: reports }
+      { active: self.active, pos: f.pos, reports: reports }
     end
   end
 
