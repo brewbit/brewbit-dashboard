@@ -4,6 +4,8 @@ module Brewbit
       class AuthController < ApiController
   
         def new
+          @device.firmware_version = params[:firmware_version]
+          @device.save
         end
 
       end
