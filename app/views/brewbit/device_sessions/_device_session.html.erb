@@ -158,14 +158,15 @@
         if (line.length == 0) {
           continue;
         }
+        var values = [NaN, NaN, NaN, NaN, NaN];
         var row = line.split(",");
         // Special processing for every row except the header.
-        row[0] = new Date(parseInt(row[0])); // Turn the string date into a Date.
+        values[0] = new Date(parseInt(row[0])); // Turn the string date into a Date.
         for (var rowIdx = 1; rowIdx < row.length; rowIdx++) {
           // Turn "123" into 123.
-          row[rowIdx] = parseFloat(row[rowIdx]);
+          values[rowIdx] = parseFloat(row[rowIdx]);
         }
-        readings.push(row);
+        readings.push(values);
       }
     }
     
