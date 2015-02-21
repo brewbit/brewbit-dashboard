@@ -36,8 +36,7 @@ events.prototype.activate = function(g) {
   this.events_ = [];
 
   return {
-    didDrawChart: this.didDrawChart,
-    dataDidUpdate: this.dataDidUpdate
+    didDrawChart: this.didDrawChart
   };
 };
 
@@ -113,7 +112,6 @@ events.prototype.updateEventDivPositions = function() {
 
   $.each(this.events_, function(idx, h) {
     var left = g.toDomXCoord(h.xval);
-    h.domX = left;  // See comments in this.dataDidUpdate
     $(h.infoDiv).css({
       'left': left-5 + 'px',
       'bottom': '16px',
@@ -187,18 +185,6 @@ events.prototype.didDrawChart = function(e) {
   this.updateEventDivPositions();
   this.attachEventsToChart_();
   this.updateEventStyles();
-};
-
-events.prototype.dataDidUpdate = function(e) {
-  // When the data in the chart updates, the events should stay in the same
-  // position on the screen. didDrawChart stores a domX parameter for each
-  // event. We use that to reposition them on data updates.
-  var g = this.dygraph_;
-  $.each(this.events_, function(idx, h) {
-    if (h.hasOwnProperty('domX')) {
-      h.xval = g.toDataXCoord(h.domX);
-    }
-  });
 };
 
 events.prototype.destroy = function() {

@@ -8,7 +8,7 @@ Brewbit::Engine.routes.draw do
       resources :sensors
       resources :device_sessions, path: :sessions, as: :sessions do
         post :stop_session, on: :member
-        get :poll, on: :member
+        get :updates, on: :member
       end
     end
     resources :temp_profiles, except: [:show]

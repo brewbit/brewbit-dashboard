@@ -50,7 +50,7 @@
         <div class="row">
           <div class="col-md-3  col-sm-3 col-md-offset-1 col-sm-offset-0">
             <div class="status-header">Temperature</div>
-            <div class="status-temp-value">
+            <div id="last-reading-<%= device_session.id %>" class="status-temp-value">
               <% if device_session.last_reading.nil? %>
                 --.-
               <% else %>
@@ -62,7 +62,7 @@
           <div class="col-md-3 col-sm-3">
             <% if device_session.setpoint_type == DeviceSession::SETPOINT_TYPE[:static] %>
               <div class="status-header">Setpoint (Static)</div>
-              <div class="status-temp-value">
+              <div id="last-setpoint-<%= device_session.id %>" class="status-temp-value">
                 <% if device_session.last_setpoint.nil? %>
                   --.-
                 <% else %>
@@ -149,6 +149,14 @@
     
     var readings = [];
     var g = undefined;
+    var events = [
+    <% device_session.session_events.each do |event| %>
+      {
+        xval: <%= event.created_at.to_i * 1000 %>,
+        text: "<%= event.summary %>",
+      },
+    <% end %>
+    ];
     
     function parse_readings(data) {
       var lines = data.split("\n");
@@ -175,14 +183,22 @@
       make_graph();
       
       <% if device_session.active %>
-      var last_pos = <%= device_session.readings_pos %>;
+      var last_update = <%= device_session.updated_at.to_i * 1000 %>;
       var active = true;
-      function poll_session() {
-        $.getJSON('<%= poll_device_session_path(@device, device_session) %>', { pos: last_pos }, function(data, status) {
+      function update_session() {
+        $.getJSON('<%= updates_device_session_path(@device, device_session) %>', { last_update: last_update }, function(data, status) {
           if (status == 'success') {
-            last_pos = data.pos;
             active = data.active;
+            last_update = data.updated_at;
+
             if (data.reports.length > 0) {
+              last_report = data.reports[data.reports.length-1];
+              last_reading = last_report[1];
+              last_setpoint = last_report[2];
+
+              $('#last-reading-<%= device_session.id %>').html(last_reading.toFixed(1));
+              $('#last-setpoint-<%= device_session.id %>').html(last_setpoint.toFixed(1));
+
               for (var i = 0; i < data.reports.length; i++) {
                 data.reports[i][0] = new Date(data.reports[i][0]);
                 readings.push(data.reports[i]);
@@ -201,14 +217,31 @@
 
               g.updateOptions(options);
             }
+
+            if (data.events.length > 0) {
+              for (var i = 0; i < data.events.length; i++) {
+                events.push({
+                  xval: data.events[i].created_at,
+                  text: data.events[i].summary
+                });
+              }
+            }
+
+            // Always reset the events to make sure they are positioned correctly
+            g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
+
+            $('.session-event').tooltip({
+              container: 'body',
+              placement: 'top'
+            });
           }
         });
 
         if (active) {
-          setTimeout(poll_session, 30000);
+          setTimeout(update_session, 30000);
         }
       }
-      setTimeout(poll_session, 30000);
+      setTimeout(update_session, 30000);
       <% end %>
     });
     
@@ -288,14 +321,7 @@
     );
     
     g.ready(function(g) {
-      g.getPluginInstance_(Dygraph.Plugins.Events).set([
-      <% device_session.session_events.each do |event| %>
-        {
-          xval: <%= event.created_at.to_i * 1000 %>,
-          text: "<%= summarize_session_event event %>",
-        },
-      <% end %>
-      ]);
+      g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
       
       $('.session-event').tooltip({
         container: 'body',
