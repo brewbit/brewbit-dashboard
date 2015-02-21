@@ -127,6 +127,10 @@ class DeviceSession < ActiveRecord::Base
     end
     reports
   end
+  
+  def events_since(last_update)
+    self.session_events.where('created_at > ?', Time.at(last_update / 1000))
+  end
 
   private
 

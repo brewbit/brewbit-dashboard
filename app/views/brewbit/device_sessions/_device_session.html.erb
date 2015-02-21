@@ -149,6 +149,14 @@
     
     var readings = [];
     var g = undefined;
+    var events = [
+    <% device_session.session_events.each do |event| %>
+      {
+        xval: <%= event.created_at.to_i * 1000 %>,
+        text: "<%= event.summary %>",
+      },
+    <% end %>
+    ];
     
     function parse_readings(data) {
       var lines = data.split("\n");
@@ -181,9 +189,10 @@
         $.getJSON('<%= updates_device_session_path(@device, device_session) %>', { last_update: last_update }, function(data, status) {
           if (status == 'success') {
             active = data.active;
+            last_update = data.updated_at;
+
             if (data.reports.length > 0) {
               last_report = data.reports[data.reports.length-1];
-              last_update = last_report[0];
               last_reading = last_report[1];
               last_setpoint = last_report[2];
 
@@ -208,6 +217,23 @@
 
               g.updateOptions(options);
             }
+
+            if (data.events.length > 0) {
+              for (var i = 0; i < data.events.length; i++) {
+                events.push({
+                  xval: data.events[i].created_at,
+                  text: data.events[i].summary
+                });
+              }
+            }
+
+            // Always reset the events to make sure they are positioned correctly
+            g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
+
+            $('.session-event').tooltip({
+              container: 'body',
+              placement: 'top'
+            });
           }
         });
 
@@ -295,14 +321,7 @@
     );
     
     g.ready(function(g) {
-      g.getPluginInstance_(Dygraph.Plugins.Events).set([
-      <% device_session.session_events.each do |event| %>
-        {
-          xval: <%= event.created_at.to_i * 1000 %>,
-          text: "<%= summarize_session_event event %>",
-        },
-      <% end %>
-      ]);
+      g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
       
       $('.session-event').tooltip({
         container: 'body',

@@ -18,8 +18,14 @@ module Brewbit
 
       render json: {
         active: @device_session.active,
-        reports: @device_session.reports_since(last_update)
-        # TODO events: @device_session.events_since(last_update)  
+        updated_at: @device_session.updated_at.to_i * 1000,
+        reports: @device_session.reports_since(last_update),
+        events: @device_session.events_since(last_update).map {|event|
+          {
+            created_at: event.created_at.to_i * 1000,
+            summary: event.summary
+          }
+        }
       }
     end
 
