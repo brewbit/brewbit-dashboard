@@ -101,31 +101,31 @@ class DeviceSession < ActiveRecord::Base
     "public/readings/#{self.uuid}.csv"
   end
   
-  def readings_pos
+  def reports_since(last_update)
+    reports = []
     File.open(readings_path, 'r') do |f|
       f.flock(File::LOCK_EX)
-      cur_pos = f.size
-    end
-  end
-  
-  def new_readings(pos)
-    File.open(readings_path, 'r') do |f|
-      f.flock(File::LOCK_EX)
-      f.pos = pos
-      reports = f.readlines.collect do |report|
-        report_elements = report.strip.split(',', -1)
-        report_elements[0] = report_elements[0].to_i
-        for i in 1...report_elements.length
-          if report_elements[i].blank?
-            report_elements[i] = Float::NAN
+      f.extend(File::Reverse)
+
+      f.reverse_each_line do |line|
+        vals = line.split(',', -1)
+
+        timestamp = vals[0].to_i
+        break if timestamp <= last_update
+
+        vals[0] = timestamp
+        for i in 1...vals.length
+          if vals[i].blank?
+            vals[i] = Float::NAN
           else
-            report_elements[i] = report_elements[i].to_f
+            vals[i] = vals[i].to_f
           end
-        end 
-        report_elements
+        end
+
+        reports.unshift(vals)
       end
-      { active: self.active, pos: f.pos, reports: reports }
     end
+    reports
   end
 
   private

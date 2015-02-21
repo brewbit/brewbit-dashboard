@@ -12,9 +12,15 @@ module Brewbit
     def show
     end
 
-    # GET /sessions/1/poll
-    def poll
-      render json: @device_session.new_readings(params.require(:pos).to_i)
+    # GET /sessions/1/updates
+    def updates
+      last_update = params.require(:last_update).to_i
+
+      render json: {
+        active: @device_session.active,
+        reports: @device_session.reports_since(last_update)
+        # TODO events: @device_session.events_since(last_update)  
+      }
     end
 
     # GET /sessions/new
