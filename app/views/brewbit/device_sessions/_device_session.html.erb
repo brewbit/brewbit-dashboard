@@ -225,15 +225,14 @@
                   text: data.events[i].summary
                 });
               }
+
+              g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
+
+              $('.session-event').tooltip({
+                container: 'body',
+                placement: 'top'
+              });
             }
-
-            // Always reset the events to make sure they are positioned correctly
-            g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
-
-            $('.session-event').tooltip({
-              container: 'body',
-              placement: 'top'
-            });
           }
         });
 
