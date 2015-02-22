@@ -36,7 +36,10 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#device_session_output_settings_attributes_<%= o.object.output_index %>_function_0, #device_session_output_settings_attributes_<%= o.object.output_index %>_function_1, #device_session_output_settings_attributes_<%= o.object.output_index %>_function_2').change(function(e){
+    func0 = '#device_session_output_settings_attributes_<%= o.object.output_index %>_function_0';
+    func1 = '#device_session_output_settings_attributes_<%= o.object.output_index %>_function_1';
+    func2 = '#device_session_output_settings_attributes_<%= o.object.output_index %>_function_2';
+    $(func0 + ',' + func1 + ',' + func2).change(function(e){
       if ($(this).val() == <%= OutputSettings::FUNCTIONS[:manual] %>) {
         $('#cycle_delay_<%= o.object.output_index %>').hide();
       }
