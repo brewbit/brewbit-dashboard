@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div class='form-group'>
+<div id="cycle_delay_<%= o.object.output_index %>" class='form-group'>
   <div class='col-sm-3 control-label'>
     <%= o.label :cycle_delay %>
   </div>
@@ -33,5 +33,19 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#device_session_output_settings_attributes_<%= o.object.output_index %>_function_0, #device_session_output_settings_attributes_<%= o.object.output_index %>_function_1, #device_session_output_settings_attributes_<%= o.object.output_index %>_function_2').change(function(e){
+      if ($(this).val() == <%= OutputSettings::FUNCTIONS[:manual] %>) {
+        $('#cycle_delay_<%= o.object.output_index %>').hide();
+      }
+      else {
+        $('#cycle_delay_<%= o.object.output_index %>').show();
+        
+      }
+    });
+  });
+</script>
 
 <hr />
