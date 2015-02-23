@@ -20,6 +20,13 @@ var events = function(opt_options) {
   this.lastWidth_ = -1;
   this.lastHeight = -1;
   this.dygraph_ = null;
+  this.event_template_id = opt_options['eventTemplate'] || 'event-template';
+  this.event_create_template_id = opt_options['eventCreateTemplate'] || 'event-create-template';
+  
+  this.createBarDiv = $('#' + this.event_create_template_id).clone().removeAttr('id').css({
+      'position': 'absolute'
+    })
+    .show().get(0);
 
   this.addTimer_ = null;
   opt_options = opt_options || {};
@@ -55,9 +62,9 @@ events.prototype.createEvent = function(props) {
   var h;
   var self = this;
   
-  var templateDiv = $('#event-template').get(0);
+  var templateDiv = $('#' + self.event_template_id);
 
-  var $infoDiv = $('#event-template').clone().removeAttr('id').css({
+  var $infoDiv = templateDiv.clone().removeAttr('id').css({
       'position': 'absolute'
     })
     .show();
@@ -75,7 +82,7 @@ events.prototype.createEvent = function(props) {
     that.moveEventToTop(h);
   });
 
-  $infoDiv.html(this.getTemplateHTML(templateDiv, props));
+  $infoDiv.html(this.getTemplateHTML(templateDiv.get(0), props));
 
   return h;
 };
@@ -109,6 +116,14 @@ events.prototype.updateEventDivPositions = function() {
   var g = this.dygraph_;
   var layout = this.dygraph_.getArea();
   var chartLeft = layout.x, chartRight = layout.x + layout.w;
+  
+  // Update event create bar
+  $(this.createBarDiv).css({
+    'left': chartLeft + 'px',
+    'width': layout.w + 'px',
+    'bottom': '16px',
+    'height': '10px'
+  });
 
   $.each(this.events_, function(idx, h) {
     var left = g.toDomXCoord(h.xval);
@@ -160,6 +175,7 @@ events.findPrevNextRows = function(g, xval, col) {
 // This reattaches them.
 events.prototype.attachEventsToChart_ = function() {
   var div = this.dygraph_.graphDiv;
+  $(this.createBarDiv).appendTo(div);
   $.each(this.events_, function(idx, h) {
     $(h.infoDiv).appendTo(div);
   });

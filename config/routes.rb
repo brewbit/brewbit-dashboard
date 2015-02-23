@@ -9,6 +9,7 @@ Brewbit::Engine.routes.draw do
       resources :device_sessions, path: :sessions, as: :sessions do
         post :stop_session, on: :member
         get :updates, on: :member
+        resources :session_events, path: :events, as: :events, only: [ :create, :update, :destroy ]
       end
     end
     resources :temp_profiles, except: [:show]

@@ -1,7 +1,25 @@
 class SessionEvent < ActiveRecord::Base
   belongs_to :device_session, touch: false
   
+  def timestamp=(timestamp)
+    self.occurred_at = Time.at(timestamp.to_f / 1000).to_datetime
+  end
+  
+  def timestamp
+    self.occurred_at.to_i * 1000
+  end
+  
+  def note=(note)
+    self.event_data = { note: note }
+  end
+  
+  def note
+    self.event_data[:note]
+  end
+  
   def summary
+    return self.event_data["note"] if self.event_type == "note"
+
     session_changes = self.event_data.clone
     output_changes = session_changes.delete('output_settings')
 

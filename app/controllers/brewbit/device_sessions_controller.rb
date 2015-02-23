@@ -22,7 +22,7 @@ module Brewbit
         reports: @device_session.reports_since(last_update),
         events: @device_session.events_since(last_update).map {|event|
           {
-            created_at: event.created_at.to_i * 1000,
+            occurred_at: event.occurred_at.to_i * 1000,
             summary: event.summary
           }
         }
@@ -115,6 +115,7 @@ module Brewbit
       redirect_to device_sessions_path, notice: 'Session was successfully destroyed.'
     end
 
+    # POST /sessions/1/stop_session
     def stop_session
       begin
         DeviceSession.transaction do
@@ -144,7 +145,7 @@ module Brewbit
           @device_session = @device.sessions.find(params[:id])
           @token_authenticated = (action_name == 'show' || action_name == 'poll') && params[:token] && @device_session.access_token == params[:token]
         end
-        
+
         user = brewbit_current_user
         @user_authenticated = user && @device.user == user
         

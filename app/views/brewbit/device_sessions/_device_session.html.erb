@@ -103,8 +103,28 @@
   </div>
 </div>
 
-<div id="event-template" class="event-info" style="display:none">
-  <div class="session-event" data-toggle="tooltip" data-placement="top" title="{{text}}"></div>
+<script id="create-note-form-<%= device_session.id %>" type="text/html-template">
+  <%= form_for device_session.new_note, url: device_session_events_path(@device, device_session, device_session.new_note), html: { class: 'form-horizontal' } do |f| %>
+    <%= f.hidden_field :event_type %>
+    <%= f.hidden_field :timestamp, id: "new_session_event_timestamp_#{device_session.id}" %>
+    <div class="input-group">
+      <%= f.text_field :note, class: 'form-control', id: "new_session_event_note_#{device_session.id}", placeholder: 'Add note...' %>
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', class: "btn btn-primary") do %>
+          <i class="glyphicon glyphicon-ok"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+</script>
+
+<div id="event-create-template-<%= device_session.id %>" class="dygraph-event-create-bar" style="display:none">
+  <div class="create-event-popover-<%= device_session.id %>" style="width: 1px; height: 1px; position: absolute;" data-trigger="manual" data-container="body" data-toggle="popover" data-placement="top" style="display:none">
+  </div>
+</div>
+
+<div id="event-template-<%= device_session.id %>" class="event-info" style="display:none">
+  <div class="session-event" data-container="body" data-toggle="tooltip" data-placement="top" title="{{text}}"></div>
 </div>
 
 <script type='text/javascript'>
@@ -149,10 +169,14 @@
     
     var readings = [];
     var g = undefined;
+    var eventsPlugin = new Dygraph.Plugins.Events({
+      eventTemplate: 'event-template-<%= device_session.id %>',
+      eventCreateTemplate: 'event-create-template-<%= device_session.id %>'
+    });
     var events = [
     <% device_session.session_events.each do |event| %>
       {
-        xval: <%= event.created_at.to_i * 1000 %>,
+        xval: <%= event.timestamp %>,
         text: "<%= event.summary %>",
       },
     <% end %>
@@ -221,17 +245,12 @@
             if (data.events.length > 0) {
               for (var i = 0; i < data.events.length; i++) {
                 events.push({
-                  xval: data.events[i].created_at,
+                  xval: data.events[i].timestamp,
                   text: data.events[i].summary
                 });
               }
 
               g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
-
-              $('.session-event').tooltip({
-                container: 'body',
-                placement: 'top'
-              });
             }
           }
         });
@@ -249,7 +268,7 @@
       document.getElementById("sensor-<%= device_session.id %>-timeline"),
       readings,
       {
-        plugins: [ Dygraph.Plugins.Events, Dygraph.Plugins.ResetZoom ],
+        plugins: [ eventsPlugin, Dygraph.Plugins.ResetZoom ],
         /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
         labels: ['', 'Reading', 'Setpoint', 'Left Output', 'Right Output'],
         dateWindowLimits: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at == device_session.created_at ? (device_session.created_at + 10.minutes).to_i * 1000 : device_session.updated_at.to_i * 1000 %>],
@@ -322,9 +341,30 @@
     g.ready(function(g) {
       g.getPluginInstance_(Dygraph.Plugins.Events).set(events);
       
-      $('.session-event').tooltip({
-        container: 'body',
-        placement: 'top'
+      $('body').tooltip({
+        selector: '.session-event'
+      });
+      $('.create-event-popover-<%= device_session.id %>').popover({
+        content: function() {
+          return $('#create-note-form-<%= device_session.id %>').html();
+        },
+        html: true
+      });
+      $('.dygraph-event-create-bar').click(function(e) {
+        $(this).children('.create-event-popover-<%= device_session.id %>').css({'left': e.offsetX + 'px'});
+        $(this).children('.create-event-popover-<%= device_session.id %>').popover('show');
+        
+        var timestamp = g.toDataXCoord(e.pageX - $('#sensor-<%= device_session.id %>-timeline').offset().left);
+        $('#new_session_event_timestamp_<%= device_session.id %>').val(timestamp);
+        
+        $('#new_session_event_note_<%= device_session.id %>').focus();
+      });
+      $(document).click(function(event) {
+        var trigger_dist = $(event.target).closest('.dygraph-event-create-bar').length;
+        var popover_dist = $(event.target).closest('.popover').length;
+        if(trigger_dist == 0 && popover_dist == 0) {
+          $('.create-event-popover-<%= device_session.id %>').popover('hide');
+        }
       });
     });
     }

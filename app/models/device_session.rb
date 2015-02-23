@@ -131,6 +131,10 @@ class DeviceSession < ActiveRecord::Base
   def events_since(last_update)
     self.session_events.where('created_at > ?', Time.at(last_update / 1000))
   end
+  
+  def new_note
+    self.session_events.build event_type: 'note', event_data: '{}'
+  end
 
   private
 
@@ -157,7 +161,7 @@ class DeviceSession < ActiveRecord::Base
       event_data[:temp_profile_completion_action] = self.temp_profile_completion_action
     end
     event_data[:output_settings] = self.output_settings.map { |os| { output_index: os.output_index, function: os.function, cycle_delay: os.cycle_delay } }
-    self.session_events.build(event_type: 'create', event_data: event_data)
+    self.session_events.build(event_type: 'create', event_data: event_data, occurred_at: DateTime.now)
   end
   
   def generate_update_event
@@ -210,7 +214,7 @@ class DeviceSession < ActiveRecord::Base
     end
     
     unless event_data.empty?
-      self.session_events.build(event_type: 'update', event_data: event_data)
+      self.session_events.build(event_type: 'update', event_data: event_data, occurred_at: DateTime.now)
     end
   end
   
