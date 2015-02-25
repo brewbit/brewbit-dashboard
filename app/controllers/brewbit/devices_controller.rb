@@ -63,7 +63,14 @@ module Brewbit
     private
       # Only allow a trusted parameter "white list" through.
       def device_params
-        params.require(:device).permit(:name, :control_mode, :hysteresis, :update_channel)
+        params.require(:device).permit(:name,
+        		                       :output_1_name,
+        		                       :output_2_name,
+        		                       :sensor_1_name,
+        		                       :sensor_2_name,
+        		                       :control_mode,
+        		                       :hysteresis,
+        		                       :update_channel)
       end
 
       def correct_device

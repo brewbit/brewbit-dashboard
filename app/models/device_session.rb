@@ -132,6 +132,15 @@ class DeviceSession < ActiveRecord::Base
     self.session_events.where('created_at > ?', Time.at(last_update / 1000))
   end
 
+  def sensor_name
+    case self.sensor_index
+    when 0
+      self.device.sensor_1_name.capitalize
+    when 1
+      self.device.sensor_2_name.capitalize
+    end
+  end
+
   private
 
   def fahrenheit_to_celsius(degrees)

@@ -11,7 +11,6 @@ class OutputSettings < ActiveRecord::Base
 
   FUNCTIONS = { heating: 0, cooling: 1, manual: 2 }
   FUNCTION_NAME = [ 'heating', 'cooling', 'manual' ]
-  INDEX_NAME = [ 'left', 'right' ]
 
   MAX_CYCLE_DELAY = 30
   
@@ -27,7 +26,12 @@ class OutputSettings < ActiveRecord::Base
   end
 
   def index_name
-    INDEX_NAME[self.output_index].capitalize
+    case self.output_index
+    when 0
+      self.device_session.device.output_1_name.capitalize
+    when 1
+      self.device_session.device.output_2_name.capitalize
+    end
   end
 end
 

@@ -4,7 +4,7 @@
       <h3 class="panel-title">
         <span><%= device_session.device.name %></span>
         <span class="session-title-sep">/</span>
-        <span>Controller <%= device_session.sensor_index + 1 %></span>
+        <span><%= device_session.sensor_name %></span>
         <span class="session-title-sep">/</span>
         <span><%= device_session.name %></span>
       </h3>
@@ -251,7 +251,7 @@
       {
         plugins: [ Dygraph.Plugins.Events, Dygraph.Plugins.ResetZoom ],
         /* rollPeriod: 10, */ // makes readings look better, but messes up setpoint transitions...
-        labels: ['', 'Reading', 'Setpoint', 'Left Output', 'Right Output'],
+        labels: ['', 'Reading', 'Setpoint', '<%= device_session.device.output_1_name %>', '<%= device_session.device.output_2_name %>'],
         dateWindowLimits: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at == device_session.created_at ? (device_session.created_at + 10.minutes).to_i * 1000 : device_session.updated_at.to_i * 1000 %>],
         dateWindow: [<%= device_session.created_at.to_i * 1000 %>, <%= device_session.updated_at == device_session.created_at ? (device_session.created_at + 10.minutes).to_i * 1000 : device_session.updated_at.to_i * 1000 %>],
         labelsDivWidth: 600,

@@ -10,6 +10,10 @@ class Defaults
       activation_token: activation_token,
       hardware_identifier: hardware_identifier,
       name: "Unactivated Device",
+      output_1_name: "Left",
+      output_2_name: "Right",
+      sensor_1_name: "Sensor 1",
+      sensor_2_name: "Sensor 2",
       output_count: 2,
       sensor_count: 2,
       control_mode: Device::CONTROL_MODE[:on_off],
@@ -40,10 +44,11 @@ class Defaults
   end
 
   def self.build_output_settings( device_session, output_index, function = Output::FUNCTIONS[:heating], cycle_delay = 3 )
-    device_session.output_settings.build(
-      output_index: output_index,
-      function: function,
-      cycle_delay: cycle_delay)
-  end
+      device_session.output_settings.build(
+        device_session: device_session,
+        output_index: output_index,
+        function: function,
+        cycle_delay: cycle_delay)
+    end
 end
 

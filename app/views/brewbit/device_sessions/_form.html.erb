@@ -29,18 +29,18 @@
 
   <div class='form-group'>
     <div class='col-sm-3 control-label'>
-      <%= f.label :sensor_index %>
+      <%= f.label :sensor %>
     </div>
     <div class='col-sm-9'>
       <div class="btn-group btn-group-justified" data-toggle="buttons">
         <%if !@device_session.persisted? || @device_session.sensor_index == 0 %>
         <label class="btn btn-default <%= "active" if @device_session.sensor_index == 0 %>">
-          <%= f.radio_button :sensor_index, "0", checked: @device_session.sensor_index == 0, autocomplete: "off" %> Sensor 1
+          <%= f.radio_button :sensor_index, "0", checked: @device_session.sensor_index == 0, autocomplete: "off" %> <%= @device_session.device.sensor_1_name .capitalize %>
         </label>
         <% end %>
         <%if !@device_session.persisted? || @device_session.sensor_index == 1 %>
         <label class="btn btn-default <%= "active" if @device_session.sensor_index == 1 %>">
-          <%= f.radio_button :sensor_index, "1", checked: @device_session.sensor_index == 1, autocomplete: "off" %> Sensor 2
+          <%= f.radio_button :sensor_index, "1", checked: @device_session.sensor_index == 1, autocomplete: "off" %> <%= @device_session.device.sensor_2_name .capitalize %>
         </label>
         <% end %>
       </div>
