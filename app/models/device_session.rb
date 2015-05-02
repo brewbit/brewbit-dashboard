@@ -103,7 +103,6 @@ class DeviceSession < ActiveRecord::Base
   
   def reports_since(last_update)
     reports = []
-    scale = device.try( :user ).try( :temperature_scale )
     File.open(readings_path, 'r') do |f|
       f.flock(File::LOCK_EX)
       f.extend(File::Reverse)
@@ -120,9 +119,6 @@ class DeviceSession < ActiveRecord::Base
             vals[i] = Float::NAN
           else
             vals[i] = vals[i].to_f
-            if scale == 'C'
-              vals[i] = fahrenheit_to_celsius( vals[i] )
-            end
           end
         end
 

@@ -196,6 +196,12 @@
               last_reading = last_report[1];
               last_setpoint = last_report[2];
 
+              <% if @device.user.temperature_scale == 'C' -%>
+              // convert last reading and set-point to celsius
+              last_reading = ((last_reading - 32) / 1.8)
+              last_setpoint = ((last_setpoint - 32) / 1.8)
+              <% end %>
+
               $('#last-reading-<%= device_session.id %>').html(last_reading.toFixed(1));
               $('#last-setpoint-<%= device_session.id %>').html(last_setpoint.toFixed(1));
 
