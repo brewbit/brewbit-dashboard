@@ -57,7 +57,9 @@ class SessionEvent < ActiveRecord::Base
         "'Step #{field_value.to_i + 1}'"
       end
     when 'static_setpoint'
-      field_value.round(1)
+      scale = device_session.try( :device ).try( :user ).try( :temperature_scale )
+      label = (scale || "").empty? ? "" : "°#{scale}"
+      "#{field_value.round(1)}#{label}"
     else
       field_value
     end
