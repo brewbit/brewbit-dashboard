@@ -87,7 +87,7 @@
       </div>
       <div class='col-sm-9'>
         <div class="input-group">
-          <%= f.text_field :static_setpoint, class: 'form-control', value: @device_session.static_setpoint %>
+          <%= f.text_field :static_setpoint, class: 'form-control', value: @device_session.static_setpoint.round(1) %>
           <span class="input-group-addon">&deg;<%= brewbit_current_user.temperature_scale %></span>
         </div>
       </div>
