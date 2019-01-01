@@ -1,7 +1,7 @@
 require 'json'
 
 class DeviceService
-  DEVICE_GATEWAY_API_URL = 'http://localhost:10080'
+  DEVICE_GATEWAY_API_URL = ENV['BREWBIT_DEVICE_GATEWAY_API_URL'] || 'http://localhost:10080'
 
   def self.send_activation_notification(device)
     options = {
